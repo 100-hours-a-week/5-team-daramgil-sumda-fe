@@ -1,4 +1,4 @@
-name: Deploy React App to EC2
+name: Build and Deploy React App to EC2
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,46 +24,13 @@ jobs:
       - name: Build React app
         run: npm run build
 
-      - name: Install Nginx on EC2
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-          SSH_HOST: ${{ secrets.EC2_HOST }}
-          SSH_USER: ${{ secrets.EC2_USER }}
-        run: |
-          ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} << 'EOF'
-            sudo apt-get update
-            sudo apt-get install -y nginx
-            sudo systemctl start nginx
-            sudo systemctl enable nginx
-          EOF
-
-      - name: Configure Nginx for React App
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-          SSH_HOST: ${{ secrets.EC2_HOST }}
-          SSH_USER: ${{ secrets.EC2_USER }}
-        run: |
-          ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} << 'EOF'
-            sudo bash -c 'cat > /etc/nginx/sites-available/default' << 'EOL'
-            server {
-                listen 80;
-                server_name _;
-                root /var/www/html;
-                index index.html;
-
-                location / {
-                    try_files $uri $uri/ /index.html;
-                }
-            }
-            EOL
-            sudo systemctl restart nginx
-          EOF
-
       - name: Deploy React App to EC2
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
           SSH_HOST: ${{ secrets.EC2_HOST }}
           SSH_USER: ${{ secrets.EC2_USER }}
         run: |
+          mkdir -p ~/.ssh
+          echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
           scp -r -o StrictHostKeyChecking=no build/* ${SSH_USER}@${SSH_HOST}:/var/www/html/
-          ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} 'sudo systemctl restart nginx'
