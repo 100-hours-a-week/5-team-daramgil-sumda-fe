@@ -3,7 +3,7 @@ name: Build and Deploy React App to EC2
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build-and-deploy:
@@ -34,4 +34,3 @@ jobs:
           echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           scp -r -o StrictHostKeyChecking=no build/* ${SSH_USER}@${SSH_HOST}:/var/www/html/
-          
