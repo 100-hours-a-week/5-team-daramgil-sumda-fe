@@ -1,0 +1,10 @@
+name: test workflow # Workflow 이름
+on: [push] # Event 감지
+jobs: # Job 설정
+  check-bats-version: # Job 이름
+    runs-on: ubuntu-latest # Job 가상환경 인스턴스
+    steps: # Step 설정
+      - uses: actions/checkout@v2 # checkout actions 사용 [이 action은 나의 레포를 checkout 하고 runner에 코드를 다운로드 합니다]
+      - uses: actions/setup-node@v1 # setup-node actions 사용 [이 action은 runner에 node를 설치하고 runner가 npm command 에 접근 할 수 있도록 해줍니다.]
+      - run: npm install -g bats # run 키워드는 job에게 이 명령어를 실행 시킬 수 있게 해줍니다. npm 으로 bats 설치
+      - run: bats -v # bats version 확인
