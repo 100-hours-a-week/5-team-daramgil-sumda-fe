@@ -1,10 +1,19 @@
 import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import Layout from "./components/layout/Layout";
+import Home from "./routes/Home";
 
 const App: React.FC = () => {
   return (
     <div>
-      <h1>숨쉬는 다람쥐 </h1>
-      <p>CICD TEST dddd123</p>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route path="/" element={<Home />} />
+          </Route>
+        </Routes>
+      </Router>
     </div>
   );
 };
