@@ -3,7 +3,8 @@
     margin: 0 auto;
     padding: 20px;
     font-family: 'Noto Sans KR', sans-serif;
-    background-color: #ffffff;
+    background-color: #e6f4ea;
+    /* 맑은 공기를 연상시키는 부드러운 파란색 */
 }
 
 .info-container {
@@ -16,7 +17,8 @@
     padding: 20px;
     text-align: center;
     border-radius: 12px;
-    background-color: #f9fafb;
+    background-color: #edf7f1;
+    /* 자연의 부드러운 초록색 */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
@@ -29,7 +31,8 @@
     margin-bottom: 8px;
     font-size: 18px;
     font-weight: 500;
-    color: #333;
+    color: #3c6e47;
+    /* 숲을 연상시키는 진한 녹색 */
 }
 
 .air-quality-image,
@@ -38,13 +41,15 @@
     width: 64px;
     height: 64px;
     margin-bottom: 12px;
+    animation: bounce 2s infinite;
 }
 
 .air-quality-status,
 .weather-status {
     font-size: 16px;
     font-weight: 500;
-    color: #1d1d1f;
+    color: #4a523a;
+    /* 다람쥐를 연상시키는 부드러운 갈색 */
     margin-bottom: 8px;
 }
 
@@ -53,6 +58,7 @@
     font-size: 28px;
     font-weight: 700;
     color: #0055ff;
+    /* 맑은 하늘을 연상시키는 파란색 */
     margin-bottom: 12px;
 }
 
@@ -60,16 +66,17 @@
 .weather-description {
     font-size: 14px;
     color: #6e6e73;
+    /* 중성적인 회색 */
 }
 
 .additional-info {
     position: relative;
     padding: 20px;
     text-align: left;
-    background-color: #f9fafb;
+    background-color: #edf7f1;
+    /* 자연의 부드러운 초록색 */
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    max-width: 300px;
     margin: 20px auto;
 }
 
@@ -78,7 +85,9 @@
     padding: 10px;
     font-size: 14px;
     color: #1d1d1f;
+    /* 자연과 조화를 이루는 짙은 색상 */
     background-color: #ffffff;
+    /* 흰색 배경 */
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     position: relative;
@@ -106,7 +115,6 @@
 }
 
 @keyframes bounce {
-
     0%,
     20%,
     50%,
