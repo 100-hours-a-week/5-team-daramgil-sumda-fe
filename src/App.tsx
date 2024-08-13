@@ -8,6 +8,10 @@ import ActivityRecommed from "./routes/ActivityRecommed";
 import OutfitByTemp from "./routes/OutfitByTemp";
 import Favorites from "./routes/Favorites";
 import LocalPride from "./routes/LocalPride";
+import SensitiveCheck from "./routes/SensitiveCheck";
+import Setting from "./routes/Setting";
+import Contact from "./routes/Contact";
+
 const App: React.FC = () => {
   return (
     <div>
@@ -20,6 +24,9 @@ const App: React.FC = () => {
             <Route path="/outfitbytemp" element={<OutfitByTemp />} />
             <Route path="/favorites" element={<Favorites />} />
             <Route path="/localpride" element={<LocalPride />} />
+            <Route path="/sensitivecheck" element={<SensitiveCheck />} />
+            <Route path="/setting" element={<Setting />} />
+            <Route path="/contact" element={<Contact />} />
           </Route>
         </Routes>
       </Router>
