@@ -3,7 +3,6 @@
   display: flex;
   justify-content: center;
   height: 100vh;
-  background-color: #e24141;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -34,4 +33,3 @@
 .content-container::-webkit-scrollbar {
   display: none;
 }
-  
