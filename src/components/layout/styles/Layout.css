@@ -30,4 +30,8 @@
   overflow: auto;
   height: 600px;
 }
+
+.content-container::-webkit-scrollbar {
+  display: none;
+}
   
