@@ -6,6 +6,7 @@ import Home from "./routes/Home";
 import Notice from "./routes/Notice";
 import ActivityRecommed from "./routes/ActivityRecommed";
 import OutfitByTemp from "./routes/OutfitByTemp";
+import SensitiveCheck from "./routes/SensitiveCheck";
 
 const App: React.FC = () => {
   return (
@@ -17,6 +18,7 @@ const App: React.FC = () => {
             <Route path="/notice" element={<Notice />} />
             <Route path="/activityRecommed" element={<ActivityRecommed />} />
             <Route path="/outfitbytemp" element={<OutfitByTemp />} />
+            <Route path="/sensitivecheck" element={<SensitiveCheck />} />
           </Route>
         </Routes>
       </Router>
