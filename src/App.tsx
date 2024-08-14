@@ -12,7 +12,7 @@ import SensitiveCheck from "./routes/SensitiveCheck";
 import Setting from "./routes/Setting";
 import Contact from "./routes/Contact";
 import DaliyMission from "./routes/DailyMission";
-
+import GameList from "./routes/GameList";
 const App: React.FC = () => {
   return (
     <div>
@@ -29,6 +29,7 @@ const App: React.FC = () => {
             <Route path="/setting" element={<Setting />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/daily" element={<DaliyMission />}></Route>
+            <Route path="/games" element={<GameList />}></Route>
           </Route>
         </Routes>
       </Router>
