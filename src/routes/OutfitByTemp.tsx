@@ -4,7 +4,7 @@ import outfit from "../assets/icons/Outfit.png";
 
 const OutfitByTemp: React.FC = () => {
   return (
-    <div>
+    <div className="outfitbytemp-container">
       <h2 className="title">기온별 옷차림 추천</h2>
       <img src={outfit} className="outfit" />
     </div>

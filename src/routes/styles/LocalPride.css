@@ -1,204 +1,204 @@
 .LocalPride-container {
-    width: 100%;
-    min-height: 100vh;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-radius: 10px;
+  width: 100%;
+  min-height: calc(100vh - 338px);
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
 }
 
 .LocalPride-title {
-    text-align: center;
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-    color: #343a40;
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #343a40;
 }
 
 .LocalPride-location {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-bottom: 20px;
 }
 
 .LocalPride-location-text {
-    font-size: 1rem;
-    color: #495057;
+  font-size: 1rem;
+  color: #495057;
 }
 
 .LocalPride-gps-button {
-    position: absolute;
-    right: 0;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
+  position: absolute;
+  right: 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 .LocalPride-gps-icon {
-    width: 24px;
-    height: 24px;
+  width: 24px;
+  height: 24px;
 }
 
 .LocalPride-upload-section {
-    text-align: center;
-    margin-bottom: 20px;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .LocalPride-upload-button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #51cf66;
-    color: #fff;
-    border-radius: 5px;
-    cursor: pointer;
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #51cf66;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .LocalPride-upload-input {
-    display: none;
+  display: none;
 }
 
 .LocalPride-preview-section {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .LocalPride-image-preview {
-    text-align: center;
-    margin-bottom: 10px;
+  text-align: center;
+  margin-bottom: 10px;
 }
 
 .LocalPride-preview-img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 10px;
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
 }
 
 .LocalPride-helpertext {
-    font-size: 0.9rem;
-    color: #868e96;
-    text-align: center;
-    margin-bottom: 10px;
+  font-size: 0.9rem;
+  color: #868e96;
+  text-align: center;
+  margin-bottom: 10px;
 }
 
 .LocalPride-action-buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
 }
 
 .LocalPride-submit-button,
 .LocalPride-cancel-button {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .LocalPride-submit-button {
-    background-color: #228be6;
-    color: #fff;
+  background-color: #228be6;
+  color: #fff;
 }
 
 .LocalPride-cancel-button {
-    background-color: #fa5252;
-    color: #fff;
+  background-color: #fa5252;
+  color: #fff;
 }
 
 .LocalPride-post-section {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .LocalPride-post-card {
-    background-color: #fff;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .LocalPride-post-time,
 .LocalPride-post-location,
 .LocalPride-post-likes {
-    display: block;
-    font-size: 0.9rem;
-    color: #868e96;
-    margin-bottom: 5px;
+  display: block;
+  font-size: 0.9rem;
+  color: #868e96;
+  margin-bottom: 5px;
 }
 
 .LocalPride-post-img {
-    width: 100%;
-    height: auto;
-    margin-bottom: 10px;
-    border-radius: 5px;
+  width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+  border-radius: 5px;
 }
 
 .LocalPride-like-button {
-    background-color: transparent;
-    color: #ff6b6b;
-    font-size: 1.2rem;
-    display: flex;
-    align-items: center;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
+  background-color: transparent;
+  color: #ff6b6b;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
 }
 
 .LocalPride-like-button::before {
-    content: '❤️';
+  content: "❤️";
 }
 .LocalPride-delete-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: #ff6b6b;
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.8rem;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ff6b6b;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.8rem;
 }
 
 .LocalPride-like-button {
-    background-color: #dbdbdb;
-    border-radius: 10px;
+  background-color: #dbdbdb;
+  border-radius: 10px;
 }
 
 .LocalPride-delete-button {
-    background-color: #ff6b6b;
-    color: #fff;
+  background-color: #ff6b6b;
+  color: #fff;
 }
 
 .LocalPride-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    text-align: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
 }
 
 .LocalPride-modal-text {
-    font-size: 1rem;
-    margin-bottom: 20px;
+  font-size: 1rem;
+  margin-bottom: 20px;
 }
 
 .LocalPride-modal-button {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin: 0 10px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 10px;
 }
 
 .LocalPride-modal-button:first-child {
-    background-color: #ff6b6b;
-    color: #fff;
+  background-color: #ff6b6b;
+  color: #fff;
 }
 
 .LocalPride-modal-button:last-child {
-    background-color: #adb5bd;
-    color: #fff;
+  background-color: #adb5bd;
+  color: #fff;
 }

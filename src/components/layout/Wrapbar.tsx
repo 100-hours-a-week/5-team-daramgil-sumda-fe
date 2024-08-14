@@ -31,7 +31,7 @@ const Wrapbar: React.FC = () => {
           대화하기
         </span>
       </Link>
-      <Link to="/" className="wrapbar-item">
+      <Link to="/daily" className="wrapbar-item">
         <img src={mission} alt="일일 미션" className="wrapbar-icon" />
         <span>일일미션</span>
       </Link>
