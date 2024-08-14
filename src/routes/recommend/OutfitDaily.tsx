@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./styles/OutfitDaily.css";
-import sun from "../assets/weather/sun.png";
-import dressIcon from "../assets/icons/mission.png";
+import sun from "../../assets/weather/sun.png";
+import dressIcon from "../../assets/icons/mission.png";
 import LocationDropdown from "../../components/LocationDropdown";
 
 const OutfitDaily: React.FC = () => {

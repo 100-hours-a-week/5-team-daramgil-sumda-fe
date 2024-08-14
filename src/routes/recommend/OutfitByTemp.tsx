@@ -1,6 +1,6 @@
 import React from "react";
 import "./styles/OutfitByTemp.css";
-import outfit from "../assets/icons/Outfit.png";
+import outfit from "../../assets/icons/Outfit.png";
 
 const OutfitByTemp: React.FC = () => {
   return (

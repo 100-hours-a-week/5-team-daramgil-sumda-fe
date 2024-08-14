@@ -16,6 +16,9 @@ import Collection from "./routes/Collection";
 import DaliyMission from "./routes/DailyMission";
 import GameList from "./routes/games/GameList";
 import WeatherInfo from "./routes/WeatherInfo";
+import OX from "./routes/games/OX";
+import FallingAcorn from "./routes/games/FallingAcorn";
+
 const App: React.FC = () => {
   return (
     <div>
@@ -36,6 +39,8 @@ const App: React.FC = () => {
             <Route path="/daily" element={<DaliyMission />} />
             <Route path="/games" element={<GameList />} />
             <Route path="/weatherinfo" element={<WeatherInfo />} />
+            <Route path="/games/ox" element={<OX />} />
+            <Route path="/games/fallingacorn" element={<FallingAcorn />} />
           </Route>
         </Routes>
       </Router>

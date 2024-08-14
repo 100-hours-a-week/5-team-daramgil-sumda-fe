@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./styles/ActivityRecommed.css";
-import good from "../assets/grade/good.png";
-import sun from "../assets/weather/sun.png";
-import running from "../assets/icons/running.png";
-import dogwalk from "../assets/icons/dogwalk.png";
-import bicycle from "../assets/icons/bicycle.png";
-import yoga from "../assets/icons/yoga.png";
+import good from "../../assets/grade/good.png";
+import sun from "../../assets/weather/sun.png";
+import running from "../../assets/icons/running.png";
+import dogwalk from "../../assets/icons/dogwalk.png";
+import bicycle from "../../assets/icons/bicycle.png";
+import yoga from "../../assets/icons/yoga.png";
 import LocationDropdown from "../../components/LocationDropdown";
 
 const ActivityRecommed: React.FC = () => {
