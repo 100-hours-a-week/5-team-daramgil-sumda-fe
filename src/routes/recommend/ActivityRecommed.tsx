@@ -6,7 +6,7 @@ import running from "../assets/icons/running.png";
 import dogwalk from "../assets/icons/dogwalk.png";
 import bicycle from "../assets/icons/bicycle.png";
 import yoga from "../assets/icons/yoga.png";
-import LocationDropdown from "../components/LocationDropdown";
+import LocationDropdown from "../../components/LocationDropdown";
 
 const ActivityRecommed: React.FC = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);

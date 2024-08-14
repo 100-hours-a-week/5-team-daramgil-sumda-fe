@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./styles/OutfitDaily.css";
 import sun from "../assets/weather/sun.png";
 import dressIcon from "../assets/icons/mission.png";
-import LocationDropdown from "../components/LocationDropdown";
+import LocationDropdown from "../../components/LocationDropdown";
 
 const OutfitDaily: React.FC = () => {
   // 드롭다운 메뉴의 열림 상태를 관리하는 state
