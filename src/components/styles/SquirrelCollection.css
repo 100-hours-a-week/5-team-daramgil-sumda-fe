@@ -1,0 +1,48 @@
+.squirrel-collection {
+  display: flex;
+  flex-wrap: wrap; /* 아이템들을 줄바꿈하여 여러 줄에 걸쳐 배치 */
+  justify-content: space-around;
+  padding: 20px 10px;
+}
+
+.squirrel-item {
+  text-align: center;
+  flex: 1 1 calc(50% - 40px); /* 각 아이템의 너비를 부모의 50%로 설정 (2열) */
+  box-sizing: border-box;
+  margin-top: 10px;
+}
+
+.image-container {
+  position: relative;
+  width: 150px;
+  height: 200px;
+  margin: 0 auto; /* 중앙 정렬 */
+}
+
+.pedestal {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+}
+
+.squirrel {
+  position: absolute;
+  bottom: 40px;
+  left: 50%; /* 수평 중앙 정렬 */
+  transform: translateX(-50%);
+  width: 60%;
+  height: auto;
+}
+
+.squirrel-name {
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 15px;
+}
+
+.squirrel-date {
+  font-size: 14px;
+  color: #555;
+  margin-top: 5px;
+}

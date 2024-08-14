@@ -9,6 +9,8 @@ import OutfitByTemp from "./routes/OutfitByTemp";
 import SensitiveCheck from "./routes/SensitiveCheck";
 import Setting from "./routes/Setting";
 import Contact from "./routes/Contact";
+import OutfitDaily from "./routes/OutfitDaily";
+import Collection from "./routes/Collection";
 
 const App: React.FC = () => {
   return (
@@ -23,6 +25,8 @@ const App: React.FC = () => {
             <Route path="/sensitivecheck" element={<SensitiveCheck />} />
             <Route path="/setting" element={<Setting />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/outfitdaily" element={<OutfitDaily />} />
+            <Route path="/collection" element={<Collection />} />
           </Route>
         </Routes>
       </Router>
