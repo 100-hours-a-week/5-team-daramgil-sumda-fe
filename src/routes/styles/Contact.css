@@ -3,6 +3,7 @@
   flex-direction: column;
   align-items: center;
   max-width: 400px;
+  min-height: calc(100vh - 338px);
   margin: 0 auto;
   padding: 20px;
   background-color: #f4f4f4;

@@ -1,16 +1,17 @@
 .gamelist-container {
-    padding: 20px;
-    text-align: center;
+  min-height: calc(100vh - 338px);
+  padding: 20px;
+  text-align: center;
 }
 
 .title {
-    font-size: 24px;
-    margin-bottom: 20px;
+  font-size: 24px;
+  margin-bottom: 20px;
 }
 
 .game-items {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
 }
