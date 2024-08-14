@@ -15,6 +15,8 @@ import OutfitDaily from "./routes/recommend/OutfitDaily";
 import Collection from "./routes/Collection";
 import DaliyMission from "./routes/DailyMission";
 import GameList from "./routes/games/GameList";
+import GameList from "./routes/GameList";
+import AQIDetails from "./routes/AQIDetails";
 import WeatherInfo from "./routes/WeatherInfo";
 import OX from "./routes/games/OX";
 import FallingAcorn from "./routes/games/FallingAcorn";
@@ -36,6 +38,9 @@ const App: React.FC = () => {
             <Route path="/contact" element={<Contact />} />
             <Route path="/outfitdaily" element={<OutfitDaily />} />
             <Route path="/collection" element={<Collection />} />
+            <Route path="/daily" element={<DaliyMission />}></Route>
+            <Route path="/games" element={<GameList />}></Route>
+            <Route path="/aqi-details" element={<AQIDetails />}></Route>
             <Route path="/daily" element={<DaliyMission />} />
             <Route path="/games" element={<GameList />} />
             <Route path="/weatherinfo" element={<WeatherInfo />} />
