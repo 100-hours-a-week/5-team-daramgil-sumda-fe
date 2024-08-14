@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import "./styles/Header.css";
 
@@ -7,6 +8,7 @@ import menu_icon from "../../assets/icons/menu.png";
 
 const Header: React.FC = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const location = useLocation(); // useLocation 훅 사용
 
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
@@ -15,6 +17,11 @@ const Header: React.FC = () => {
   const closeSidebar = () => {
     setSidebarOpen(false);
   };
+
+  useEffect(() => {
+    // 경로가 변경될 때마다 사이드바를 닫음
+    closeSidebar();
+  }, [location.pathname]); // location.pathname이 변경될 때마다 실행
 
   return (
     <div>

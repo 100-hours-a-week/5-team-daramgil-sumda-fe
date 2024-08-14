@@ -45,6 +45,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         <Link to="/setting" className="footer-item" onClick={onClose}>
           설정
         </Link>
+        <p style={{ marginBottom: "110px" }}></p>
       </div>
     </div>
   );
