@@ -1,0 +1,78 @@
+.sidebar {
+    position: fixed;
+    margin-top: 74px;
+    width: 250px;
+    height: 100%;
+    top: 0;
+    float: left;
+    background-color: #e7e7ea;
+    color: black;
+    padding: 60px 20px;
+    transition: 0.3s;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+    z-index: 1000;
+}
+
+/* Hide the sidebar */
+.hidden {
+    display: none;
+}
+.sidebar .menu-title {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.sidebar .menu-item {
+    width: 100%;
+    padding: 10px 0;
+    margin: 10px 0 15px 0;
+    text-align: center;
+    background-color: white;
+    border-radius: 15px; /* 버튼 모서리를 둥글게 설정 */
+    font-size: 16px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.sidebar .menu-item:hover {
+    background-color: #f0f0f0; /* 호버 시 약간 어두운 색상으로 변경 */
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.sidebar .menu-item + .menu-item {
+    margin-top: 10px; /* 버튼 간격을 유지 */
+}
+
+.sidebar .footer-section {
+    margin-top: auto;
+    padding-top: 5px;
+    border-top: 1px solid #aaa; /* 위쪽 섹션과 구분을 위한 선 추가 */
+    text-align: center;
+}
+
+.sidebar .footer-item {
+    width: 100%;
+    padding: 10px 0;
+    margin: 10px 0 15px 0;
+    text-align: center;
+    background-color: white;
+    border-radius: 15px; /* 버튼 모서리를 둥글게 설정 */
+    font-size: 16px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.sidebar .footer-item:hover {
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+    background-color: #f0f0f0;
+}

@@ -1,0 +1,133 @@
+.home-page {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #e6f4ea;
+    /* 맑은 공기를 연상시키는 부드러운 파란색 */
+}
+
+.info-container {
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.air-quality-section,
+.weather-section {
+    padding: 20px;
+    text-align: center;
+    border-radius: 12px;
+    background-color: #edf7f1;
+    /* 자연의 부드러운 초록색 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.weather-section {
+    margin-top: 1rem;
+}
+
+.air-quality-title,
+.weather-title {
+    margin-bottom: 8px;
+    font-size: 18px;
+    font-weight: 500;
+    color: #3c6e47;
+    /* 숲을 연상시키는 진한 녹색 */
+}
+
+.air-quality-image,
+.weather-icon {
+    display: inline-block;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 12px;
+    animation: bounce 2s infinite;
+}
+
+.air-quality-status,
+.weather-status {
+    font-size: 16px;
+    font-weight: 500;
+    color: #4a523a;
+    /* 다람쥐를 연상시키는 부드러운 갈색 */
+    margin-bottom: 8px;
+}
+
+.air-quality-value,
+.weather-current-temperature {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0055ff;
+    /* 맑은 하늘을 연상시키는 파란색 */
+    margin-bottom: 12px;
+}
+
+.air-quality-description,
+.weather-description {
+    font-size: 14px;
+    color: #6e6e73;
+    /* 중성적인 회색 */
+}
+
+.additional-info {
+    position: relative;
+    padding: 20px;
+    text-align: left;
+    background-color: #edf7f1;
+    /* 자연의 부드러운 초록색 */
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin: 20px auto;
+}
+
+.additional-info p {
+    margin: 0;
+    padding: 10px;
+    font-size: 14px;
+    color: #1d1d1f;
+    /* 자연과 조화를 이루는 짙은 색상 */
+    background-color: #ffffff;
+    /* 흰색 배경 */
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    position: relative;
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+.additional-info p::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 20px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: #ffffff transparent transparent transparent;
+}
+
+.additional-info img {
+    display: block;
+    width: 80px;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateY(0);
+    }
+
+    40% {
+        transform: translateY(-10px);
+    }
+
+    60% {
+        transform: translateY(-5px);
+    }
+}
