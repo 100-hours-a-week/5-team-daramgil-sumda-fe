@@ -19,7 +19,7 @@ const Wrapbar: React.FC = () => {
         <img src={info} alt="대기 오염 조회" className="wrapbar-icon" />
         <span>대기조회</span>
       </Link>
-      <Link to="/" className="wrapbar-item">
+      <Link to="/weatherinfo" className="wrapbar-item">
         <img src={weather} alt="날씨 정보 조회" className="wrapbar-icon" />
         <span>날씨조회</span>
       </Link>
