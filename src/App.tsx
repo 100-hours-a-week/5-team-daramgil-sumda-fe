@@ -14,7 +14,7 @@ import Contact from "./routes/Contact";
 import OutfitDaily from "./routes/OutfitDaily";
 import Collection from "./routes/Collection";
 import DaliyMission from "./routes/DailyMission";
-
+import GameList from "./routes/GameList";
 const App: React.FC = () => {
   return (
     <div>
@@ -33,6 +33,7 @@ const App: React.FC = () => {
             <Route path="/outfitdaily" element={<OutfitDaily />} />
             <Route path="/collection" element={<Collection />} />
             <Route path="/daily" element={<DaliyMission />}></Route>
+            <Route path="/games" element={<GameList />}></Route>
           </Route>
         </Routes>
       </Router>
