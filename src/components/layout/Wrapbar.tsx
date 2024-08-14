@@ -15,7 +15,7 @@ const Wrapbar: React.FC = () => {
         <img src={home} alt="홈" className="wrapbar-icon" />
         <span>홈</span>
       </Link>
-      <Link to="/" className="wrapbar-item">
+      <Link to="/aqi-details" className="wrapbar-item">
         <img src={info} alt="대기 오염 조회" className="wrapbar-icon" />
         <span>대기조회</span>
       </Link>
