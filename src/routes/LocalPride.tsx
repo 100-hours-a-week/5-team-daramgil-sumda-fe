@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./styles/LocalPride.css";
-import gps_icon from "../assets/gps.png";
+import gps_icon from "../assets/icons/gps.png";
 
 // Location Component
 const Location: React.FC = () => (
