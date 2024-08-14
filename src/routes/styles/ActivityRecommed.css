@@ -1,0 +1,102 @@
+.activityRecommend-page {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: "Noto Sans KR", sans-serif;
+  background-color: #ffffff;
+}
+
+.info-container-activity {
+  display: flex;
+  justify-content: space-between; /* 두 섹션 사이의 공간을 고르게 분배 */
+  margin-bottom: 0;
+}
+
+.air-quality-section-activity {
+  display: flex; /* 가로 정렬을 위해 flexbox 사용 */
+  flex: 1.7;
+  justify-content: space-between; /* 내부 아이템 간의 공간을 고르게 분배 */
+  padding: 20px 10px;
+  text-align: center;
+  border-radius: 12px;
+  background-color: #cecece;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-top: 0;
+}
+
+.weather-section-activity {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  background-color: #f9fafb;
+  margin-right: 0; /* 마지막 섹션의 오른쪽 여백을 제거 */
+}
+
+.fine-dust-section-activity {
+  flex: 1;
+  margin-right: 10px; /* 두 섹션 사이의 간격을 설정 */
+}
+
+.fine-dust-section-activity:last-child {
+  margin-right: 0; /* 마지막 아이템의 오른쪽 여백을 제거 */
+}
+
+.air-quality-title-activity,
+.weather-title-activity {
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.air-quality-image-activity,
+.weather-icon-activity {
+  display: inline-block;
+  width: 45px;
+  height: 45px;
+  margin-bottom: 12px;
+}
+
+.air-quality-status-activity,
+.weather-status-activity {
+  font-size: 16px;
+  font-weight: 500;
+  color: #1d1d1f;
+  margin-bottom: 8px;
+}
+
+.air-quality-value-activity,
+.weather-current-temperature-activity {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0055ff;
+  margin-bottom: 12px;
+}
+
+.air-quality-description-activity,
+.weather-description-activity {
+  font-size: 14px;
+  color: #6e6e73;
+}
+
+.activity-recommendations {
+  padding: 10px;
+  background-color: #fff;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  padding: 20px 0;
+}
+
+.activity-item img {
+  width: 50px;
+  height: 50px;
+  margin-right: 20px;
+}
+
+.activity-item p {
+  font-size: 14px;
+  color: #333;
+}

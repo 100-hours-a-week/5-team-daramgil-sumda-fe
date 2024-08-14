@@ -1,5 +1,5 @@
 import React from "react";
-import gps from "../assets/gps.png";
+import gps from "../assets/icons/gps.png";
 import "./styles/LocationDropdown.css";
 
 // LocationDropdown 컴포넌트가 받을 props의 타입 정의

@@ -11,6 +11,8 @@ import LocalPride from "./routes/LocalPride";
 import SensitiveCheck from "./routes/SensitiveCheck";
 import Setting from "./routes/Setting";
 import Contact from "./routes/Contact";
+import OutfitDaily from "./routes/OutfitDaily";
+import Collection from "./routes/Collection";
 import DaliyMission from "./routes/DailyMission";
 
 const App: React.FC = () => {
@@ -28,6 +30,8 @@ const App: React.FC = () => {
             <Route path="/sensitivecheck" element={<SensitiveCheck />} />
             <Route path="/setting" element={<Setting />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/outfitdaily" element={<OutfitDaily />} />
+            <Route path="/collection" element={<Collection />} />
             <Route path="/daily" element={<DaliyMission />}></Route>
           </Route>
         </Routes>
