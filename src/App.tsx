@@ -16,6 +16,7 @@ import Collection from "./routes/Collection";
 import DaliyMission from "./routes/DailyMission";
 import GameList from "./routes/GameList";
 import AQIDetails from "./routes/AQIDetails";
+import WeatherInfo from "./routes/WeatherInfo";
 const App: React.FC = () => {
   return (
     <div>
@@ -36,6 +37,9 @@ const App: React.FC = () => {
             <Route path="/daily" element={<DaliyMission />}></Route>
             <Route path="/games" element={<GameList />}></Route>
             <Route path="/aqi-details" element={<AQIDetails />}></Route>
+            <Route path="/daily" element={<DaliyMission />} />
+            <Route path="/games" element={<GameList />} />
+            <Route path="/weatherinfo" element={<WeatherInfo />} />
           </Route>
         </Routes>
       </Router>
