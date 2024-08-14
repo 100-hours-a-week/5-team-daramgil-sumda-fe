@@ -3,20 +3,24 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Layout from "./components/layout/Layout";
 import Home from "./routes/Home";
-import Notice from "./routes/Notice";
-import ActivityRecommed from "./routes/ActivityRecommed";
-import OutfitByTemp from "./routes/OutfitByTemp";
+import Notice from "./routes/info/Notice";
+import ActivityRecommed from "./routes/recommend/ActivityRecommed";
+import OutfitByTemp from "./routes/recommend/OutfitByTemp";
 import Favorites from "./routes/Favorites";
 import LocalPride from "./routes/LocalPride";
 import SensitiveCheck from "./routes/SensitiveCheck";
-import Setting from "./routes/Setting";
-import Contact from "./routes/Contact";
-import OutfitDaily from "./routes/OutfitDaily";
+import Setting from "./routes/info/Setting";
+import Contact from "./routes/info/Contact";
+import OutfitDaily from "./routes/recommend/OutfitDaily";
 import Collection from "./routes/Collection";
 import DaliyMission from "./routes/DailyMission";
+import GameList from "./routes/games/GameList";
 import GameList from "./routes/GameList";
 import AQIDetails from "./routes/AQIDetails";
 import WeatherInfo from "./routes/WeatherInfo";
+import OX from "./routes/games/OX";
+import FallingAcorn from "./routes/games/FallingAcorn";
+
 const App: React.FC = () => {
   return (
     <div>
@@ -40,6 +44,8 @@ const App: React.FC = () => {
             <Route path="/daily" element={<DaliyMission />} />
             <Route path="/games" element={<GameList />} />
             <Route path="/weatherinfo" element={<WeatherInfo />} />
+            <Route path="/games/ox" element={<OX />} />
+            <Route path="/games/fallingacorn" element={<FallingAcorn />} />
           </Route>
         </Routes>
       </Router>

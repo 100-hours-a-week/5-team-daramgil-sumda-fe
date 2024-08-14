@@ -1,12 +1,19 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./styles/Game.css";
 
 interface GameProps {
   title: string;
   thumbnailUrl: string;
+  link: string;
 }
 
-const Game: React.FC<GameProps> = ({ title, thumbnailUrl }) => {
+const Game: React.FC<GameProps> = ({ title, thumbnailUrl, link }) => {
+  const navigate = useNavigate();
+  const handleImageClick = () => {
+    navigate(`/games/${link}`);
+  };
+
   return (
     <div className="game-container">
       <div className="game-title-container">
@@ -20,7 +27,9 @@ const Game: React.FC<GameProps> = ({ title, thumbnailUrl }) => {
         />
       </div>
       <div className="game-button-container">
-        <button className="game-button">게임하러 가기</button>
+        <button className="game-button" onClick={handleImageClick}>
+          게임하러 가기
+        </button>
       </div>
     </div>
   );
