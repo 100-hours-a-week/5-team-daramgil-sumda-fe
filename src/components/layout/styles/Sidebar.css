@@ -11,8 +11,17 @@
   transition: 0.3s;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
   z-index: 1000;
+  overflow-y: auto;
+}
+/* 스크롤바 숨기기 */
+.sidebar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
+.sidebar {
+  -ms-overflow-style: none; /* IE 및 Edge */
+  scrollbar-width: none; /* Firefox */
+}
 /* Hide the sidebar */
 .hidden {
   display: none;
