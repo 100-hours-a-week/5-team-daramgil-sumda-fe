@@ -20,6 +20,7 @@ import WeatherInfo from "./routes/WeatherInfo";
 import OX from "./routes/games/OX";
 import FallingAcorn from "./routes/games/FallingAcorn";
 import Answer from "./routes/games/Answer";
+import Adopt from "./routes/Adopt";
 
 const App: React.FC = () => {
   return (
@@ -47,6 +48,7 @@ const App: React.FC = () => {
             <Route path="/games/ox" element={<OX />} />
             <Route path="/games/fallingacorn" element={<FallingAcorn />} />
             <Route path="/games/answer" element={<Answer />} />
+            <Route path="/adopt" element={<Adopt />} />
           </Route>
         </Routes>
       </Router>
