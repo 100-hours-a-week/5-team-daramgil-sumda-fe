@@ -1,0 +1,79 @@
+.answer-container {
+  max-width: 400px;
+  min-height: calc(100vh - 338px);
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.answer-title {
+  text-align: center;
+  font-size: 32px;
+  margin: 40px 0;
+  font-weight: 600;
+  color: #333;
+}
+.correct-answer-section {
+  margin-bottom: 20px;
+}
+
+.correct-answer-text {
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+.correct-answer-box {
+  display: inline-block;
+  padding: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #007bff;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  border: 2px solid #007bff;
+  width: 60px;
+  margin: 0 auto;
+}
+
+.explanation-section {
+  margin-bottom: 20px;
+}
+
+.explanation-text {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.5;
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.reward-section {
+  margin: 20px 0;
+}
+
+.reward-text {
+  font-size: 18px;
+  font-weight: bold;
+  color: #28a745;
+  background-color: #e0ffe0;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.confirm-button {
+  padding: 10px 20px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.confirm-button:hover {
+  background-color: #0056b3;
+}
