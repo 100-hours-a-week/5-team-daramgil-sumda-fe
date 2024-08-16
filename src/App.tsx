@@ -21,6 +21,7 @@ import OX from "./routes/games/OX";
 import FallingAcorn from "./routes/games/FallingAcorn";
 import Answer from "./routes/games/Answer";
 import Adopt from "./routes/Adopt";
+import Squirrel from "./routes/Squirrel";
 
 const App: React.FC = () => {
   return (
@@ -49,6 +50,7 @@ const App: React.FC = () => {
             <Route path="/games/fallingacorn" element={<FallingAcorn />} />
             <Route path="/games/answer" element={<Answer />} />
             <Route path="/adopt" element={<Adopt />} />
+            <Route path="/squirrel" element={<Squirrel />} />
           </Route>
         </Routes>
       </Router>

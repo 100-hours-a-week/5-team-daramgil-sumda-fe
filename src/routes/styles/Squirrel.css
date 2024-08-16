@@ -1,0 +1,228 @@
+.squirrel-container {
+  max-width: 400px;
+  min-height: calc(100vh - 338px);
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.level-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.progress-bar {
+  width: 80%;
+  background-color: #ccc;
+  border-radius: 10px;
+  height: 10px;
+  overflow: hidden;
+}
+
+.progress {
+  background-color: #007bff;
+  height: 100%;
+}
+
+.level-text {
+  margin-right: 5px;
+  font-weight: bold;
+}
+
+.acorn-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.acorn-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.acorn-count {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.acorn-count > img {
+  width: 35px;
+  height: 35px;
+}
+
+.acorn-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 40px 30px;
+  border-radius: 10px;
+  text-align: center;
+  position: relative;
+  line-height: 1.5rem;
+}
+
+.acorn-modal-btn {
+  padding: 5px 10px;
+  margin-top: 5px;
+  color: white;
+  background-color: #007bff;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.squirrel-section {
+  margin-top: 20px;
+  position: relative;
+}
+
+.chat-squirrel {
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.chat-squirrel > img {
+  margin: 0 auto;
+  width: 60%;
+}
+
+.new-squirrel-button {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #007bff9f;
+  color: white;
+  padding: 20px 20px;
+  margin-bottom: 50px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.chat-section {
+  margin-top: 20px;
+}
+
+.chat-messages {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background-color: #c0c0c0;
+  padding: 10px;
+  border-radius: 5px;
+  height: 500px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.message {
+  margin-bottom: 10px;
+}
+
+.message.user {
+  border-radius: 5px;
+  background-color: #92febb;
+  padding: 10px 5px;
+  text-align: right;
+  color: #000000;
+}
+
+.message.bot {
+  border-radius: 5px;
+  background-color: #f8ff8f;
+  padding: 10px 5px;
+  text-align: left;
+  color: #000000;
+}
+
+.common-questions-container {
+  margin-top: auto;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
+}
+
+.common-questions-container.visible {
+  max-height: 150px; /* 펼쳐진 상태에서의 최대 높이 */
+}
+
+.common-questions {
+  background-color: #e0e0e0;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.question {
+  background-color: #fff;
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.question:hover {
+  background-color: #ddd;
+}
+
+.toggle-button {
+  background-color: #ddd;
+  color: white;
+  padding: 5px;
+  text-align: center;
+  border: 1px solid #5b5b5b;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.chat-input-container {
+  display: flex;
+}
+
+.chat-input-container input {
+  flex: 1;
+  font-size: 13px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-right: 10px;
+}
+
+.chat-input-container button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.chat-input-container button:disabled {
+  background-color: #aaa;
+}

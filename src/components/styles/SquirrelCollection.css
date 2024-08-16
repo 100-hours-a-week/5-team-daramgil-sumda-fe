@@ -9,7 +9,7 @@
   text-align: center;
   flex: 1 1 calc(50% - 40px); /* 각 아이템의 너비를 부모의 50%로 설정 (2열) */
   box-sizing: border-box;
-  margin-top: 10px;
+  margin: 5px 2px 0 2px;
 }
 
 .image-container {

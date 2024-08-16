@@ -1,0 +1,15 @@
+.falling-acorn-container {
+  max-width: 400px;
+  min-height: calc(100vh - 338px);
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.falling-acorn-title {
+  text-align: center;
+  font-size: 32px;
+  margin: 40px 0;
+  font-weight: 600;
+  color: #333;
+}
