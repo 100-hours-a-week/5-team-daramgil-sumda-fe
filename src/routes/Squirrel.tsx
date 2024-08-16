@@ -167,9 +167,10 @@ const Squirrel: React.FC = () => {
               </div>
             </div>
           </div>
-
-          <div className="toggle-button" onClick={toggleQuestions}>
-            {isQuestionsVisible ? "" : ""}
+          <div className="toggle-button-container">
+            <div className="toggle-button" onClick={toggleQuestions}>
+              {isQuestionsVisible ? "" : ""}
+            </div>
           </div>
         </div>
 

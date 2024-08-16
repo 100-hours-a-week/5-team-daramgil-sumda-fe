@@ -126,6 +126,7 @@
 
 .chat-section {
   margin-top: 20px;
+  position: relative; /* 부모 요소의 위치 기준 설정 */
 }
 
 .chat-messages {
@@ -136,9 +137,19 @@
   padding: 10px;
   border-radius: 5px;
   height: 500px;
-  overflow-y: auto;
   margin-bottom: 10px;
   position: relative;
+  z-index: 1; /* 겹치는 요소 위에 표시되도록 설정 */
+  overflow-y: auto;
+}
+.chat-log {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow-y: auto;
+}
+.chat-log::-webkit-scrollbar {
+  display: none;
 }
 
 .message {
@@ -162,14 +173,22 @@
 }
 
 .common-questions-container {
-  margin-top: auto;
+  position: absolute; /* 부모 요소의 상대적인 위치를 기준으로 절대 위치 설정 */
+  bottom: 35px; /* 하단에 위치 */
+  left: 0;
+  width: 100%;
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease-in-out;
+  z-index: 2; /* chat-messages 위에 위치 */
+}
+.common-questions-container::-webkit-scrollbar {
+  display: none;
 }
 
 .common-questions-container.visible {
   max-height: 150px; /* 펼쳐진 상태에서의 최대 높이 */
+  overflow-y: auto;
 }
 
 .common-questions {
@@ -189,7 +208,9 @@
 .question:hover {
   background-color: #ddd;
 }
-
+.toggle-button-container {
+  margin-top: auto;
+}
 .toggle-button {
   background-color: #ddd;
   color: white;

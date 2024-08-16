@@ -38,3 +38,12 @@
 .tag-name {
   font-size: 16px;
 }
+.tag-content {
+  margin-top: 2px;
+  background-color: #484848;
+  color: #fff;
+  padding: 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}

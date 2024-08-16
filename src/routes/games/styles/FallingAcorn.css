@@ -8,8 +8,53 @@
 
 .falling-acorn-title {
   text-align: center;
-  font-size: 32px;
-  margin: 40px 0;
+  font-size: 28px;
+  margin: 30px 0;
   font-weight: 600;
   color: #333;
+}
+.start-button {
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: #ffeb3b;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 200px;
+}
+
+.start-button:hover {
+  background-color: #fdd835;
+}
+
+.falling-acorn {
+  position: relative;
+  width: 100%;
+  height: 450px;
+  overflow: hidden;
+  background-image: url("../../../assets/background.png");
+}
+
+.score-board {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  font-size: 18px;
+}
+
+.acorn {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background-image: url("../../../assets/acorn.png");
+  background-size: cover;
+}
+
+.basket {
+  position: absolute;
+  bottom: 1px;
+  width: 100px;
+  height: 58px;
+  background-image: url("../../../assets/basket.png");
+  background-size: cover;
 }
