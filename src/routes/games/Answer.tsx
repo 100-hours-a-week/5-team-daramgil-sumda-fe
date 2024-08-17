@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import "./styles/Answer.css";
+import { useNavigate } from "react-router-dom";
 
 const Answer: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleSubmit = () => {
+    navigate(`/daily`);
+  };
   return (
     <div className="answer-container">
       <h2 className="answer-title">OX 퀴즈</h2>
@@ -22,7 +28,9 @@ const Answer: React.FC = () => {
         <p className="reward-text">OX 퀴즈 참가 완료! 도토리를 주웠어요!</p>
       </div>
 
-      <button className="confirm-button">확인</button>
+      <button className="confirm-button" onClick={handleSubmit}>
+        확인
+      </button>
     </div>
   );
 };

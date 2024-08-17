@@ -1,12 +1,13 @@
 import React from "react";
 import Game from "../../components/Game"; // Game 컴포넌트 import
 import "./styles/GameList.css";
+import oxicon from "../../assets/OXquiz.png";
 
 const GameList: React.FC = () => {
   const dummyGames = [
     {
       title: "OX 퀴즈",
-      thumbnailUrl: "https://via.placeholder.com/150",
+      thumbnailUrl: "/OXquiz.png",
       link: "ox",
     },
     {
