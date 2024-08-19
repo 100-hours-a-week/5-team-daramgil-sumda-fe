@@ -46,5 +46,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+  },
+  "description": "## 팀명 : 다람길",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC"
 }
