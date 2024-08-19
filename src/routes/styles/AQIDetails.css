@@ -1,0 +1,157 @@
+/* AQIDetails.css */
+.aqidetails-container-unique {
+  min-height: calc(100vh - 338px);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fafafa;
+  color: #333;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  gap: 20px;
+}
+
+.page-title-unique {
+  font-size: 2rem;
+  font-weight: 500;
+  color: #1976d2;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.page-description-unique {
+  font-size: 1rem;
+  color: #666;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.info-container-unique {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 24px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.air-quality-section-unique {
+  flex: 1 1 100%;
+  max-width: 100%;
+  text-align: center;
+  padding: 24px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.air-quality-title-unique {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #1976d2;
+  margin-bottom: 12px;
+}
+
+.air-quality-image-unique {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 16px;
+  /* 상단과 하단 여백을 지정하면서 중앙 정렬 */
+  display: block;
+}
+
+.air-quality-status-unique {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.air-quality-value-unique {
+  font-size: 1rem;
+  color: #757575;
+}
+
+.pollutants-container-unique {
+  display: flex;
+  flex: 1 1 100%;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.pollutants-row-unique {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 24px;
+}
+
+.pollutant-item-unique {
+  flex: 1 1 calc(33.333% - 24px);
+  text-align: center;
+  padding: 16px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
+}
+
+.pollutant-item-unique h2 {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #1976d2;
+  margin-bottom: 12px;
+}
+
+.pollutant-image-unique {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 8px;
+}
+
+.pollutant-status-unique {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 4px;
+  color: #333;
+}
+
+.pollutant-value-unique {
+  font-size: 0.9rem;
+  color: #757575;
+}
+
+.chart-container-unique {
+  width: 100%;
+  max-width: 1200px;
+  padding: 24px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.chart-container-unique h3 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #1976d2;
+  margin-bottom: 16px;
+}
+
+/* Swiper 스타일을 위한 기본 설정 */
+.swiper-container {
+  width: 100%;
+  height: 400px;
+  margin-top: 20px;
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}

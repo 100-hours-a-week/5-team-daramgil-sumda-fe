@@ -1,0 +1,14 @@
+.outfitbytemp-container {
+  min-height: calc(100vh - 338px);
+}
+.title {
+  text-align: center;
+  font-size: 32px;
+  margin: 20px 0;
+  font-weight: 600;
+  color: #333;
+}
+.outfit {
+  padding: 20px 0;
+  margin-bottom: 15px;
+}

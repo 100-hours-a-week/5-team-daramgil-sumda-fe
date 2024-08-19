@@ -1,0 +1,49 @@
+.tag-collection {
+  width: 100%;
+  padding: 20px;
+}
+
+.tag-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.tag-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* 각 항목 간의 간격 */
+}
+
+.tag-item {
+  display: flex;
+  align-items: center;
+  background-color: #000;
+  color: #fff;
+  padding: 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tag-item:hover {
+  background-color: #333;
+}
+
+.tag-icon {
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+.tag-name {
+  font-size: 16px;
+}
+.tag-content {
+  margin-top: 2px;
+  background-color: #484848;
+  color: #fff;
+  padding: 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
