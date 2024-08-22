@@ -68,7 +68,10 @@ const WeatherInfo: React.FC = () => {
     setDropdownOpen(false);
   };
 
-  const loadCurrentLocation = async () => {
+  const loadCurrentLocation = async (): Promise<{
+    latitude: number;
+    longitude: number;
+  } | null> => {
     if (navigator.geolocation) {
       return new Promise<{ latitude: number; longitude: number } | null>(
         (resolve) => {
@@ -76,36 +79,52 @@ const WeatherInfo: React.FC = () => {
             async (position) => {
               const { latitude, longitude } = position.coords;
               setCoordinates({ lat: latitude, lng: longitude });
-              setSelectedLocation(
-                `위도: ${latitude.toFixed(4)}, 경도: ${longitude.toFixed(4)}`
-              );
-              console.log(`현재 위치: 위도 ${latitude}, 경도 ${longitude}`);
-
-              // 현재 위치 정보를 반환
-              resolve({ latitude, longitude });
+              try {
+                const response = await fetch(
+                  `${process.env.REACT_APP_API_URL}/locations/convert?latitude=${latitude}&longitude=${longitude}`
+                );
+                if (!response.ok) {
+                  throw new Error("Failed to fetch location data");
+                }
+                const data = await response.json();
+                if (data.status === 200 && data.data.district) {
+                  setSelectedLocation(data.data.district); // 응답에서 district 값을 설정
+                  resolve({ latitude, longitude });
+                } else {
+                  alert("위치를 찾을 수 없습니다.");
+                  resolve(null);
+                }
+              } catch (error) {
+                console.error(
+                  "위치 정보를 가져오는 중 오류가 발생했습니다:",
+                  error
+                );
+                alert("위치 정보를 가져오는 중 오류가 발생했습니다.");
+                resolve(null);
+              }
             },
             (error) => {
               console.error(
                 "위치 권한이 거부되었습니다. 기본 위치로 설정합니다."
               );
-              const seoulCityHall = { lat: 37.5665, lng: 126.978 };
-              setCoordinates(seoulCityHall);
-              setSelectedLocation("위도: 37.5665, 경도: 126.9780");
-
-              // 기본 위치를 반환 (에러 발생 시)
-              resolve({ latitude: 37.5665, longitude: 126.978 });
+              const seoulCityHall = { latitude: 37.5665, longitude: 126.978 }; // 속성 이름 수정
+              setCoordinates({
+                lat: seoulCityHall.latitude,
+                lng: seoulCityHall.longitude,
+              });
+              resolve(seoulCityHall);
             }
           );
         }
       );
     } else {
       console.error("Geolocation API를 지원하지 않는 브라우저입니다.");
-      const seoulCityHall = { lat: 37.5665, lng: 126.978 };
-      setCoordinates(seoulCityHall);
-      setSelectedLocation("위도: 37.5665, 경도: 126.9780");
-
-      // 기본 위치를 반환 (Geolocation API 미지원 시)
-      return { latitude: 37.5665, longitude: 126.978 };
+      const seoulCityHall = { latitude: 37.5665, longitude: 126.978 }; // 속성 이름 수정
+      setCoordinates({
+        lat: seoulCityHall.latitude,
+        lng: seoulCityHall.longitude,
+      });
+      return seoulCityHall;
     }
   };
 
