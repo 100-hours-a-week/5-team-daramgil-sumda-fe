@@ -1,7 +1,14 @@
 /* AQIDetails.css */
+.aqidetails-page {
+  max-width: 400px;
+  min-height: calc(100vh - 338px);
+  margin: 0 auto;
+  padding: 20px;
+  font-family: "Noto Sans KR", sans-serif;
+  background-color: #fafafa;
+}
 .aqidetails-container-unique {
   min-height: calc(100vh - 338px);
-  padding: 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -122,7 +129,8 @@
   color: #757575;
 }
 
-.chart-container-unique {
+.chart-container-unique,
+.map-container-unique {
   width: 100%;
   max-width: 1200px;
   padding: 24px;
@@ -131,7 +139,8 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.chart-container-unique h3 {
+.chart-container-unique h3,
+.map-container-unique h3 {
   font-size: 1.5rem;
   font-weight: 500;
   color: #1976d2;

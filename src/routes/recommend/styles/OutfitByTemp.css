@@ -1,5 +1,7 @@
-.outfitbytemp-container {
+.outfitbytemp-page {
   min-height: calc(100vh - 338px);
+  padding: 20px;
+  background-color: #ffffff;
 }
 .title {
   text-align: center;
@@ -8,7 +10,84 @@
   font-weight: 600;
   color: #333;
 }
-.outfit {
-  padding: 20px 0;
-  margin-bottom: 15px;
+.outfitbytemp-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.color-container {
+  width: 40px;
+  height: 560px;
+  margin-right: 10px;
+  background: linear-gradient(
+    to bottom,
+    red,
+    /* 빨강 */ orange,
+    /* 주황 */ yellow,
+    /* 노랑 */ green,
+    /* 초록 */ blue,
+    /* 파랑 */ indigo,
+    /* 남색 */ violet /* 보라 */
+  );
+  border-radius: 5px; /* Optional: 둥근 모서리 */
+}
+.outfit-container {
+  display: flex;
+  align-items: left;
+  margin-bottom: 10px;
+  flex-direction: column;
+}
+
+.outfit-item {
+  display: flex;
+  height: 45px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.temp-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.temp-title {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.outfit-description {
+  font-size: 1em;
+  word-break: break-word;
+}
+
+.color-very-high {
+  color: red; /* 텍스트 색상도 빨강으로 설정 */
+}
+.color-high {
+  color: orange; /* 텍스트 색상도 주황으로 설정 */
+}
+
+.color-mid-high {
+  color: #ffcc00; /* 텍스트 색상도 노랑으로 설정 */
+}
+.color-mid-mid {
+  color: lightgreen; /* 텍스트 색상도 연두로 설정 */
+}
+
+.color-mid {
+  color: green; /* 텍스트 색상도 초록으로 설정 */
+}
+
+.color-mid-low {
+  color: blue; /* 텍스트 색상도 파랑으로 설정 */
+}
+
+.color-low {
+  color: darkblue; /* 텍스트 색상도 진한 파랑으로 설정 */
+}
+
+.color-very-low {
+  color: purple; /* 텍스트 색상도 보랑으로 설정 */
+}
+.color-very-very-low {
+  color: indigo; /* 텍스트 색상도 진한 보랑으로 설정 */
 }
