@@ -6,11 +6,11 @@ interface LocationDropdownProps {
   selectedLocation: string;
   isDropdownOpen: boolean;
   toggleDropdown: () => void;
-  selectLocation: (location: string) => void;
+  selectLocation: (location: string, id: number) => void;
   loadCurrentLocation: () => Promise<{
     latitude: number;
     longitude: number;
-  } | null>; // 수정: Promise로 위치 반환
+  } | null>;
 }
 
 const LocationDropdown: React.FC<LocationDropdownProps> = ({
@@ -26,42 +26,17 @@ const LocationDropdown: React.FC<LocationDropdownProps> = ({
 
   const handleLoadCurrentLocation = async () => {
     try {
-      const location = await loadCurrentLocation(); // 상위 컴포넌트에서 위치 가져오기
-
-      if (location) {
-        const { latitude, longitude } = location;
-
-        const response = await fetch(
-          `http://localhost:3030/api/locations/convert`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: `{
-      "latitude": ${latitude},
-      "longitude": ${longitude}
-    }`, // 직접 문자열로 구성
-          }
-        );
-
-        const data = await response.json();
-
-        if (response.ok && data.status === "success") {
-          selectLocation(data.data.district); // 성공 시 위치 선택
-        } else {
-          alert(data.message || "주소 정보를 찾을 수 없습니다.");
-        }
-      } else {
+      const location = await loadCurrentLocation();
+      if (!location) {
         alert("위치를 가져올 수 없습니다.");
       }
+      // `location`은 이미 `loadCurrentLocation`에서 처리되었기 때문에 추가 작업이 필요하지 않음.
     } catch (error) {
       console.error("위치 정보를 가져오는 중 오류가 발생했습니다:", error);
       alert("위치 정보를 가져오는 중 오류가 발생했습니다.");
     }
   };
 
-  // 컴포넌트가 마운트될 때 로컬 스토리지에서 즐겨찾기 데이터를 불러옴
   useEffect(() => {
     const storedFavorites = localStorage.getItem("favorites");
     if (storedFavorites) {
@@ -82,17 +57,15 @@ const LocationDropdown: React.FC<LocationDropdownProps> = ({
 
       {isDropdownOpen && (
         <ul className="dropdown-menu">
-          {/* 로컬 스토리지에서 불러온 즐겨찾기 목록 출력 */}
           {favorites.map((favorite) => (
             <li
               key={favorite.id}
-              onClick={() => selectLocation(favorite.location)}
+              onClick={() => selectLocation(favorite.location, favorite.id)} // id와 location을 함께 전달
             >
               {favorite.location}
             </li>
           ))}
-          {/* 기본 항목 */}
-          <li onClick={() => selectLocation("등록하기")}>등록하기</li>
+          <li onClick={() => selectLocation("등록하기", 0)}>등록하기</li>
         </ul>
       )}
     </div>

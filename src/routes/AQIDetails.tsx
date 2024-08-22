@@ -16,7 +16,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
-
 // 등급 이미지 임포트
 import good from "../assets/grade/good.png";
 import moderate from "../assets/grade/moderate.png";
@@ -24,48 +23,36 @@ import unhealthy from "../assets/grade/unhealthy.png";
 import veryUnhealthy from "../assets/grade/very_unhealthy.png";
 import hazardous from "../assets/grade/hazardous.png";
 
-const getAirQualityGrade = (value: number) => {
-  if (value <= 30) {
-    return { image: good, status: "좋음", value };
-  } else if (value <= 50) {
-    return { image: moderate, status: "보통", value };
-  } else if (value <= 100) {
-    return { image: unhealthy, status: "나쁨", value };
-  } else if (value <= 150) {
-    return { image: veryUnhealthy, status: "매우 나쁨", value };
-  } else {
-    return { image: hazardous, status: "위험", value };
-  }
-};
-
 const AQIDetails: React.FC = () => {
+  const [error, setError] = useState<string | null>(null);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<string>("");
-  const [coordinates, setCoordinates] = useState<{ lat: number; lng: number }>({
-    lat: 37.5665,
-    lng: 126.978,
-  });
   const [airPollutionData, setAirPollutionData] = useState<any[]>([]);
   const [airQualityData, setAirQualityData] = useState<any | null>(null);
   const [airPollutionImages, setAirPollutionImages] = useState<any[]>([]);
   const [imageIndex, setImageIndex] = useState(0);
+  const [id, setId] = useState<number>(0);
 
   useEffect(() => {
     loadCurrentLocation();
   }, []);
 
   useEffect(() => {
-    if (coordinates.lat && coordinates.lng) {
-      fetchAirPollutionData(coordinates.lat, coordinates.lng);
-      fetchAirQualityData(1234); // id를 하드코딩된 1234로 전달
-      fetchAirPollutionImages(); // 이미지 데이터 요청 값 필요없음
+    if (!id) {
+      fetchAirPollutionData(1);
+      fetchAirQualityData(1);
+      fetchAirPollutionImages();
+    } else {
+      fetchAirPollutionData(id);
+      fetchAirQualityData(id);
+      fetchAirPollutionImages();
     }
-  }, [coordinates]);
+  }, [id]);
 
-  const fetchAirPollutionData = async (latitude: number, longitude: number) => {
+  const fetchAirPollutionData = async (id: number) => {
     try {
       const response = await fetch(
-        `http://localhost:3030/api/air/time?latitude=${latitude}&longitude=${longitude}`,
+        `${process.env.REACT_APP_API_URL}/air/time?id=12`,
         {
           method: "GET",
           headers: {
@@ -73,6 +60,9 @@ const AQIDetails: React.FC = () => {
           },
         }
       );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
       const data = await response.json();
       // data.data 배열에서 차트에 사용할 데이터로 변환
       const transformedData = data.data.map((entry: any) => ({
@@ -95,7 +85,30 @@ const AQIDetails: React.FC = () => {
   const fetchAirQualityData = async (id: number) => {
     try {
       const response = await fetch(
-        `http://localhost:3030/api/air/current?id=${id}`,
+        `${process.env.REACT_APP_API_URL}/air/current?id=12`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setAirQualityData(data.data);
+      console.log(airQualityData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setError("현재 위치의 대기질 데이터를 가져오는데 실패했습니다.");
+    }
+  };
+
+  const fetchAirPollutionImages = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/air/image`,
         {
           method: "GET",
           headers: {
@@ -105,31 +118,19 @@ const AQIDetails: React.FC = () => {
       );
       if (response.ok) {
         const data = await response.json();
-        setAirQualityData(data.data); // data.data를 사용하여 상태 업데이트
-        console.log(airQualityData);
-      } else {
-        console.error("Failed to fetch air quality data.");
-      }
-    } catch (error) {
-      console.error("Error fetching air quality data:", error);
-    }
-  };
-  const fetchAirPollutionImages = async () => {
-    try {
-      const response = await fetch(`http://localhost:3030/api/air/images`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setAirPollutionImages(data.data);
+        // `data.data.airPollutionImages`를 설정
+        setAirPollutionImages(
+          Array.isArray(data.data.airPollutionImages)
+            ? data.data.airPollutionImages
+            : []
+        );
       } else {
         console.error("Failed to fetch air pollution images.");
+        setAirPollutionImages([]); // 실패 시 빈 배열로 초기화
       }
     } catch (error) {
       console.error("Error fetching air pollution images:", error);
+      setAirPollutionImages([]); // 오류 시 빈 배열로 초기화
     }
   };
 
@@ -145,88 +146,107 @@ const AQIDetails: React.FC = () => {
     setDropdownOpen(!isDropdownOpen);
   };
 
-  const selectLocation = (location: string) => {
+  const selectLocation = (location: string, id: number) => {
+    // id도 함께 받아옴
     if (location === "등록하기") {
       console.log("페이지 이동: 등록 페이지로 이동합니다.");
       window.location.href = "/favorites";
     } else {
       setSelectedLocation(location);
-      const [lat, lng] = location
-        .split(",")
-        .map((item) => parseFloat(item.split(": ")[1]));
-      setCoordinates({ lat, lng });
+      setId(id); // 선택된 location의 id를 설정
+      setDropdownOpen(false);
     }
-    setDropdownOpen(false);
   };
 
-  const loadCurrentLocation = async () => {
+  const loadCurrentLocation = async (): Promise<{
+    latitude: number;
+    longitude: number;
+  } | null> => {
     if (navigator.geolocation) {
       return new Promise<{ latitude: number; longitude: number } | null>(
         (resolve) => {
           navigator.geolocation.getCurrentPosition(
             async (position) => {
               const { latitude, longitude } = position.coords;
-              setCoordinates({ lat: latitude, lng: longitude });
-              setSelectedLocation(
-                `위도: ${latitude.toFixed(4)}, 경도: ${longitude.toFixed(4)}`
-              );
-              console.log(`현재 위치: 위도 ${latitude}, 경도 ${longitude}`);
-
-              // 현재 위치 정보를 반환
-              resolve({ latitude, longitude });
+              try {
+                const response = await fetch(
+                  `${process.env.REACT_APP_API_URL}/locations/convert?latitude=${latitude}&longitude=${longitude}`
+                );
+                if (!response.ok) {
+                  throw new Error("Failed to fetch location data");
+                }
+                const data = await response.json();
+                if (data.status === 200 && data.data.district) {
+                  setSelectedLocation(data.data.district); // 응답에서 district 값을 설정
+                  resolve({ latitude, longitude });
+                } else {
+                  alert("위치를 찾을 수 없습니다.");
+                  resolve(null);
+                }
+              } catch (error) {
+                console.error(
+                  "위치 정보를 가져오는 중 오류가 발생했습니다:",
+                  error
+                );
+                alert("위치 정보를 가져오는 중 오류가 발생했습니다.");
+                resolve(null);
+              }
             },
             (error) => {
               console.error(
                 "위치 권한이 거부되었습니다. 기본 위치로 설정합니다."
               );
-              const seoulCityHall = { lat: 37.5665, lng: 126.978 };
-              setCoordinates(seoulCityHall);
-              setSelectedLocation("위도: 37.5665, 경도: 126.9780");
-
-              // 기본 위치를 반환 (에러 발생 시)
-              resolve({ latitude: 37.5665, longitude: 126.978 });
+              const seoulCityHall = { latitude: 37.5665, longitude: 126.978 }; // 속성 이름 수정
+              resolve(seoulCityHall);
             }
           );
         }
       );
     } else {
       console.error("Geolocation API를 지원하지 않는 브라우저입니다.");
-      const seoulCityHall = { lat: 37.5665, lng: 126.978 };
-      setCoordinates(seoulCityHall);
-      setSelectedLocation("위도: 37.5665, 경도: 126.9780");
-
-      // 기본 위치를 반환 (Geolocation API 미지원 시)
-      return { latitude: 37.5665, longitude: 126.978 };
+      const seoulCityHall = { latitude: 37.5665, longitude: 126.978 }; // 속성 이름 수정
+      return seoulCityHall;
     }
   };
+  const getAirQualityGrade = (value: number) => {
+    if (value <= 30) {
+      return { image: good, status: "좋음", value };
+    } else if (value <= 50) {
+      return { image: moderate, status: "보통", value };
+    } else if (value <= 100) {
+      return { image: unhealthy, status: "나쁨", value };
+    } else if (value <= 150) {
+      return { image: veryUnhealthy, status: "매우 나쁨", value };
+    } else {
+      return { image: hazardous, status: "위험", value };
+    }
+  };
+  // 각 오염 물질의 등급을 계산 (서버에서 받아온 데이터를 사용)
+  const khaiInfo = airQualityData?.khaiValue
+    ? getAirQualityGrade(airQualityData.khaiValue)
+    : { image: null, status: "데이터 없음", value: 0 };
+  const pm10Info = airQualityData?.pm10Value
+    ? getAirQualityGrade(airQualityData.pm10Value)
+    : { image: null, status: "데이터 없음", value: 0 };
+  const pm25Info = airQualityData?.pm25Value
+    ? getAirQualityGrade(airQualityData.pm25Value)
+    : { image: null, status: "데이터 없음", value: 0 };
+  const no2Info = airQualityData?.no2Value
+    ? getAirQualityGrade(airQualityData.no2Value * 1000)
+    : { image: null, status: "데이터 없음", value: 0 };
+  const o3Info = airQualityData?.o3Value
+    ? getAirQualityGrade(airQualityData.o3Value * 1000)
+    : { image: null, status: "데이터 없음", value: 0 };
+  const coInfo = airQualityData?.coValue
+    ? getAirQualityGrade(airQualityData.coValue * 1000)
+    : { image: null, status: "데이터 없음", value: 0 };
+  const so2Info = airQualityData?.so2Value
+    ? getAirQualityGrade(airQualityData.so2Value * 1000)
+    : { image: null, status: "데이터 없음", value: 0 };
 
   if (!airQualityData) {
     return <div>Loading...</div>;
   }
-
-  // 각 오염 물질의 등급을 계산 (서버에서 받아온 데이터를 사용)
-  const khaiInfo = airQualityData.khaiValue
-    ? getAirQualityGrade(airQualityData.khaiValue)
-    : { image: null, status: "데이터 없음", value: 0 };
-  const pm10Info = airQualityData.pm10Value
-    ? getAirQualityGrade(airQualityData.pm10Value)
-    : { image: null, status: "데이터 없음", value: 0 };
-  const pm25Info = airQualityData.pm25Value
-    ? getAirQualityGrade(airQualityData.pm25Value)
-    : { image: null, status: "데이터 없음", value: 0 };
-  const no2Info = airQualityData.no2Value
-    ? getAirQualityGrade(airQualityData.no2Value * 1000)
-    : { image: null, status: "데이터 없음", value: 0 };
-  const o3Info = airQualityData.o3Value
-    ? getAirQualityGrade(airQualityData.o3Value * 1000)
-    : { image: null, status: "데이터 없음", value: 0 };
-  const coInfo = airQualityData.coValue
-    ? getAirQualityGrade(airQualityData.coValue * 1000)
-    : { image: null, status: "데이터 없음", value: 0 };
-  const so2Info = airQualityData.so2Value
-    ? getAirQualityGrade(airQualityData.so2Value * 1000)
-    : { image: null, status: "데이터 없음", value: 0 };
-
   return (
     <div className="aqidetails-page">
       <LocationDropdown
@@ -256,7 +276,9 @@ const AQIDetails: React.FC = () => {
               <p>데이터 없음</p>
             )}
             <p className="air-quality-status-unique">{khaiInfo.status}</p>
-            <p className="air-quality-value-unique">{khaiInfo.value} µg/m³</p>
+            <p className="air-quality-value-unique">
+              {airQualityData.khaiValue} µg/m³
+            </p>
           </div>
 
           {/* 각 오염 물질 수치 표시 */}

@@ -5,7 +5,6 @@ const Favorites: React.FC = () => {
   const [favorites, setFavorites] = useState<
     { id: number; location: string }[]
   >([]);
-
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<
     { id: number; location: string }[]
@@ -26,20 +25,15 @@ const Favorites: React.FC = () => {
           process.env.REACT_APP_API_URL
         }/locations/search?query=${encodeURIComponent(searchQuery)}`
       );
-
       if (response.ok) {
         const data = await response.json();
-        if (data.status === "success") {
-          setSearchResults(
-            data.data.map((item: any) => ({
-              id: item.id,
-              location: item.district,
-            }))
-          );
-        } else {
-          setSearchResults([]);
-          alert("검색 결과가 없습니다.");
-        }
+
+        setSearchResults(
+          data.data.map((item: any) => ({
+            id: item.id,
+            location: item.locationName || item.district, // 백엔드에서 반환하는 위치 정보 필드 이름에 따라 조정
+          }))
+        );
       } else {
         alert("검색 요청에 실패했습니다.");
       }
@@ -50,10 +44,7 @@ const Favorites: React.FC = () => {
   };
 
   const handleAddFavorite = (id: number, location: string) => {
-    const newFavorite = {
-      id,
-      location,
-    };
+    const newFavorite = { id, location };
     const updatedFavorites = [...favorites, newFavorite];
     setFavorites(updatedFavorites);
     localStorage.setItem("favorites", JSON.stringify(updatedFavorites)); // 로컬 스토리지에 저장
