@@ -90,7 +90,7 @@ const Squirrel: React.FC = () => {
               onChange={handleAcornChange}
             />
             <div>
-              {selectedAcorns}/{maxLevels[level - 1] - progress}
+              {selectedAcorns}/{30}
             </div>
             <button className="acorn-modal-btn" onClick={handleFeedAcorns}>
               도토리 주기

@@ -7,6 +7,7 @@ const FallingAcorn: React.FC = () => {
   const [acornPosition, setAcornPosition] = useState({ x: 50, y: 0 });
   const [basketPosition, setBasketPosition] = useState(50);
   const [gameStarted, setGameStarted] = useState(false);
+  console.log(process.env.REACT_APP_API_URL);
 
   useEffect(() => {
     if (!gameStarted) return;

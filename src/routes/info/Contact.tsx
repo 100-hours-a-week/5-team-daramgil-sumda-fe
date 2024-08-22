@@ -14,7 +14,7 @@ const Contact: React.FC = () => {
       setErrorMessage("*제목, 내용, 이메일을 입력해주세요.");
     } else {
       setErrorMessage("");
-      // 여기서 폼 데이터를 서버로 전송하는 로직을 추가할 수 있습니다.
+      // 여기서 폼 데이터를 서버로 전송하는 로직을 추가
       console.log("Form Submitted", { title, content, email });
     }
   };
