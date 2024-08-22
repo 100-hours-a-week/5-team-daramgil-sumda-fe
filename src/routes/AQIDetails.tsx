@@ -58,7 +58,7 @@ const AQIDetails: React.FC = () => {
     if (coordinates.lat && coordinates.lng) {
       fetchAirPollutionData(coordinates.lat, coordinates.lng);
       fetchAirQualityData(1234); // id를 하드코딩된 1234로 전달
-      fetchAirPollutionImages(1234); // 이미지 데이터도 하드코딩으로 가져옴
+      fetchAirPollutionImages(); // 이미지 데이터 요청 값 필요없음
     }
   }, [coordinates]);
 
@@ -114,20 +114,17 @@ const AQIDetails: React.FC = () => {
       console.error("Error fetching air quality data:", error);
     }
   };
-  const fetchAirPollutionImages = async (id: number) => {
+  const fetchAirPollutionImages = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:3030/api/air/images?id=${id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`http://localhost:3030/api/air/images`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       if (response.ok) {
         const data = await response.json();
-        setAirPollutionImages(data.data.airPollutionImages);
+        setAirPollutionImages(data.data);
       } else {
         console.error("Failed to fetch air pollution images.");
       }
