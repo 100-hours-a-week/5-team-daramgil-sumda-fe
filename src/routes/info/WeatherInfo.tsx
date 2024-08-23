@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./styles/WeatherInfo.css";
-import sun from "../assets/weather/sun.png";
-import cloud from "../assets/weather/cloud.png";
-import rain from "../assets/weather/rainy.png";
-import snow from "../assets/weather/snow.png";
-import LocationDropdown from "../components/LocationDropdown";
+import sun from "../../assets/weather/sun.png";
+import cloud from "../../assets/weather/cloud.png";
+import rain from "../../assets/weather/rainy.png";
+import snow from "../../assets/weather/snow.png";
+import LocationDropdown from "../../components/LocationDropdown";
 
 // 날씨 유형에 따른 이미지 매핑 객체
 const weatherIcons: { [key: string]: string } = {

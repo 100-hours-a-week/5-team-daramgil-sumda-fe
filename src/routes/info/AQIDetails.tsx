@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./styles/AQIDetails.css";
-import LocationDropdown from "../components/LocationDropdown";
+import LocationDropdown from "../../components/LocationDropdown";
 import {
   LineChart,
   Line,
@@ -17,11 +17,11 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
 // 등급 이미지 임포트
-import good from "../assets/grade/good.png";
-import moderate from "../assets/grade/moderate.png";
-import unhealthy from "../assets/grade/unhealthy.png";
-import veryUnhealthy from "../assets/grade/very_unhealthy.png";
-import hazardous from "../assets/grade/hazardous.png";
+import good from "../../assets/grade/good.png";
+import moderate from "../../assets/grade/moderate.png";
+import unhealthy from "../../assets/grade/unhealthy.png";
+import veryUnhealthy from "../../assets/grade/very_unhealthy.png";
+import hazardous from "../../assets/grade/hazardous.png";
 
 const AQIDetails: React.FC = () => {
   const [error, setError] = useState<string | null>(null);

@@ -1,5 +1,5 @@
 import React from "react";
-import Game from "../../components/Game"; // Game 컴포넌트 import
+import Game from "./Game"; // Game 컴포넌트 import
 import "./styles/GameList.css";
 import oxicon from "../../assets/OXquiz.png";
 

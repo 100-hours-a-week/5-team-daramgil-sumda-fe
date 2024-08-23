@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import Select from "react-select";
 import "./styles/Collection.css";
 
-import SquirrelCollection from "../components/SquirrelCollection";
-import TagCollection from "../components/TagCollection";
+import SquirrelCollection from "./SquirrelCollection";
+import TagCollection from "./TagCollection";
 
 const Collection: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<{

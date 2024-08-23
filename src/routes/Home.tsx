@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./styles/Home.css";
 import good from "../assets/grade/good.png";
 import moderate from "../assets/grade/moderate.png";
@@ -77,12 +78,13 @@ const Home: React.FC = () => {
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
   };
+  const navigate = useNavigate();
 
   const selectLocation = (location: string, id: number) => {
     // id도 함께 받아옴
     if (location === "등록하기") {
       console.log("페이지 이동: 등록 페이지로 이동합니다.");
-      window.location.href = "/favorites";
+      navigate("/favorites");
     } else {
       setSelectedLocation(location);
       setId(id); // 선택된 location의 id를 설정

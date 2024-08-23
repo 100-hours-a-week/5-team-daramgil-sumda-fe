@@ -1,7 +1,7 @@
 import React from "react";
 import "./styles/DailyMission.css";
-import Acorn_img from "../assets/acorn.png";
-import Check_img from "../assets/check.png";
+import Acorn_img from "../../assets/acorn.png";
+import Check_img from "../../assets/check.png";
 const DaliyMission: React.FC = () => {
   return (
     <div className="dailymission-container">
