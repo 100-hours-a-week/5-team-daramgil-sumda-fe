@@ -276,7 +276,7 @@ const AQIDetails: React.FC = () => {
               {pollutantInfo.khai.status}
             </p>
             <p className="air-quality-value-unique">
-              {pollutantInfo.khai.value} µg/m³
+              {pollutantInfo.khai.value}
             </p>
           </div>
 
@@ -296,7 +296,10 @@ const AQIDetails: React.FC = () => {
                       <p>데이터 없음</p>
                     )}
                     <p className="pollutant-status-unique">{info.status}</p>
-                    <p className="pollutant-value-unique">{info.value} µg/m³</p>
+                    <p className="pollutant-value-unique">
+                      {info.value}{" "}
+                      {key === "pm10" || key === "pm25" ? "㎍/㎥" : "ppm"}
+                    </p>
                   </div>
                 )
             )}
@@ -365,8 +368,8 @@ const AQIDetails: React.FC = () => {
           <p>
             * 데이터는 실시간 관측된 자료이며
             <br />
-            측정소 현지 사정이나 데이터의 수신상태에 따라
-            <br /> 미수신 될 수 있음 <br />
+            측정소 현지 사정이나 데이터의 <br />
+            수신상태에 따라 미수신 될 수 있음 <br />
             <br />
             출처 : 환경부/한국환경공단
           </p>
