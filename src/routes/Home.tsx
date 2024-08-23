@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { Navigation, Pagination } from "swiper/modules";
 import "./styles/Home.css";
 import good from "../assets/grade/good.png";
 import moderate from "../assets/grade/moderate.png";
@@ -15,18 +20,22 @@ const Home: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedLocation, setSelectedLocation] = useState<string>("");
   const [id, setId] = useState<number>(0);
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
+
+  const navigate = useNavigate();
+
   useEffect(() => {
-    if (id) {
-      fetchFavoriteLocationData(id);
-    } else {
-      fetchCurrentLocationData(id);
-    }
+    loadCurrentLocation();
+  }, []);
+
+  useEffect(() => {
+    fetchAirQualityData(id || 1);
   }, [id]);
 
-  const fetchCurrentLocationData = async (id: number) => {
+  const fetchAirQualityData = async (id: number) => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/air/current?id=12`,
+        `${process.env.REACT_APP_API_URL}/air/current?id=${id}`,
         {
           method: "GET",
           headers: {
@@ -39,125 +48,105 @@ const Home: React.FC = () => {
       }
       const data = await response.json();
       setAirQualityData(data.data);
-      console.log(data.data);
     } catch (error) {
       console.error("Error fetching data:", error);
       setError("현재 위치의 대기질 데이터를 가져오는데 실패했습니다.");
     }
   };
 
-  const fetchFavoriteLocationData = async (id: number) => {
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/air/current?id=123`, // id를 쿼리 파라미터로 전달
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const data = await response.json();
-      setAirQualityData(data.data);
-      console.log(data.data);
-    } catch (error) {
-      console.error("Error fetching favorite location data:", error);
-      setError("즐겨찾기 위치의 대기질 데이터를 가져오는데 실패했습니다.");
-    }
-  };
-
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
-  const [coordinates, setCoordinates] = useState<{ lat: number; lng: number }>({
-    lat: 37.5665,
-    lng: 126.978,
-  });
-
-  const toggleDropdown = () => {
-    setDropdownOpen(!isDropdownOpen);
-  };
-  const navigate = useNavigate();
+  const toggleDropdown = () => setDropdownOpen(!isDropdownOpen);
 
   const selectLocation = (location: string, id: number) => {
-    // id도 함께 받아옴
     if (location === "등록하기") {
-      console.log("페이지 이동: 등록 페이지로 이동합니다.");
       navigate("/favorites");
     } else {
       setSelectedLocation(location);
-      setId(id); // 선택된 location의 id를 설정
+      setId(id);
       setDropdownOpen(false);
     }
   };
+
   const loadCurrentLocation = async (): Promise<{
     latitude: number;
     longitude: number;
   } | null> => {
+    const defaultLocation = { latitude: 37.5665, longitude: 126.978 };
+    const fetchLocationData = async (latitude: number, longitude: number) => {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/locations/convert?latitude=${latitude}&longitude=${longitude}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch location data");
+        }
+        const data = await response.json();
+        if (data.status === 200 && data.data.district) {
+          setSelectedLocation(data.data.district);
+          setId(data.data.id);
+          return { latitude, longitude };
+        } else {
+          alert("위치를 찾을 수 없습니다.");
+          return null;
+        }
+      } catch (error) {
+        console.error("위치 정보를 가져오는 중 오류가 발생했습니다:", error);
+        alert("위치 정보를 가져오는 중 오류가 발생했습니다.");
+        return null;
+      }
+    };
+
     if (navigator.geolocation) {
       return new Promise<{ latitude: number; longitude: number } | null>(
         (resolve) => {
           navigator.geolocation.getCurrentPosition(
             async (position) => {
               const { latitude, longitude } = position.coords;
-              try {
-                const response = await fetch(
-                  `${process.env.REACT_APP_API_URL}/locations/convert?latitude=${latitude}&longitude=${longitude}`
-                );
-                if (!response.ok) {
-                  throw new Error("Failed to fetch location data");
-                }
-                const data = await response.json();
-                if (data.status === 200 && data.data.district) {
-                  setSelectedLocation(data.data.district); // 응답에서 district 값을 설정
-                  resolve({ latitude, longitude });
-                } else {
-                  alert("위치를 찾을 수 없습니다.");
-                  resolve(null);
-                }
-              } catch (error) {
-                console.error(
-                  "위치 정보를 가져오는 중 오류가 발생했습니다:",
-                  error
-                );
-                alert("위치 정보를 가져오는 중 오류가 발생했습니다.");
-                resolve(null);
-              }
+              const locationData = await fetchLocationData(latitude, longitude);
+              resolve(locationData);
             },
-            (error) => {
+            async () => {
               console.error(
                 "위치 권한이 거부되었습니다. 기본 위치로 설정합니다."
               );
-              const seoulCityHall = { latitude: 37.5665, longitude: 126.978 }; // 속성 이름 수정
-              resolve(seoulCityHall);
+              const locationData = await fetchLocationData(
+                defaultLocation.latitude,
+                defaultLocation.longitude
+              );
+              resolve(locationData);
             }
           );
         }
       );
     } else {
       console.error("Geolocation API를 지원하지 않는 브라우저입니다.");
-      const seoulCityHall = { latitude: 37.5665, longitude: 126.978 }; // 속성 이름 수정
-      return seoulCityHall;
+      const locationData = await fetchLocationData(
+        defaultLocation.latitude,
+        defaultLocation.longitude
+      );
+      return locationData;
     }
   };
+
+  const airQualityGrades: { [key: string]: { image: string; status: string } } =
+    {
+      "1": { image: good, status: "좋음" },
+      "2": { image: moderate, status: "보통" },
+      "3": { image: unhealthy, status: "나쁨" },
+      "4": { image: veryUnhealthy, status: "매우 나쁨" },
+      "5": { image: hazardous, status: "위험" },
+    };
+
   const getAirQualityGrade = (value: number) => {
-    if (value <= 30) {
-      return { image: good, status: "좋음", value };
-    } else if (value <= 50) {
-      return { image: moderate, status: "보통", value };
-    } else if (value <= 100) {
-      return { image: unhealthy, status: "나쁨", value };
-    } else if (value <= 150) {
-      return { image: veryUnhealthy, status: "매우 나쁨", value };
-    } else {
-      return { image: hazardous, status: "위험", value };
-    }
+    if (value <= 30) return airQualityGrades["1"];
+    if (value <= 50) return airQualityGrades["2"];
+    if (value <= 100) return airQualityGrades["3"];
+    if (value <= 150) return airQualityGrades["4"];
+    return airQualityGrades["5"];
   };
-  // 각 오염 물질의 등급을 계산 (서버에서 받아온 데이터를 사용)
+
   const khaiInfo = airQualityData?.khaiValue
     ? getAirQualityGrade(airQualityData.khaiValue)
-    : { image: null, status: "데이터 없음", value: 0 };
+    : { image: undefined, status: "데이터 없음" };
 
   return (
     <div className="home-page">
@@ -168,50 +157,63 @@ const Home: React.FC = () => {
         selectLocation={selectLocation}
         loadCurrentLocation={loadCurrentLocation} // GPS 버튼 클릭 시 현재 위치 로드
       />
+      <h1 className="page-title-unique">대기 오염 정보 조회</h1>
+      <p className="page-description-unique">
+        현재 위치 또는 선택한 위치의 대기 오염 정보를 확인하세요.
+      </p>
 
-      <div className="info-container">
-        <div className="air-quality-section">
-          <h1 className="air-quality-title">통합대기환경지수</h1>
-          <img
-            className="air-quality-image"
-            src={khaiInfo.image}
-            alt="통합대기환경지수 이미지"
-          />
-          {airQualityData ? (
-            <>
-              <p className="air-quality-status">{khaiInfo.status}</p>
-              <p className="air-quality-value">{airQualityData.khaiValue}</p>
-              <p className="air-quality-description">
-                {/* {airQualityData.air_quality_summary} */}
-                오늘은 공기가 정말 맑고 깨끗해요!
-              </p>
-            </>
-          ) : (
-            <p>Loading air quality data...</p>
-          )}
-        </div>
-        <div className="weather-section">
-          <h1 className="weather-title">날씨</h1>
-          <img className="weather-icon" src={sun} alt="날씨 이미지" />
-          {airQualityData ? (
-            <>
-              <p className="weather-status">{airQualityData.weather_type}</p>
-              <p className="weather-current-temperature">
-                {airQualityData.current_temperature}°C
-              </p>
-              <p className="weather-range">
-                {airQualityData.min_temperature}°C /{" "}
-                {airQualityData.max_temperature}°C
-              </p>
-              <p className="weather-description">
-                {airQualityData.weather_summary}
-              </p>
-            </>
-          ) : (
-            <p>Loading weather data...</p>
-          )}
-        </div>
-      </div>
+      <Swiper
+        modules={[Navigation, Pagination]}
+        navigation
+        pagination={{ clickable: true }}
+        spaceBetween={50}
+        slidesPerView={1}
+      >
+        <SwiperSlide>
+          <div className="home-info-container air-quality-section">
+            <h1 className="air-quality-title">통합대기환경지수</h1>
+            <img
+              className="air-quality-image"
+              src={khaiInfo.image}
+              alt="통합대기환경지수 이미지"
+            />
+            {airQualityData ? (
+              <>
+                <p className="air-quality-status">{khaiInfo.status}</p>
+                <p className="air-quality-value">{airQualityData.khaiValue}</p>
+                <p className="air-quality-description">
+                  오늘은 공기가 정말 맑고 깨끗해요!
+                </p>
+              </>
+            ) : (
+              <p>Loading air quality data...</p>
+            )}
+          </div>
+        </SwiperSlide>
+        <SwiperSlide>
+          <div className="home-info-container weather-section">
+            <h1 className="weather-title">날씨</h1>
+            <img className="weather-icon" src={sun} alt="날씨 이미지" />
+            {airQualityData ? (
+              <>
+                <p className="weather-status">{airQualityData.weather_type}</p>
+                <p className="weather-current-temperature">
+                  {airQualityData.current_temperature}°C
+                </p>
+                <p className="weather-range">
+                  {airQualityData.min_temperature}°C /{" "}
+                  {airQualityData.max_temperature}°C
+                </p>
+                <p className="weather-description">
+                  {airQualityData.weather_summary}
+                </p>
+              </>
+            ) : (
+              <p>Loading weather data...</p>
+            )}
+          </div>
+        </SwiperSlide>
+      </Swiper>
 
       <div className="additional-info">
         {airQualityData ? (

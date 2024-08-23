@@ -18,10 +18,7 @@ const weatherIcons: { [key: string]: string } = {
 const WeatherInfo: React.FC = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<string>("");
-  const [coordinates, setCoordinates] = useState<{ lat: number; lng: number }>({
-    lat: 37.5665,
-    lng: 126.978,
-  });
+  const [id, setId] = useState<number>(0);
   const [weatherData, setWeatherData] = useState<any | null>(null);
 
   useEffect(() => {
@@ -29,15 +26,15 @@ const WeatherInfo: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (coordinates.lat && coordinates.lng) {
-      fetchWeatherData(coordinates.lat, coordinates.lng);
+    if (id) {
+      fetchWeatherData(id);
     }
-  }, [coordinates]);
+  }, [id]);
 
-  const fetchWeatherData = async (latitude: number, longitude: number) => {
+  const fetchWeatherData = async (id: number) => {
     try {
       const response = await fetch(
-        `http://localhost:3030/api/map/weather?latitude=${latitude}&longitude=${longitude}`
+        `http://localhost:8080/api/map/weather?id=${id}`
       );
       if (response.ok) {
         const data = await response.json();
@@ -54,77 +51,75 @@ const WeatherInfo: React.FC = () => {
     setDropdownOpen(!isDropdownOpen);
   };
 
-  const selectLocation = (location: string) => {
+  const selectLocation = (location: string, id: number) => {
     if (location === "등록하기") {
-      console.log("페이지 이동: 등록 페이지로 이동합니다.");
       window.location.href = "/favorites";
     } else {
       setSelectedLocation(location);
-      const [lat, lng] = location
-        .split(",")
-        .map((item) => parseFloat(item.split(": ")[1]));
-      setCoordinates({ lat, lng });
+      setId(id);
+      setDropdownOpen(false);
     }
-    setDropdownOpen(false);
   };
 
   const loadCurrentLocation = async (): Promise<{
     latitude: number;
     longitude: number;
   } | null> => {
+    const defaultLocation = { latitude: 37.5665, longitude: 126.978 };
+    const fetchLocationData = async (latitude: number, longitude: number) => {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/locations/convert?latitude=${latitude}&longitude=${longitude}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch location data");
+        }
+        const data = await response.json();
+        if (data.status === 200 && data.data.district) {
+          setSelectedLocation(data.data.district);
+          setId(data.data.id);
+          return { latitude, longitude };
+        } else {
+          alert("위치를 찾을 수 없습니다.");
+          return null;
+        }
+      } catch (error) {
+        console.error("위치 정보를 가져오는 중 오류가 발생했습니다:", error);
+        alert("위치 정보를 가져오는 중 오류가 발생했습니다.");
+        return null;
+      }
+    };
+
     if (navigator.geolocation) {
       return new Promise<{ latitude: number; longitude: number } | null>(
         (resolve) => {
           navigator.geolocation.getCurrentPosition(
             async (position) => {
               const { latitude, longitude } = position.coords;
-              setCoordinates({ lat: latitude, lng: longitude });
-              try {
-                const response = await fetch(
-                  `${process.env.REACT_APP_API_URL}/locations/convert?latitude=${latitude}&longitude=${longitude}`
-                );
-                if (!response.ok) {
-                  throw new Error("Failed to fetch location data");
-                }
-                const data = await response.json();
-                if (data.status === 200 && data.data.district) {
-                  setSelectedLocation(data.data.district); // 응답에서 district 값을 설정
-                  resolve({ latitude, longitude });
-                } else {
-                  alert("위치를 찾을 수 없습니다.");
-                  resolve(null);
-                }
-              } catch (error) {
-                console.error(
-                  "위치 정보를 가져오는 중 오류가 발생했습니다:",
-                  error
-                );
-                alert("위치 정보를 가져오는 중 오류가 발생했습니다.");
-                resolve(null);
-              }
+              const locationData = await fetchLocationData(latitude, longitude);
+              setId(0); // 초기화 시도
+              resolve(locationData);
             },
-            (error) => {
+            async () => {
               console.error(
                 "위치 권한이 거부되었습니다. 기본 위치로 설정합니다."
               );
-              const seoulCityHall = { latitude: 37.5665, longitude: 126.978 }; // 속성 이름 수정
-              setCoordinates({
-                lat: seoulCityHall.latitude,
-                lng: seoulCityHall.longitude,
-              });
-              resolve(seoulCityHall);
+              const locationData = await fetchLocationData(
+                defaultLocation.latitude,
+                defaultLocation.longitude
+              );
+              resolve(locationData);
             }
           );
         }
       );
     } else {
       console.error("Geolocation API를 지원하지 않는 브라우저입니다.");
-      const seoulCityHall = { latitude: 37.5665, longitude: 126.978 }; // 속성 이름 수정
-      setCoordinates({
-        lat: seoulCityHall.latitude,
-        lng: seoulCityHall.longitude,
-      });
-      return seoulCityHall;
+      const locationData = await fetchLocationData(
+        defaultLocation.latitude,
+        defaultLocation.longitude
+      );
+      return locationData;
     }
   };
 

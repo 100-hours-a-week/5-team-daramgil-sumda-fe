@@ -4,6 +4,7 @@ import {
   Routes,
   Route,
   useNavigate,
+  useLocation,
 } from "react-router-dom";
 
 import Layout from "./components/layout/Layout";
@@ -34,16 +35,21 @@ import FallingAcorn from "./routes/games/FallingAcorn";
 import SensitiveCheck from "./routes/SensitiveCheck";
 import Setting from "./routes/Setting";
 
+import UnderConstruction from "./routes/UnderConstruction";
+
 const App: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const sensitiveGroup = localStorage.getItem("sensitiveGroup");
-    if (!sensitiveGroup) {
-      // 로컬 스토리지에 값이 없으면 SensitiveCheck 페이지로 이동
+    const restrictedPaths = ["/", "/activityRecommed"];
+
+    // 현재 경로가 restrictedPaths 중 하나인 경우에만 민감군 정보를 확인
+    if (restrictedPaths.includes(location.pathname) && !sensitiveGroup) {
       navigate("/sensitivecheck");
     }
-  }, [navigate]);
+  }, [navigate, location.pathname]);
 
   return (
     <div>
@@ -58,13 +64,13 @@ const App: React.FC = () => {
 
           <Route path="/notice" element={<Notice />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/localpride" element={<LocalPride />} />
+          {/* <Route path="/localpride" element={<LocalPride />} />
 
-          <Route path="/activityRecommed" element={<ActivityRecommed />} />
+          <Route path="/activityRecommed" element={<ActivityRecommed />} /> */}
           <Route path="/outfitdaily" element={<OutfitDaily />} />
           <Route path="/outfitbytemp" element={<OutfitByTemp />} />
 
-          <Route path="/squirrel" element={<Squirrel />} />
+          {/* <Route path="/squirrel" element={<Squirrel />} />
           <Route path="/adopt" element={<Adopt />} />
           <Route path="/collection" element={<Collection />} />
 
@@ -72,9 +78,11 @@ const App: React.FC = () => {
           <Route path="/games" element={<GameList />} />
           <Route path="/games/ox" element={<OX />} />
           <Route path="/games/answer" element={<Answer />} />
-          <Route path="/games/fallingacorn" element={<FallingAcorn />} />
+          <Route path="/games/fallingacorn" element={<FallingAcorn />} />*/}
 
           <Route path="/setting" element={<Setting />} />
+
+          <Route path="/underConstruction" element={<UnderConstruction />} />
         </Route>
       </Routes>
     </div>

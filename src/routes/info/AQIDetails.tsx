@@ -38,21 +38,15 @@ const AQIDetails: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!id) {
-      fetchAirPollutionData(1);
-      fetchAirQualityData(1);
-      fetchAirPollutionImages();
-    } else {
-      fetchAirPollutionData(id);
-      fetchAirQualityData(id);
-      fetchAirPollutionImages();
-    }
+    fetchAirPollutionData(id || 1);
+    fetchAirQualityData(id || 1);
+    fetchAirPollutionImages();
   }, [id]);
 
   const fetchAirPollutionData = async (id: number) => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/air/time?id=12`,
+        `${process.env.REACT_APP_API_URL}/air/time?id=${id}`,
         {
           method: "GET",
           headers: {
@@ -64,7 +58,6 @@ const AQIDetails: React.FC = () => {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
-      // data.data 배열에서 차트에 사용할 데이터로 변환
       const transformedData = data.data.map((entry: any) => ({
         time: entry.dataTime,
         khai: entry.khaiValue,
@@ -76,7 +69,6 @@ const AQIDetails: React.FC = () => {
         so2: entry.so2Value,
       }));
       setAirPollutionData(transformedData);
-      console.log(transformedData);
     } catch (error) {
       console.error("Error fetching air pollution data:", error);
     }
@@ -85,7 +77,7 @@ const AQIDetails: React.FC = () => {
   const fetchAirQualityData = async (id: number) => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/air/current?id=12`,
+        `${process.env.REACT_APP_API_URL}/air/current?id=${id}`,
         {
           method: "GET",
           headers: {
@@ -98,7 +90,6 @@ const AQIDetails: React.FC = () => {
       }
       const data = await response.json();
       setAirQualityData(data.data);
-      console.log(airQualityData);
     } catch (error) {
       console.error("Error fetching data:", error);
       setError("현재 위치의 대기질 데이터를 가져오는데 실패했습니다.");
@@ -118,7 +109,6 @@ const AQIDetails: React.FC = () => {
       );
       if (response.ok) {
         const data = await response.json();
-        // `data.data.airPollutionImages`를 설정
         setAirPollutionImages(
           Array.isArray(data.data.airPollutionImages)
             ? data.data.airPollutionImages
@@ -126,20 +116,20 @@ const AQIDetails: React.FC = () => {
         );
       } else {
         console.error("Failed to fetch air pollution images.");
-        setAirPollutionImages([]); // 실패 시 빈 배열로 초기화
+        setAirPollutionImages([]);
       }
     } catch (error) {
       console.error("Error fetching air pollution images:", error);
-      setAirPollutionImages([]); // 오류 시 빈 배열로 초기화
+      setAirPollutionImages([]);
     }
   };
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setImageIndex((prevIndex) => (prevIndex + 1) % 3); // 3개의 이미지 순환
+      setImageIndex((prevIndex) => (prevIndex + 1) % 3);
     }, 1000);
 
-    return () => clearInterval(interval); // Cleanup on unmount
+    return () => clearInterval(interval);
   }, []);
 
   const toggleDropdown = () => {
@@ -147,13 +137,11 @@ const AQIDetails: React.FC = () => {
   };
 
   const selectLocation = (location: string, id: number) => {
-    // id도 함께 받아옴
     if (location === "등록하기") {
-      console.log("페이지 이동: 등록 페이지로 이동합니다.");
       window.location.href = "/favorites";
     } else {
       setSelectedLocation(location);
-      setId(id); // 선택된 location의 id를 설정
+      setId(id);
       setDropdownOpen(false);
     }
   };
@@ -162,91 +150,102 @@ const AQIDetails: React.FC = () => {
     latitude: number;
     longitude: number;
   } | null> => {
+    const defaultLocation = { latitude: 37.5665, longitude: 126.978 };
+    const fetchLocationData = async (latitude: number, longitude: number) => {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/locations/convert?latitude=${latitude}&longitude=${longitude}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch location data");
+        }
+        const data = await response.json();
+        if (data.status === 200 && data.data.district) {
+          setSelectedLocation(data.data.district);
+          return { latitude, longitude };
+        } else {
+          alert("위치를 찾을 수 없습니다.");
+          return null;
+        }
+      } catch (error) {
+        console.error("위치 정보를 가져오는 중 오류가 발생했습니다:", error);
+        alert("위치 정보를 가져오는 중 오류가 발생했습니다.");
+        return null;
+      }
+    };
     if (navigator.geolocation) {
       return new Promise<{ latitude: number; longitude: number } | null>(
         (resolve) => {
           navigator.geolocation.getCurrentPosition(
             async (position) => {
               const { latitude, longitude } = position.coords;
-              try {
-                const response = await fetch(
-                  `${process.env.REACT_APP_API_URL}/locations/convert?latitude=${latitude}&longitude=${longitude}`
-                );
-                if (!response.ok) {
-                  throw new Error("Failed to fetch location data");
-                }
-                const data = await response.json();
-                if (data.status === 200 && data.data.district) {
-                  setSelectedLocation(data.data.district); // 응답에서 district 값을 설정
-                  resolve({ latitude, longitude });
-                } else {
-                  alert("위치를 찾을 수 없습니다.");
-                  resolve(null);
-                }
-              } catch (error) {
-                console.error(
-                  "위치 정보를 가져오는 중 오류가 발생했습니다:",
-                  error
-                );
-                alert("위치 정보를 가져오는 중 오류가 발생했습니다.");
-                resolve(null);
-              }
+              const locationData = await fetchLocationData(latitude, longitude);
+              setId(0); // 초기화 시도
+              resolve(locationData);
             },
-            (error) => {
+            async (error) => {
               console.error(
                 "위치 권한이 거부되었습니다. 기본 위치로 설정합니다."
               );
-              const seoulCityHall = { latitude: 37.5665, longitude: 126.978 }; // 속성 이름 수정
-              resolve(seoulCityHall);
+              const locationData = await fetchLocationData(
+                defaultLocation.latitude,
+                defaultLocation.longitude
+              );
+              resolve(locationData);
             }
           );
         }
       );
     } else {
       console.error("Geolocation API를 지원하지 않는 브라우저입니다.");
-      const seoulCityHall = { latitude: 37.5665, longitude: 126.978 }; // 속성 이름 수정
-      return seoulCityHall;
+      const locationData = await fetchLocationData(
+        defaultLocation.latitude,
+        defaultLocation.longitude
+      );
+      return locationData;
     }
   };
-  const getAirQualityGrade = (value: number) => {
-    if (value <= 30) {
-      return { image: good, status: "좋음", value };
-    } else if (value <= 50) {
-      return { image: moderate, status: "보통", value };
-    } else if (value <= 100) {
-      return { image: unhealthy, status: "나쁨", value };
-    } else if (value <= 150) {
-      return { image: veryUnhealthy, status: "매우 나쁨", value };
-    } else {
-      return { image: hazardous, status: "위험", value };
-    }
+
+  const airQualityGrades: { [key: string]: { image: string; status: string } } =
+    {
+      "1": { image: good, status: "좋음" },
+      "2": { image: moderate, status: "보통" },
+      "3": { image: unhealthy, status: "나쁨" },
+      "4": { image: veryUnhealthy, status: "매우 나쁨" },
+      "5": { image: hazardous, status: "위험" },
+    };
+
+  const getAirQualityInfo = (value: string, grade: string) => {
+    const info = airQualityGrades[grade] || {
+      image: "",
+      status: "데이터 없음",
+    };
+    return { ...info, value };
   };
-  // 각 오염 물질의 등급을 계산 (서버에서 받아온 데이터를 사용)
-  const khaiInfo = airQualityData?.khaiValue
-    ? getAirQualityGrade(airQualityData.khaiValue)
-    : { image: null, status: "데이터 없음", value: 0 };
-  const pm10Info = airQualityData?.pm10Value
-    ? getAirQualityGrade(airQualityData.pm10Value)
-    : { image: null, status: "데이터 없음", value: 0 };
-  const pm25Info = airQualityData?.pm25Value
-    ? getAirQualityGrade(airQualityData.pm25Value)
-    : { image: null, status: "데이터 없음", value: 0 };
-  const no2Info = airQualityData?.no2Value
-    ? getAirQualityGrade(airQualityData.no2Value * 1000)
-    : { image: null, status: "데이터 없음", value: 0 };
-  const o3Info = airQualityData?.o3Value
-    ? getAirQualityGrade(airQualityData.o3Value * 1000)
-    : { image: null, status: "데이터 없음", value: 0 };
-  const coInfo = airQualityData?.coValue
-    ? getAirQualityGrade(airQualityData.coValue * 1000)
-    : { image: null, status: "데이터 없음", value: 0 };
-  const so2Info = airQualityData?.so2Value
-    ? getAirQualityGrade(airQualityData.so2Value * 1000)
-    : { image: null, status: "데이터 없음", value: 0 };
+
+  const pollutantInfo = {
+    khai: getAirQualityInfo(
+      airQualityData?.khaiValue,
+      airQualityData?.khaiGrade
+    ),
+    pm10: getAirQualityInfo(
+      airQualityData?.pm10Value,
+      airQualityData?.pm10Grade
+    ),
+    pm25: getAirQualityInfo(
+      airQualityData?.pm25Value,
+      airQualityData?.pm25Grade
+    ),
+    no2: getAirQualityInfo(airQualityData?.no2Value, airQualityData?.no2Grade),
+    o3: getAirQualityInfo(airQualityData?.o3Value, airQualityData?.o3Grade),
+    co: getAirQualityInfo(airQualityData?.coValue, airQualityData?.coGrade),
+    so2: getAirQualityInfo(airQualityData?.so2Value, airQualityData?.so2Grade),
+  };
 
   if (!airQualityData) {
     return <div>Loading...</div>;
   }
+
   return (
     <div className="aqidetails-page">
       <LocationDropdown
@@ -261,122 +260,46 @@ const AQIDetails: React.FC = () => {
         <p className="page-description-unique">
           현재 위치 또는 선택한 위치의 대기 오염 정보를 확인하세요.
         </p>
-        {/* 대기 질과 오염 물질 정보를 표시하는 섹션 */}
         <div className="info-container-unique">
-          {/* 통합대기환경지수 섹션 */}
           <div className="air-quality-section-unique">
             <h1 className="air-quality-title-unique">통합대기환경지수</h1>
-            {khaiInfo.image ? (
+            {pollutantInfo.khai.image ? (
               <img
                 className="air-quality-image-unique"
-                src={khaiInfo.image}
+                src={pollutantInfo.khai.image}
                 alt="통합대기환경지수 이미지"
               />
             ) : (
               <p>데이터 없음</p>
             )}
-            <p className="air-quality-status-unique">{khaiInfo.status}</p>
+            <p className="air-quality-status-unique">
+              {pollutantInfo.khai.status}
+            </p>
             <p className="air-quality-value-unique">
-              {airQualityData.khaiValue} µg/m³
+              {pollutantInfo.khai.value} µg/m³
             </p>
           </div>
 
-          {/* 각 오염 물질 수치 표시 */}
           <div className="pollutants-container-unique">
-            <div className="pollutants-row-unique">
-              {/* PM10 */}
-              <div className="pollutant-item-unique">
-                <h2>PM10</h2>
-                {pm10Info.image ? (
-                  <img
-                    className="pollutant-image-unique"
-                    src={pm10Info.image}
-                    alt="PM10 등급 이미지"
-                  />
-                ) : (
-                  <p>데이터 없음</p>
-                )}
-                <p className="pollutant-status-unique">{pm10Info.status}</p>
-                <p className="pollutant-value-unique">{pm10Info.value} µg/m³</p>
-              </div>
-              {/* PM2.5 */}
-              <div className="pollutant-item-unique">
-                <h2>PM2.5</h2>
-                {pm25Info.image ? (
-                  <img
-                    className="pollutant-image-unique"
-                    src={pm25Info.image}
-                    alt="PM2.5 등급 이미지"
-                  />
-                ) : (
-                  <p>데이터 없음</p>
-                )}
-                <p className="pollutant-status-unique">{pm25Info.status}</p>
-                <p className="pollutant-value-unique">{pm25Info.value} µg/m³</p>
-              </div>
-              {/* NO2 */}
-              <div className="pollutant-item-unique">
-                <h2>NO2</h2>
-                {no2Info.image ? (
-                  <img
-                    className="pollutant-image-unique"
-                    src={no2Info.image}
-                    alt="NO2 등급 이미지"
-                  />
-                ) : (
-                  <p>데이터 없음</p>
-                )}
-                <p className="pollutant-status-unique">{no2Info.status}</p>
-                <p className="pollutant-value-unique">{no2Info.value} ppm</p>
-              </div>
-            </div>
-            <div className="pollutants-row-unique">
-              {/* O3 */}
-              <div className="pollutant-item-unique">
-                <h2>O3</h2>
-                {o3Info.image ? (
-                  <img
-                    className="pollutant-image-unique"
-                    src={o3Info.image}
-                    alt="O3 등급 이미지"
-                  />
-                ) : (
-                  <p>데이터 없음</p>
-                )}
-                <p className="pollutant-status-unique">{o3Info.status}</p>
-                <p className="pollutant-value-unique">{o3Info.value} ppm</p>
-              </div>
-              {/* CO */}
-              <div className="pollutant-item-unique">
-                <h2>CO</h2>
-                {coInfo.image ? (
-                  <img
-                    className="pollutant-image-unique"
-                    src={coInfo.image}
-                    alt="CO 등급 이미지"
-                  />
-                ) : (
-                  <p>데이터 없음</p>
-                )}
-                <p className="pollutant-status-unique">{coInfo.status}</p>
-                <p className="pollutant-value-unique">{coInfo.value} ppm</p>
-              </div>
-              {/* SO2 */}
-              <div className="pollutant-item-unique">
-                <h2>SO2</h2>
-                {so2Info.image ? (
-                  <img
-                    className="pollutant-image-unique"
-                    src={so2Info.image}
-                    alt="SO2 등급 이미지"
-                  />
-                ) : (
-                  <p>데이터 없음</p>
-                )}
-                <p className="pollutant-status-unique">{so2Info.status}</p>
-                <p className="pollutant-value-unique">{so2Info.value} ppm</p>
-              </div>
-            </div>
+            {Object.entries(pollutantInfo).map(
+              ([key, info]) =>
+                key !== "khai" && (
+                  <div className="pollutant-item-unique" key={key}>
+                    <h2>{key.toUpperCase()}</h2>
+                    {info.image ? (
+                      <img
+                        className="pollutant-image-unique"
+                        src={info.image}
+                        alt={`${key} 등급 이미지`}
+                      />
+                    ) : (
+                      <p>데이터 없음</p>
+                    )}
+                    <p className="pollutant-status-unique">{info.status}</p>
+                    <p className="pollutant-value-unique">{info.value} µg/m³</p>
+                  </div>
+                )
+            )}
           </div>
         </div>
 
@@ -389,122 +312,33 @@ const AQIDetails: React.FC = () => {
             spaceBetween={50}
             slidesPerView={1}
           >
-            {/* PM10 미세먼지*/}
-            <SwiperSlide>
-              <h3>PM10</h3>
-              <ResponsiveContainer width="100%" height={400}>
-                <LineChart
-                  data={airPollutionData.sort(
-                    (a, b) =>
-                      new Date(a.time).getTime() - new Date(b.time).getTime()
-                  )}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="dateTime" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="pm10" stroke="#8884d8" />
-                </LineChart>
-              </ResponsiveContainer>
-            </SwiperSlide>
-            {/* PM2.5 초미세먼지*/}
-            <SwiperSlide>
-              <h3>PM2.5</h3>
-              <ResponsiveContainer width="100%" height={400}>
-                <LineChart
-                  data={airPollutionData.sort(
-                    (a, b) =>
-                      new Date(a.time).getTime() - new Date(b.time).getTime()
-                  )}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="dateTime" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="pm25" stroke="#82ca9d" />
-                </LineChart>
-              </ResponsiveContainer>
-            </SwiperSlide>
-            {/* NO2 이산화질소 */}
-            <SwiperSlide>
-              <h3>NO2</h3>
-              <ResponsiveContainer width="100%" height={400}>
-                <LineChart
-                  data={airPollutionData.sort(
-                    (a, b) =>
-                      new Date(a.time).getTime() - new Date(b.time).getTime()
-                  )}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="dateTime" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="no2" stroke="#ffc658" />
-                </LineChart>
-              </ResponsiveContainer>
-            </SwiperSlide>
-            {/* O3 오존 */}
-            <SwiperSlide>
-              <h3>O3</h3>
-              <ResponsiveContainer width="100%" height={400}>
-                <LineChart
-                  data={airPollutionData.sort(
-                    (a, b) =>
-                      new Date(a.time).getTime() - new Date(b.time).getTime()
-                  )}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="dateTime" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="o3" stroke="#ff7300" />
-                </LineChart>
-              </ResponsiveContainer>
-            </SwiperSlide>
-            {/* CO 일산화탄소 */}
-            <SwiperSlide>
-              <h3>CO</h3>
-              <ResponsiveContainer width="100%" height={400}>
-                <LineChart
-                  data={airPollutionData.sort(
-                    (a, b) =>
-                      new Date(a.time).getTime() - new Date(b.time).getTime()
-                  )}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="dateTime" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="co" stroke="#0088FE" />
-                </LineChart>
-              </ResponsiveContainer>
-            </SwiperSlide>
-            {/* SO2 아황산가스 */}
-            <SwiperSlide>
-              <h3>SO2</h3>
-              <ResponsiveContainer width="100%" height={400}>
-                <LineChart
-                  data={airPollutionData.sort(
-                    (a, b) =>
-                      new Date(a.time).getTime() - new Date(b.time).getTime()
-                  )}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="dateTime" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="so2" stroke="#FF0000" />
-                </LineChart>
-              </ResponsiveContainer>
-            </SwiperSlide>
+            {["pm10", "pm25", "no2", "o3", "co", "so2"].map((pollutant) => (
+              <SwiperSlide key={pollutant}>
+                <h3>{pollutant.toUpperCase()}</h3>
+                <ResponsiveContainer width="100%" height={250}>
+                  <LineChart
+                    data={airPollutionData.sort(
+                      (a, b) =>
+                        new Date(a.time).getTime() - new Date(b.time).getTime()
+                    )}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="dateTime" />
+                    <YAxis />
+                    <Tooltip />
+                    {/* <Legend /> */}
+                    <Line
+                      type="monotone"
+                      dataKey={pollutant}
+                      stroke="#8884d8"
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </SwiperSlide>
+            ))}
           </Swiper>
         </div>
+
         <div className="map-container-unique">
           <h3>대기질 예측 지도</h3>
           <Swiper
@@ -526,6 +360,16 @@ const AQIDetails: React.FC = () => {
               </SwiperSlide>
             ))}
           </Swiper>
+        </div>
+        <div className="map-container-unique">
+          <p>
+            * 데이터는 실시간 관측된 자료이며
+            <br />
+            측정소 현지 사정이나 데이터의 수신상태에 따라
+            <br /> 미수신 될 수 있음 <br />
+            <br />
+            출처 : 환경부/한국환경공단
+          </p>
         </div>
       </div>
     </div>

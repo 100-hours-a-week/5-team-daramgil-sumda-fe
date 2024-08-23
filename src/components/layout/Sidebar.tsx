@@ -13,13 +13,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       <Link to="/favorites" className="menu-item" onClick={onClose}>
         즐겨찾는 위치
       </Link>
-      <Link to="/collection" className="menu-item" onClick={onClose}>
+      <Link to="/underConstruction" className="menu-item" onClick={onClose}>
         컬렉션
       </Link>
-      <Link to="/" className="menu-item" onClick={onClose}>
+      <Link to="/underConstruction" className="menu-item" onClick={onClose}>
         지역별 익명 채팅방
       </Link>
-      <Link to="/localpride" className="menu-item" onClick={onClose}>
+      <Link to="/underConstruction" className="menu-item" onClick={onClose}>
         우리동네 날씨자랑
       </Link>
       <Link to="/outfitbytemp" className="menu-item" onClick={onClose}>
@@ -28,10 +28,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       <Link to="/outfitdaily" className="menu-item" onClick={onClose}>
         오늘의 옷차림 추천
       </Link>
-      <Link to="/activityRecommed" className="menu-item" onClick={onClose}>
+      <Link to="/underConstruction" className="menu-item" onClick={onClose}>
         야외활동 추천
       </Link>
-      <Link to="/games" className="menu-item" onClick={onClose}>
+      <Link to="/underConstruction" className="menu-item" onClick={onClose}>
         도토리 주으러 가기
       </Link>
 

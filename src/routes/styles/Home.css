@@ -7,13 +7,14 @@
   background-color: #ffffff;
 }
 
-.info-container {
-  margin-bottom: 20px;
+.home-info-container {
+  margin-bottom: 10px;
   cursor: pointer;
 }
 
 .air-quality-section,
 .weather-section {
+  width: 100%;
   padding: 20px;
   text-align: center;
   border-radius: 12px;

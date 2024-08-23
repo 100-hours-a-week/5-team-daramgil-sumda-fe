@@ -3,7 +3,7 @@ import "./styles/Notice.css";
 
 interface NoticeItemProps {
   title: string;
-  date: string;
+  createdAt: string;
   content: string;
 }
 
@@ -20,11 +20,12 @@ const Notice: React.FC = () => {
   const fetchNotices = async () => {
     try {
       // 서버가 구현되면 아래 URL을 실제 API 엔드포인트로 변경 /api/official
-      const response = await fetch("http://localhost:3030/api/official");
+      const response = await fetch("http://localhost:8080/api/official");
 
       if (response.ok) {
         const data = await response.json();
-        setNotices(data.notices);
+
+        setNotices(data.data);
       } else {
         const errorData = await response.json();
         setErrorMessage(errorData.message);
@@ -50,7 +51,7 @@ const Notice: React.FC = () => {
                 onClick={() => toggleContent(index)}
               >
                 <div className="notice-title-text">{notice.title}</div>
-                <div className="notice-date">{notice.date}</div>
+                <div className="notice-date">{notice.createdAt}</div>
               </div>
             </div>
             {openIndex === index && (
@@ -59,6 +60,7 @@ const Notice: React.FC = () => {
                   {notice.content.split("\n").map((line, i) => (
                     <p key={i}>{line}</p>
                   ))}
+                  {/* 길이 제한 */}
                 </div>
               </div>
             )}

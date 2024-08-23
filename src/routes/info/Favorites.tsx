@@ -9,14 +9,23 @@ const Favorites: React.FC = () => {
   const [searchResults, setSearchResults] = useState<
     { id: number; location: string }[]
   >([]);
+  const [showSearchResults, setShowSearchResults] = useState(false);
 
-  // 컴포넌트가 마운트될 때 로컬 스토리지에서 즐겨찾기를 불러옴
   useEffect(() => {
     const storedFavorites = localStorage.getItem("favorites");
     if (storedFavorites) {
       setFavorites(JSON.parse(storedFavorites));
     }
   }, []);
+
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      setSearchResults([]);
+      setShowSearchResults(false);
+    } else {
+      handleSearch();
+    }
+  }, [searchQuery]);
 
   const handleSearch = async () => {
     try {
@@ -27,33 +36,36 @@ const Favorites: React.FC = () => {
       );
       if (response.ok) {
         const data = await response.json();
-
-        setSearchResults(
-          data.data.map((item: any) => ({
-            id: item.id,
-            location: item.locationName || item.district, // 백엔드에서 반환하는 위치 정보 필드 이름에 따라 조정
-          }))
-        );
+        const results = data.data.map((item: any) => ({
+          id: item.id,
+          location: item.locationName || item.district,
+        }));
+        setSearchResults(results);
+        setShowSearchResults(true);
       } else {
-        alert("검색 요청에 실패했습니다.");
+        setSearchResults([]);
+        setShowSearchResults(false);
       }
     } catch (error) {
       console.error("검색 중 오류가 발생했습니다:", error);
-      alert("검색 중 오류가 발생했습니다.");
+      setSearchResults([]);
+      setShowSearchResults(false);
     }
   };
 
   const handleAddFavorite = (id: number, location: string) => {
-    const newFavorite = { id, location };
-    const updatedFavorites = [...favorites, newFavorite];
-    setFavorites(updatedFavorites);
-    localStorage.setItem("favorites", JSON.stringify(updatedFavorites)); // 로컬 스토리지에 저장
+    if (!favorites.some((favorite) => favorite.id === id)) {
+      const newFavorite = { id, location };
+      const updatedFavorites = [...favorites, newFavorite];
+      setFavorites(updatedFavorites);
+      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+    }
   };
 
   const handleDelete = (id: number) => {
     const updatedFavorites = favorites.filter((favorite) => favorite.id !== id);
     setFavorites(updatedFavorites);
-    localStorage.setItem("favorites", JSON.stringify(updatedFavorites)); // 로컬 스토리지에 저장
+    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
   };
 
   return (
@@ -65,42 +77,55 @@ const Favorites: React.FC = () => {
           placeholder="검색"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
+          onFocus={() => setShowSearchResults(true)}
         />
         <button className="search-bar-button" onClick={handleSearch}>
           검색
         </button>
       </div>
-      {searchResults.length > 0 && (
+      {showSearchResults && (
         <div className="search-result-container">
-          <ul>
-            {searchResults.map((result) => (
-              <li key={result.id} className="favorite-item">
-                {result.location}
-                <button
-                  className="favorite-item-delete-button"
-                  onClick={() => handleAddFavorite(result.id, result.location)}
-                >
-                  추가
-                </button>
-              </li>
-            ))}
-          </ul>
+          {searchResults.length > 0 ? (
+            <ul>
+              {searchResults.map((result) => (
+                <li key={result.id} className="favorite-item">
+                  {result.location}
+                  <button
+                    className="favorite-item-delete-button"
+                    onClick={() =>
+                      handleAddFavorite(result.id, result.location)
+                    }
+                  >
+                    추가
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="no-results">검색 결과 없음</p>
+          )}
         </div>
       )}
       <h3 className="favorites-header">즐겨찾기 목록</h3>
-      <ul className="favorites-list">
-        {favorites.map((favorite) => (
-          <li key={favorite.id} className="favorite-item">
-            <span className="favorite-item-location">{favorite.location}</span>
-            <button
-              className="favorite-item-delete-button"
-              onClick={() => handleDelete(favorite.id)}
-            >
-              삭제
-            </button>
-          </li>
-        ))}
-      </ul>
+      {favorites.length > 0 ? (
+        <ul className="favorites-list">
+          {favorites.map((favorite) => (
+            <li key={favorite.id} className="favorite-item">
+              <span className="favorite-item-location">
+                {favorite.location}
+              </span>
+              <button
+                className="favorite-item-delete-button"
+                onClick={() => handleDelete(favorite.id)}
+              >
+                삭제
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="no-favorites">즐겨찾기한 지역이 없습니다</p>
+      )}
     </div>
   );
 };

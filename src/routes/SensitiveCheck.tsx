@@ -31,13 +31,13 @@ const SensitiveCheck: React.FC = () => {
 
       <div className="button-group">
         <button
-          className={`option-button ${selected === "yes" ? "selected" : ""}`}
+          className={`option-button2 ${selected === "yes" ? "selected" : ""}`}
           onClick={() => handleSelect("yes")}
         >
           예
         </button>
         <button
-          className={`option-button ${selected === "no" ? "selected" : ""}`}
+          className={`option-button1 ${selected === "no" ? "selected" : ""}`}
           onClick={() => handleSelect("no")}
         >
           아니요

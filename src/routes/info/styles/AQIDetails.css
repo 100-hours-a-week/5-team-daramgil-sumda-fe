@@ -84,28 +84,28 @@
   flex: 1 1 100%;
   flex-wrap: wrap;
   justify-content: space-between;
-  gap: 24px;
+  gap: 5px;
 }
 
 .pollutants-row-unique {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  gap: 24px;
+  gap: 15px;
 }
 
 .pollutant-item-unique {
   flex: 1 1 calc(33.333% - 24px);
   text-align: center;
-  padding: 16px;
+  padding: 16px 10px;
   border-radius: 8px;
   background-color: #fff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  margin-bottom: 24px;
+  margin-bottom: 15px;
 }
 
 .pollutant-item-unique h2 {
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 500;
   color: #1976d2;
   margin-bottom: 12px;
@@ -114,6 +114,7 @@
 .pollutant-image-unique {
   width: 60px;
   height: 60px;
+  margin: 0 auto;
   margin-bottom: 8px;
 }
 
@@ -146,6 +147,12 @@
   color: #1976d2;
   margin-bottom: 16px;
 }
+.map-container-unique p {
+  line-height: 1rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #d21919;
+}
 
 /* Swiper 스타일을 위한 기본 설정 */
 .swiper-container {
@@ -156,6 +163,7 @@
 
 .swiper-slide {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;

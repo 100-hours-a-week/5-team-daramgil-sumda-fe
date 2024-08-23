@@ -6,16 +6,43 @@ const Contact: React.FC = () => {
   const [content, setContent] = useState("");
   const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!title || !content || !email) {
       setErrorMessage("*제목, 내용, 이메일을 입력해주세요.");
-    } else {
-      setErrorMessage("");
-      // 여기서 폼 데이터를 서버로 전송하는 로직을 추가
-      console.log("Form Submitted", { title, content, email });
+      setSuccessMessage("");
+      return;
+    }
+
+    setErrorMessage("");
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("http://localhost:8080/api/inquiry", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title, content, email }),
+      });
+
+      if (response.ok) {
+        setSuccessMessage("문의가 성공적으로 등록되었습니다.");
+        setTitle("");
+        setContent("");
+        setEmail("");
+      } else {
+        const errorData = await response.json();
+        setErrorMessage(errorData.message || "문의 등록에 실패했습니다.");
+      }
+    } catch (error) {
+      setErrorMessage("서버와의 통신에 실패했습니다.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -34,6 +61,7 @@ const Contact: React.FC = () => {
             onChange={(e) => setTitle(e.target.value)}
             className="form-input"
             placeholder="제목을 입력하세요"
+            disabled={isLoading}
           />
         </div>
         <div className="form-group">
@@ -46,6 +74,7 @@ const Contact: React.FC = () => {
             onChange={(e) => setContent(e.target.value)}
             className="form-textarea"
             placeholder="내용을 입력하세요"
+            disabled={isLoading}
           />
         </div>
         <div className="form-group">
@@ -59,13 +88,15 @@ const Contact: React.FC = () => {
             onChange={(e) => setEmail(e.target.value)}
             className="form-input"
             placeholder="이메일을 입력하세요"
+            disabled={isLoading}
           />
         </div>
         {errorMessage && <p className="form-error">{errorMessage}</p>}
+        {successMessage && <p className="form-success">{successMessage}</p>}
+        <button type="submit" className="form-button" disabled={isLoading}>
+          {isLoading ? "보내는 중..." : "보내기"}
+        </button>
       </form>
-      <button type="submit" className="form-button" onClick={handleSubmit}>
-        보내기
-      </button>
     </div>
   );
 };
