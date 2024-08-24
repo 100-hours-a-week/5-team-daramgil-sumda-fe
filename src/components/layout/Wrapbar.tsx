@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "./styles/Wrapbar.css";
 
 import home from "../../assets/icons/home.png";
@@ -9,9 +9,20 @@ import squirrel from "../../assets/icons/squirrel.png";
 import mission from "../../assets/icons/mission.png";
 
 const Wrapbar: React.FC = () => {
+  const location = useLocation();
+
+  const handleHomeClick = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) => {
+    if (location.pathname === "/") {
+      e.preventDefault(); // 기본 동작 방지
+      window.location.reload(); // 새로고침
+    }
+  };
+
   return (
     <div className="wrapbar">
-      <Link to="/" className="wrapbar-item">
+      <Link to="/" className="wrapbar-item" onClick={handleHomeClick}>
         <img src={home} alt="홈" className="wrapbar-icon" />
         <span>홈</span>
       </Link>
