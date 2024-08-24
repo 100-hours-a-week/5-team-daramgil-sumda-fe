@@ -4,17 +4,20 @@ import "./styles/UnderConstruction.css";
 
 const Setting: React.FC = () => {
   const navigate = useNavigate();
-  const confirm = () => {
+  const goToHome = () => {
     navigate("/");
   };
   return (
     <div className="construction-container">
-      <div className="construction-title">구현 중인 페이지입니다.</div>
+      <div className="construction-title">페이지 준비 중입니다.</div>
       <div className="construction-section">
-        <p>현재 기능 구현 중에 있습니다.</p>
-        <p>아래 버튼을 누르시면 메인 페이지로 돌아갑니다.</p>
-        <button className="construction-button" onClick={confirm}>
-          확인
+        <p>
+          이 기능은 곧 만나보실 수 있습니다.
+          <br /> 더 나은 서비스를 위해 준비 중입니다.
+        </p>
+        <p>아래 버튼을 누르시면 메인 페이지로 이동합니다.</p>
+        <button className="construction-button" onClick={goToHome}>
+          메인 페이지로 이동
         </button>
       </div>
     </div>
