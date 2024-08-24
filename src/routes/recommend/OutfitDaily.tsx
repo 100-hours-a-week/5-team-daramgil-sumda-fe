@@ -1,92 +1,165 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./styles/OutfitDaily.css";
 import sun from "../../assets/weather/sun.png";
-import dressIcon from "../../assets/icons/mission.png";
+import cloud from "../../assets/weather/cloud.png";
+import rain from "../../assets/weather/rainy.png";
+import snow from "../../assets/weather/snow.png";
 import LocationDropdown from "../../components/LocationDropdown";
 
-const OutfitDaily: React.FC = () => {
-  // 드롭다운 메뉴의 열림 상태를 관리하는 state
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
+// 날씨 유형에 따른 아이콘 매핑
+const weatherIcons: { [key: string]: string } = {
+  맑음: sun,
+  흐림: cloud,
+  비: rain,
+  눈: snow,
+  구름많음: cloud,
+};
 
-  // 선택된 위치와 관련된 state
+const OutfitDailyPage: React.FC = () => {
   const [selectedLocation, setSelectedLocation] = useState<string>("");
+  const [id, setId] = useState<number>(0);
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const [weatherData, setWeatherData] = useState<any>(null);
+  const navigate = useNavigate();
 
-  // 현재 위치의 위도와 경도를 관리하는 state, 초기값은 서울 시청 좌표로 설정
-  const [coordinates, setCoordinates] = useState<{ lat: number; lng: number }>({
-    lat: 37.5665,
-    lng: 126.978,
-  });
-
-  // 컴포넌트가 마운트될 때 현재 위치를 로드
   useEffect(() => {
     loadCurrentLocation();
   }, []);
 
-  // 드롭다운 메뉴를 토글하는 함수
-  const toggleDropdown = () => {
-    setDropdownOpen(!isDropdownOpen);
-  };
+  useEffect(() => {
+    if (id) {
+      fetchWeatherData(id);
+    }
+  }, [id]);
 
-  // 드롭다운 메뉴에서 위치를 선택할 때 호출되는 함수
-  const selectLocation = (location: string) => {
+  const toggleDropdown = () => setDropdownOpen(!isDropdownOpen);
+
+  const selectLocation = (location: string, id: number) => {
     if (location === "등록하기") {
-      console.log("페이지 이동: 등록 페이지로 이동합니다."); // 등록 페이지로 이동하는 로직을 추가 가능
+      navigate("/favorites");
     } else {
       setSelectedLocation(location);
-      // 위치 정보를 파싱하여 위도와 경도 값을 업데이트
-      const [lat, lng] = location
-        .split(",")
-        .map((item) => parseFloat(item.split(": ")[1]));
-      setCoordinates({ lat, lng });
+      setId(id);
+      setDropdownOpen(false);
     }
-    setDropdownOpen(false); // 드롭다운 메뉴를 닫음
   };
 
-  // 현재 위치를 로드하는 함수
-  const loadCurrentLocation = async () => {
+  const loadCurrentLocation = async (): Promise<{
+    latitude: number;
+    longitude: number;
+  } | null> => {
+    const defaultLocation = { latitude: 37.5665, longitude: 126.978 };
+    const fetchLocationData = async (latitude: number, longitude: number) => {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/locations/convert?latitude=${latitude}&longitude=${longitude}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch location data");
+        }
+        const data = await response.json();
+        if (data.status === 200 && data.data.district) {
+          setSelectedLocation(data.data.district);
+          setId(data.data.id);
+          return { latitude, longitude };
+        } else {
+          alert("위치를 찾을 수 없습니다.");
+          return null;
+        }
+      } catch (error) {
+        console.error("위치 정보를 가져오는 중 오류가 발생했습니다:", error);
+        alert("위치 정보를 가져오는 중 오류가 발생했습니다.");
+        return null;
+      }
+    };
+
     if (navigator.geolocation) {
       return new Promise<{ latitude: number; longitude: number } | null>(
         (resolve) => {
           navigator.geolocation.getCurrentPosition(
             async (position) => {
               const { latitude, longitude } = position.coords;
-              setCoordinates({ lat: latitude, lng: longitude });
-              setSelectedLocation(
-                `위도: ${latitude.toFixed(4)}, 경도: ${longitude.toFixed(4)}`
-              );
-              console.log(`현재 위치: 위도 ${latitude}, 경도 ${longitude}`);
-
-              // 현재 위치 정보를 반환
-              resolve({ latitude, longitude });
+              const locationData = await fetchLocationData(latitude, longitude);
+              resolve(locationData);
             },
-            (error) => {
+            async () => {
               console.error(
                 "위치 권한이 거부되었습니다. 기본 위치로 설정합니다."
               );
-              const seoulCityHall = { lat: 37.5665, lng: 126.978 };
-              setCoordinates(seoulCityHall);
-              setSelectedLocation("위도: 37.5665, 경도: 126.9780");
-
-              // 기본 위치를 반환 (에러 발생 시)
-              resolve({ latitude: 37.5665, longitude: 126.978 });
+              const locationData = await fetchLocationData(
+                defaultLocation.latitude,
+                defaultLocation.longitude
+              );
+              resolve(locationData);
             }
           );
         }
       );
     } else {
       console.error("Geolocation API를 지원하지 않는 브라우저입니다.");
-      const seoulCityHall = { lat: 37.5665, lng: 126.978 };
-      setCoordinates(seoulCityHall);
-      setSelectedLocation("위도: 37.5665, 경도: 126.9780");
+      const locationData = await fetchLocationData(
+        defaultLocation.latitude,
+        defaultLocation.longitude
+      );
+      return locationData;
+    }
+  };
 
-      // 기본 위치를 반환 (Geolocation API 미지원 시)
-      return { latitude: 37.5665, longitude: 126.978 };
+  const fetchWeatherData = async (locationId: number) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/weather/current?id=${locationId}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch weather data");
+      }
+      const data = await response.json();
+      if (data.status === 200) {
+        setWeatherData(data.data);
+      } else {
+        alert("날씨 정보를 가져올 수 없습니다.");
+      }
+    } catch (error) {
+      console.error("날씨 정보를 가져오는 중 오류가 발생했습니다:", error);
+      alert("날씨 정보를 가져오는 중 오류가 발생했습니다.");
+    }
+  };
+
+  const getOutfitRecommendation = (
+    temperature: number,
+    humidity: number
+  ): string[] => {
+    if (temperature >= 30) {
+      if (humidity > 70) {
+        return ["통기성 좋은 반팔", "반바지", "모자", "선글라스"];
+      } else {
+        return ["반팔", "반바지", "가벼운 원피스", "샌들"];
+      }
+    } else if (temperature >= 25) {
+      return ["반팔", "반바지", "얇은 긴바지", "스니커즈"];
+    } else if (temperature >= 20) {
+      return ["반팔", "얇은 긴팔", "청바지", "가디건"];
+    } else if (temperature >= 15) {
+      return ["얇은 긴팔", "얇은 스웨터", "긴 바지", "재킷"];
+    } else if (temperature >= 10) {
+      return ["두꺼운 긴팔", "니트", "코트", "긴 바지"];
+    } else if (temperature >= 5) {
+      return ["두꺼운 스웨터", "코트", "스카프", "장갑", "긴 바지"];
+    } else {
+      return [
+        "패딩",
+        "두꺼운 코트",
+        "목도리",
+        "장갑",
+        "털모자",
+        "두꺼운 긴 바지",
+      ];
     }
   };
 
   return (
-    <div className="home-page">
-      {/* 위치 선택 드롭다운 컴포넌트 */}
+    <div className="outfit-daily-page">
       <LocationDropdown
         selectedLocation={selectedLocation}
         isDropdownOpen={isDropdownOpen}
@@ -94,35 +167,40 @@ const OutfitDaily: React.FC = () => {
         selectLocation={selectLocation}
         loadCurrentLocation={loadCurrentLocation}
       />
-      <h2 className="daily-title">오늘의 옷차림 추천</h2>
-      {/* 대기 질과 날씨 정보를 표시하는 섹션 */}
-      <div className="info-container">
-        <div className="weather-section">
-          <img className="weather-icon" src={sun} alt="날씨 이미지" />
-          <p className="weather-status">맑음</p>
-          <p className="weather-current-temperature">32°C</p>
-          <p className="weather-range">33°C / 26°C</p>
-          <p className="weather-description">날씨는 맑지만 폭염이에요!</p>
-        </div>
-        <h2 className="recommend-title">
-          오늘 같은 날씨에 이런 옷을 입으면 좋아요!
-        </h2>
-        <div className="outfit-icons">
-          <img src={dressIcon} alt="드레스 아이콘" className="outfit-icon" />
-          <img src={dressIcon} alt="민소매 아이콘" className="outfit-icon" />
-          <img src={dressIcon} alt="반바지 아이콘" className="outfit-icon" />
-        </div>
-        <div className="daily-outfit-section">
-          <div className="outfit-recommendations">
-            <p>민소매</p>
-            <p>반팔</p>
-            <p>반바지</p>
-            <p>짧은 옷</p>
-          </div>
+      <h2 className="outfit-daily-title">오늘의 옷차림 추천</h2>
+      <div className="outfit-info-container">
+        <div className="outfit-weather-section">
+          {weatherData ? (
+            <>
+              <img
+                className="outfit-weather-icon"
+                src={weatherIcons[weatherData.weather]}
+                alt={`${weatherData.weather} 이미지`}
+              />
+              <p className="outfit-weather-status">{weatherData.weather}</p>
+              <p className="outfit-weather-current-temperature">
+                {weatherData.temperature}
+              </p>
+              <p className="outfit-weather-humidity">
+                습도 {weatherData.humidity}
+              </p>
+              <h2 className="outfit-recommend-title">추천 옷차림</h2>
+              <ul className="outfit-recommendations-list">
+                {getOutfitRecommendation(
+                  parseFloat(weatherData.temperature),
+                  parseFloat(weatherData.humidity)
+                ).map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <p>날씨 정보를 가져오는 중...</p>
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-export default OutfitDaily;
+export default OutfitDailyPage;
