@@ -25,6 +25,7 @@ import LocationDropdown from "../components/LocationDropdown";
 
 const Home: React.FC = () => {
   const [airQualityData, setAirQualityData] = useState<any>(null);
+  const [weatherData, setWeatherData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [selectedLocation, setSelectedLocation] = useState<string>("");
   const [id, setId] = useState<number>(0);
@@ -38,6 +39,7 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     fetchAirQualityData(id || 1);
+    fetchWeatherData(id || 1);
   }, [id]);
 
   const fetchAirQualityData = async (id: number) => {
@@ -59,6 +61,22 @@ const Home: React.FC = () => {
     } catch (error) {
       console.error("Error fetching data:", error);
       setError("현재 위치의 대기질 데이터를 가져오는데 실패했습니다.");
+    }
+  };
+  const fetchWeatherData = async (id: number) => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/weather/current?id=${id}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setWeatherData(data.data);
+        console.log(data.data);
+      } else {
+        console.error("Failed to fetch weather data.");
+      }
+    } catch (error) {
+      console.error("Error fetching weather data:", error);
     }
   };
 
@@ -215,19 +233,17 @@ const Home: React.FC = () => {
           <div className="home-info-container weather-section">
             <h1 className="weather-title">날씨</h1>
             <img className="weather-icon" src={sun} alt="날씨 이미지" />
-            {airQualityData ? (
+            {weatherData ? (
               <>
-                <p className="weather-status">{airQualityData.weather_type}</p>
+                <p className="weather-status">{weatherData.weather}</p>
                 <p className="weather-current-temperature">
-                  {airQualityData.current_temperature}°C
+                  {weatherData.temperature}
                 </p>
-                <p className="weather-range">
-                  {airQualityData.min_temperature}°C /{" "}
-                  {airQualityData.max_temperature}°C
-                </p>
-                <p className="weather-description">
-                  {airQualityData.weather_summary}
-                </p>
+                {/* <p className="weather-range">
+                  {weatherData.min_temperature}°C /{" "}
+                  {weatherData.max_temperature}°C
+                </p> */}
+                <p className="weather-description">{weatherData.humidity}</p>
               </>
             ) : (
               <p>Loading weather data...</p>
