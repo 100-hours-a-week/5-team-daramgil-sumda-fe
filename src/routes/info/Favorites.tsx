@@ -19,10 +19,7 @@ const Favorites: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (searchQuery.trim() === "") {
-      setSearchResults([]);
-      setShowSearchResults(false);
-    } else {
+    if (searchQuery.trim() !== "") {
       handleSearch();
     }
   }, [searchQuery]);
@@ -60,6 +57,11 @@ const Favorites: React.FC = () => {
       setFavorites(updatedFavorites);
       localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
     }
+
+    // 검색어 초기화 및 검색 결과 숨기기
+    setSearchQuery(""); // 검색어 초기화
+    setSearchResults([]); // 검색 결과 초기화
+    setShowSearchResults(false); // 검색 결과 목록 숨기기
   };
 
   const handleDelete = (id: number) => {
@@ -83,7 +85,7 @@ const Favorites: React.FC = () => {
           검색
         </button>
       </div>
-      {showSearchResults && (
+      {showSearchResults && searchQuery.trim() !== "" && (
         <div className="search-result-container">
           {searchResults.length > 0 ? (
             <ul>

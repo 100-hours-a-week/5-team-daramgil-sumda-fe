@@ -6,13 +6,21 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
 import "./styles/Home.css";
+
+import basic from "../assets/randomSquirrels/기본.png";
+import knight from "../assets/randomSquirrels/기사.png";
+import samurai from "../assets/randomSquirrels/사무라이.png";
+import cook from "../assets/randomSquirrels/요리사.png";
+import space from "../assets/randomSquirrels/우주비행사.png";
+import pilot from "../assets/randomSquirrels/파일럿.png";
+import hiphop from "../assets/randomSquirrels/힙합.png";
+
 import good from "../assets/grade/good.png";
 import moderate from "../assets/grade/moderate.png";
 import unhealthy from "../assets/grade/unhealthy.png";
 import veryUnhealthy from "../assets/grade/very_unhealthy.png";
 import hazardous from "../assets/grade/hazardous.png";
 import sun from "../assets/weather/sun.png";
-import default_squirrel_img from "../assets/기본_다람쥐_lv4-removebg-preview.png";
 import LocationDropdown from "../components/LocationDropdown";
 
 const Home: React.FC = () => {
@@ -148,6 +156,23 @@ const Home: React.FC = () => {
     ? getAirQualityGrade(airQualityData.khaiValue)
     : { image: undefined, status: "데이터 없음" };
 
+  const squirrelImages = [
+    basic,
+    knight,
+    samurai,
+    space,
+    cook,
+    pilot,
+    hiphop,
+    // 추가 이미지 URL을 여기다 추가하세요
+  ];
+  const [randomImage, setRandomImage] = useState("");
+
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * squirrelImages.length);
+    setRandomImage(squirrelImages[randomIndex]);
+  }, []);
+
   return (
     <div className="home-page">
       <LocationDropdown
@@ -157,10 +182,6 @@ const Home: React.FC = () => {
         selectLocation={selectLocation}
         loadCurrentLocation={loadCurrentLocation} // GPS 버튼 클릭 시 현재 위치 로드
       />
-      <h1 className="page-title-unique">대기 오염 정보 조회</h1>
-      <p className="page-description-unique">
-        현재 위치 또는 선택한 위치의 대기 오염 정보를 확인하세요.
-      </p>
 
       <Swiper
         modules={[Navigation, Pagination]}
@@ -222,7 +243,7 @@ const Home: React.FC = () => {
             <p>
               더 궁금한 점은 아래 ‘다람쥐와 대화하기’ 를 통해 알려드릴게요!!
             </p>
-            <img src={default_squirrel_img} alt="다람쥐 이미지" />
+            <img src={randomImage} alt="다람쥐 이미지" />
           </>
         ) : (
           <p>Loading additional information...</p>
