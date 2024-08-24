@@ -20,7 +20,7 @@ const Notice: React.FC = () => {
   const fetchNotices = async () => {
     try {
       // 서버가 구현되면 아래 URL을 실제 API 엔드포인트로 변경 /api/official
-      const response = await fetch("http://localhost:8080/api/official");
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/official`);
 
       if (response.ok) {
         const data = await response.json();

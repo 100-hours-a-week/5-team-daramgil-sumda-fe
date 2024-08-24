@@ -54,7 +54,7 @@ const WeatherInfo: React.FC = () => {
   const fetchWeatherData = async (id: number) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/weather/current?id=${id}`
+        `${process.env.REACT_APP_API_URL}/weather/current?id=${id}`
       );
       if (response.ok) {
         const data = await response.json();
@@ -81,7 +81,7 @@ const WeatherInfo: React.FC = () => {
   const fetchHourlyWeatherData = async (id: number) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/weather/time?id=${id}`
+        `${process.env.REACT_APP_API_URL}/weather/time?id=${id}`
       );
       if (response.ok) {
         const data = await response.json();
@@ -113,7 +113,7 @@ const WeatherInfo: React.FC = () => {
   const fetchDailyWeatherData = async (id: number) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/weather/days?id=${id}`
+        `${process.env.REACT_APP_API_URL}/weather/days?id=${id}`
       );
       if (response.ok) {
         const data = await response.json();

@@ -98,7 +98,7 @@ const LocalPride: React.FC = () => {
   const [deletePostId, setDeletePostId] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch("http://localhost:3030/api/community")
+    fetch(`${process.env.REACT_APP_API_URL}/community`)
       .then((response) => response.json())
       .then((data) => {
         if (data.status === 200) {
@@ -121,7 +121,7 @@ const LocalPride: React.FC = () => {
 
   const confirmDelete = () => {
     if (deletePostId !== null) {
-      fetch(`http://localhost:3030/api/community/${deletePostId}`, {
+      fetch(`${process.env.REACT_APP_API_URL}/community/${deletePostId}`, {
         method: "DELETE",
       })
         .then((response) => response.json())
@@ -150,7 +150,7 @@ const LocalPride: React.FC = () => {
         address: "대구 달서구 월성동", // 예시로 고정된 address 사용
       };
 
-      fetch("http://localhost:3030/api/community", {
+      fetch(`${process.env.REACT_APP_API_URL}/community`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -171,7 +171,7 @@ const LocalPride: React.FC = () => {
   };
 
   const onLike = (id: number) => {
-    fetch(`http://localhost:3030/api/community/${id}/like`, {
+    fetch(`${process.env.REACT_APP_API_URL}/community/${id}/like`, {
       method: "POST",
     })
       .then((response) => response.json())

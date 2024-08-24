@@ -109,7 +109,7 @@ const OutfitDailyPage: React.FC = () => {
   const fetchWeatherData = async (locationId: number) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/weather/current?id=${locationId}`
+        `${process.env.REACT_APP_API_URL}weather/current?id=${locationId}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch weather data");
