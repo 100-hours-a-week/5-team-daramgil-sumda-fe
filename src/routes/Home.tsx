@@ -190,6 +190,81 @@ const Home: React.FC = () => {
     const randomIndex = Math.floor(Math.random() * squirrelImages.length);
     setRandomImage(squirrelImages[randomIndex]);
   }, []);
+  // 대기질 메시지 설정 함수
+  const getAirQualityMessage = (value: number) => {
+    if (value <= 30) {
+      return "오늘의 공기는 깨끗하고 상쾌해요! 야외 활동하기에 딱 좋은 날입니다.";
+    } else if (value <= 50) {
+      return "오늘은 공기가 무난해요. 평소처럼 야외 활동을 즐기셔도 좋습니다.";
+    } else if (value <= 100) {
+      return "오늘은 공기가 다소 탁하네요. 민감한 분들은 실내 활동을 추천드려요.";
+    } else if (value <= 150) {
+      return "오늘은 공기가 많이 안 좋아요. 가능하면 야외 활동을 피하시고, 외출 시 마스크를 꼭 착용하세요.";
+    } else {
+      return "오늘은 공기가 매우 나쁩니다. 꼭 실내에서 활동하시고, 창문을 닫아두세요.";
+    }
+  };
+
+  // 날씨 메시지 설정 함수
+  const getWeatherMessage = (weather: string) => {
+    switch (weather) {
+      case "맑음":
+        return "날씨도 맑고 화창하니, 가벼운 옷차림으로 산책을 즐겨보세요.";
+      case "흐림":
+        return "오늘은 구름이 많고 흐려요. 간혹 우산이 필요할 수도 있으니 챙기세요.";
+      case "비":
+        return "오늘은 비가 내리니 우산을 꼭 챙기세요. 빗길 운전 시 조심하세요!";
+      case "눈":
+        return "오늘은 눈이 내려요. 미끄럼에 주의하시고, 따뜻하게 입으세요.";
+      case "더위":
+        return "오늘은 기온이 많이 올라 더운 날씨입니다. 충분한 수분을 섭취하고, 실내에서 쉬는 것이 좋아요.";
+      default:
+        return "오늘의 날씨 정보를 확인하세요.";
+    }
+  };
+
+  // 다람쥐와 대화하는 부분에 대한 메시지 설정 함수
+  const getSquirrelMessage = (airQualityValue: number, weather: string) => {
+    let message = "";
+
+    // 대기질과 날씨를 모두 고려한 메시지 생성
+    if (airQualityValue > 100) {
+      message = "공기가 나빠요. 실내에서 활동하는 것이 좋아요.";
+      if (weather === "맑음") {
+        message += " 날씨가 맑지만, 공기질 때문에 외출은 피하세요.";
+      } else if (weather === "더위") {
+        message += " 또한, 더운 날씨이므로 실내에서 시원하게 보내세요.";
+      } else if (weather === "눈") {
+        message += " 눈이 오고 있어요, 실내에서 따뜻하게 지내세요.";
+      } else {
+        message += " 날씨도 좋지 않으니 실내에서 쉬는 게 좋겠어요.";
+      }
+    } else if (airQualityValue > 50 && airQualityValue <= 100) {
+      message = "공기가 약간 탁해요. 외출 시 주의가 필요해요.";
+      if (weather === "맑음") {
+        message += " 그래도 날씨가 맑으니 가볍게 산책해보세요.";
+      } else if (weather === "비") {
+        message += " 비가 오고 있으니 우산을 꼭 챙기세요.";
+      } else {
+        message += " 오늘 날씨도 적당하니 주의하면서 외출해보세요.";
+      }
+    } else {
+      message = "공기가 좋으니 활동하기 좋은 날이에요!";
+      if (weather === "맑음") {
+        message += " 맑은 날씨라 산책하기 정말 좋아요.";
+      } else if (weather === "흐림") {
+        message += " 구름이 조금 있지만 활동하기 괜찮아요.";
+      } else if (weather === "비") {
+        message += " 비가 오지만 공기가 깨끗하니 우산 챙기고 나가세요.";
+      } else if (weather === "눈") {
+        message += " 눈이 와요! 따뜻하게 입고 나가서 눈 구경해보세요.";
+      } else if (weather === "더위") {
+        message += " 날씨가 더우니 시원한 곳에서 활동하세요.";
+      }
+    }
+
+    return message;
+  };
 
   return (
     <div className="home-page">
@@ -221,7 +296,7 @@ const Home: React.FC = () => {
                 <p className="air-quality-status">{khaiInfo.status}</p>
                 <p className="air-quality-value">{airQualityData.khaiValue}</p>
                 <p className="air-quality-description">
-                  오늘은 공기가 정말 맑고 깨끗해요!
+                  {getAirQualityMessage(airQualityData.khaiValue)}
                 </p>
               </>
             ) : (
@@ -239,11 +314,9 @@ const Home: React.FC = () => {
                 <p className="weather-current-temperature">
                   {weatherData.temperature}
                 </p>
-                {/* <p className="weather-range">
-                  {weatherData.min_temperature}°C /{" "}
-                  {weatherData.max_temperature}°C
-                </p> */}
-                <p className="weather-description">{weatherData.humidity}</p>
+                <p className="weather-description">
+                  {getWeatherMessage(weatherData.weather)}
+                </p>
               </>
             ) : (
               <p>Loading weather data...</p>
@@ -253,11 +326,17 @@ const Home: React.FC = () => {
       </Swiper>
 
       <div className="additional-info">
-        {airQualityData ? (
+        {airQualityData && weatherData ? (
           <>
-            <p>{airQualityData.recommended_action}</p>
             <p>
-              더 궁금한 점은 아래 ‘다람쥐와 대화하기’ 를 통해 알려드릴게요!!
+              {getSquirrelMessage(
+                airQualityData.khaiValue,
+                weatherData.weather
+              )}
+            </p>
+            <p>
+              더 궁금한 점이 있다면, 아래 '다람쥐와 대화하기'를 통해
+              알려드릴게요!
             </p>
             <img src={randomImage} alt="다람쥐 이미지" />
           </>

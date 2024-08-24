@@ -7,11 +7,11 @@ const Footer: React.FC = () => {
     <footer className="footer">
       <img src={logo} alt="Logo" className="footer-logo" />
       <p className="footer-text">
-        상호명 : 숨쉬는 다람쥐 | 대표자 박원준
+        팀 이름: 다람길 | 서비스 이름: 숨쉬는 다람쥐 (숨다)
         <br />
-        고객센터 : 010-1234-1234, contact@daramgil.kr
+        고객센터: daramgil07@gmail.com
         <br />
-        주소 : 서울특별시 어딘가 임대로 싼 곳에 있는 다람길
+        주소: 해당 없음
       </p>
     </footer>
   );
