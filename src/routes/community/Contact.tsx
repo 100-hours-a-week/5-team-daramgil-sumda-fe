@@ -5,15 +5,49 @@ const Contact: React.FC = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [email, setEmail] = useState("");
+  const [titleError, setTitleError] = useState("");
+  const [contentError, setContentError] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const validateEmail = (email: string) => {
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailPattern.test(email);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!title || !content || !email) {
-      setErrorMessage("*제목, 내용, 이메일을 입력해주세요.");
+    let isValid = true;
+
+    if (!title) {
+      setTitleError("*제목을 입력해주세요.");
+      isValid = false;
+    } else {
+      setTitleError("");
+    }
+
+    if (!content) {
+      setContentError("*내용을 입력해주세요.");
+      isValid = false;
+    } else {
+      setContentError("");
+    }
+
+    if (!email) {
+      setEmailError("*이메일을 입력해주세요.");
+      isValid = false;
+    } else if (!validateEmail(email)) {
+      setEmailError("*유효한 이메일을 입력해주세요.");
+      isValid = false;
+    } else {
+      setEmailError("");
+    }
+
+    if (!isValid) {
+      setErrorMessage("");
       setSuccessMessage("");
       return;
     }
@@ -50,8 +84,8 @@ const Contact: React.FC = () => {
     <div className="contact-container">
       <h1 className="contact-title">문의하기</h1>
       <form onSubmit={handleSubmit} className="contact-form">
-        <div className="form-group">
-          <label htmlFor="title" className="form-label">
+        <div className="contact-form-group">
+          <label htmlFor="title" className="contact-form-label">
             제목
           </label>
           <input
@@ -59,26 +93,32 @@ const Contact: React.FC = () => {
             id="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="form-input"
+            className="contact-form-input"
             placeholder="제목을 입력하세요"
             disabled={isLoading}
           />
+          {titleError && (
+            <p className="contact-form-helpertext">{titleError}</p>
+          )}
         </div>
-        <div className="form-group">
-          <label htmlFor="content" className="form-label">
+        <div className="contact-form-group">
+          <label htmlFor="content" className="contact-form-label">
             내용
           </label>
           <textarea
             id="content"
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="form-textarea"
+            className="contact-form-textarea"
             placeholder="내용을 입력하세요"
             disabled={isLoading}
           />
+          {contentError && (
+            <p className="contact-form-helpertext">{contentError}</p>
+          )}
         </div>
-        <div className="form-group">
-          <label htmlFor="email" className="form-label">
+        <div className="contact-form-group">
+          <label htmlFor="email" className="contact-form-label">
             이메일
           </label>
           <input
@@ -86,14 +126,23 @@ const Contact: React.FC = () => {
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="form-input"
+            className="contact-form-input"
             placeholder="이메일을 입력하세요"
             disabled={isLoading}
           />
+          {emailError && (
+            <p className="contact-form-helpertext">{emailError}</p>
+          )}
         </div>
-        {errorMessage && <p className="form-error">{errorMessage}</p>}
-        {successMessage && <p className="form-success">{successMessage}</p>}
-        <button type="submit" className="form-button" disabled={isLoading}>
+        {errorMessage && <p className="contact-form-error">{errorMessage}</p>}
+        {successMessage && (
+          <p className="contact-form-success">{successMessage}</p>
+        )}
+        <button
+          type="submit"
+          className="contact-form-button"
+          disabled={isLoading}
+        >
           {isLoading ? "보내는 중..." : "보내기"}
         </button>
       </form>
