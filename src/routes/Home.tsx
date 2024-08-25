@@ -20,51 +20,56 @@ import moderate from "../assets/grade/moderate.png";
 import unhealthy from "../assets/grade/unhealthy.png";
 import veryUnhealthy from "../assets/grade/very_unhealthy.png";
 import hazardous from "../assets/grade/hazardous.png";
-import sun from "../assets/weather/sun.png";
-import cloud from "../assets/weather/cloud.png";
-import rain from "../assets/weather/rainy.png";
-import snow from "../assets/weather/snow.png";
 import LocationDropdown from "../components/LocationDropdown";
 import {
   WiDaySunny,
-  WiDaySunnyOvercast,
-  WiDayHaze,
-  WiDayCloudy,
-  WiCloud,
   WiCloudy,
   WiFog,
   WiShowers,
-  WiDayShowers,
-  WiStormShowers,
-  WiDayStormShowers,
-  WiRain,
-  WiCloudyGusts,
-  WiDayCloudyGusts,
   WiSnow,
-  WiDaySnow,
-  WiSnowflakeCold,
-  WiSleet,
-  WiHail,
-  WiRainMix,
-  WiThermometer,
-  WiThermometerExterior,
-  WiWindy,
-  WiNightClear,
-  WiNightAltPartlyCloudy,
-  WiNightAltCloudyHigh,
-  WiNightAltCloudy,
-  WiNightAltShowers,
-  WiNightAltStormShowers,
-  WiNightAltCloudyGusts,
-  WiNightAltSnow,
+  WiStormShowers,
 } from "react-icons/wi";
-interface WeatherIconMap {
-  [key: number]: JSX.Element;
-}
+
+const weatherMainToKorean: { [key in keyof typeof weatherIconMap]: string } = {
+  Thunderstorm: "천둥번개",
+  Drizzle: "이슬비",
+  Rain: "비",
+  Snow: "눈",
+  Mist: "엷은 안개",
+  Smoke: "연기",
+  Haze: "실안개",
+  Dust: "먼지",
+  Fog: "안개",
+  Sand: "모래",
+  Ash: "화산재",
+  Squall: "돌풍",
+  Tornado: "토네이도",
+  Clear: "맑음",
+  Clouds: "구름",
+};
+
+const weatherIconMap = {
+  Thunderstorm: <WiStormShowers />,
+  Drizzle: <WiShowers />,
+  Rain: <WiShowers />,
+  Snow: <WiSnow />,
+  Mist: <WiFog />,
+  Smoke: <WiFog />,
+  Haze: <WiFog />,
+  Dust: <WiFog />,
+  Fog: <WiFog />,
+  Sand: <WiFog />,
+  Ash: <WiFog />,
+  Squall: <WiStormShowers />,
+  Tornado: <WiStormShowers />,
+  Clear: <WiDaySunny />,
+  Clouds: <WiCloudy />,
+};
+
 const Home: React.FC = () => {
   const [airQualityData, setAirQualityData] = useState<any>(null);
   const [weatherData, setWeatherData] = useState<any>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   const [selectedLocation, setSelectedLocation] = useState<string>("");
   const [id, setId] = useState<number>(0);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -76,10 +81,28 @@ const Home: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    fetchAirQualityData(id || 1);
-    fetchWeatherData(id || 1);
-    console.log("Updated ID:", id);
+    if (id) {
+      setLoading(true);
+      fetchWeatherData(id).then(() => setLoading(false));
+      fetchAirQualityData(id);
+    }
   }, [id]);
+
+  const fetchWeatherData = async (id: number) => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/acweather?id=${id}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setWeatherData(data.weatherDataJson);
+      } else {
+        console.error("날씨 데이터를 가져오는 데 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("날씨 데이터를 가져오는 중 오류가 발생했습니다:", error);
+    }
+  };
 
   const fetchAirQualityData = async (id: number) => {
     try {
@@ -99,35 +122,6 @@ const Home: React.FC = () => {
       setAirQualityData(data.data);
     } catch (error) {
       console.error("Error fetching data:", error);
-      setError("현재 위치의 대기질 데이터를 가져오는데 실패했습니다.");
-    }
-  };
-  const fetchWeatherData = async (id: number) => {
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/acweather?id=${id}`
-      );
-      if (response.ok) {
-        const data = await response.json();
-        setWeatherData(data.weatherDataJson);
-      } else {
-        console.error("Failed to fetch weather data.");
-      }
-    } catch (error) {
-      console.error("Error fetching weather data:", error);
-    }
-  };
-
-  const toggleDropdown = () => setDropdownOpen(!isDropdownOpen);
-
-  const selectLocation = (location: string, id: number) => {
-    if (location === "등록하기") {
-      navigate("/favorites");
-    } else {
-      setSelectedLocation(location);
-      setId(id);
-      setDropdownOpen(false);
-      console.log("즐겨찾기 " + id);
     }
   };
 
@@ -147,9 +141,7 @@ const Home: React.FC = () => {
         const data = await response.json();
         if (data.status === 200 && data.data.district) {
           setSelectedLocation(data.data.district);
-          setId(data.data.id); // 상태 업데이트 요청
-          console.log(latitude, longitude);
-          console.log(id);
+          setId(data.data.id);
           return { latitude, longitude };
         } else {
           alert("위치를 찾을 수 없습니다.");
@@ -194,14 +186,46 @@ const Home: React.FC = () => {
     }
   };
 
-  const airQualityGrades: { [key: string]: { image: string; status: string } } =
-    {
-      "1": { image: good, status: "좋음" },
-      "2": { image: moderate, status: "보통" },
-      "3": { image: unhealthy, status: "나쁨" },
-      "4": { image: veryUnhealthy, status: "매우 나쁨" },
-      "5": { image: hazardous, status: "위험" },
-    };
+  const toggleDropdown = () => setDropdownOpen(!isDropdownOpen);
+
+  const selectLocation = (location: string, id: number) => {
+    if (location === "등록하기") {
+      navigate("/favorites");
+    } else {
+      setSelectedLocation(location);
+      setId(id);
+      setDropdownOpen(false);
+    }
+  };
+
+  const squirrelImages = [basic, knight, samurai, space, cook, pilot, hiphop];
+
+  const [randomImage, setRandomImage] = useState("");
+
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * squirrelImages.length);
+    setRandomImage(squirrelImages[randomIndex]);
+  }, []);
+
+  const executeIcon = (weatherMain: keyof typeof weatherIconMap) => {
+    if (!weatherMain) {
+      return <WiDaySunny />;
+    }
+    const icon = weatherIconMap[weatherMain];
+    if (!icon) {
+      return <WiDaySunny />;
+    }
+    return icon;
+  };
+
+  const airQualityGrades = {
+    "1": { image: good, status: "좋음" },
+    "2": { image: moderate, status: "보통" },
+    "3": { image: unhealthy, status: "나쁨" },
+    "4": { image: veryUnhealthy, status: "매우 나쁨" },
+    "5": { image: hazardous, status: "위험" },
+  };
+
   const getAirQualityGrade = (value: number) => {
     if (value <= 50) return airQualityGrades["1"];
     if (value <= 100) return airQualityGrades["2"];
@@ -209,96 +233,7 @@ const Home: React.FC = () => {
     if (value <= 350) return airQualityGrades["4"];
     return airQualityGrades["5"];
   };
-  const khaiInfo = airQualityData?.khaiValue
-    ? getAirQualityGrade(airQualityData.khaiValue)
-    : { image: undefined, status: "데이터 없음" };
 
-  // 날씨 유형에 따른 아이콘 매핑
-  const weatherIcons: { [key: string]: string } = {
-    맑음: sun,
-    흐림: cloud,
-    비: rain,
-    눈: snow,
-    구름많음: cloud,
-  };
-  // 날씨 아이콘 선택
-  const weatherIconMap: WeatherIconMap = {
-    1: <WiDaySunny />,
-    2: <WiDaySunnyOvercast />,
-    3: <WiDaySunnyOvercast />,
-    4: <WiDaySunnyOvercast />,
-    5: <WiDayHaze />,
-    6: <WiDayCloudy />,
-    7: <WiCloud />,
-    8: <WiCloudy />,
-    11: <WiFog />,
-    12: <WiShowers />,
-    13: <WiDayShowers />,
-    14: <WiDayShowers />,
-    15: <WiStormShowers />,
-    16: <WiDayStormShowers />,
-    17: <WiDayStormShowers />,
-    18: <WiRain />,
-    19: <WiCloudyGusts />,
-    20: <WiDayCloudyGusts />,
-    21: <WiDayCloudyGusts />,
-    22: <WiSnow />,
-    23: <WiDaySnow />,
-    24: <WiSnowflakeCold />,
-    25: <WiSleet />,
-    26: <WiHail />,
-    29: <WiRainMix />,
-    30: <WiThermometer />,
-    31: <WiThermometerExterior />,
-    32: <WiWindy />,
-    33: <WiNightClear />,
-    34: <WiNightAltPartlyCloudy />,
-    35: <WiNightAltPartlyCloudy />,
-    36: <WiNightAltPartlyCloudy />,
-    37: <WiNightAltCloudyHigh />,
-    38: <WiNightAltCloudy />,
-    39: <WiNightAltShowers />,
-    40: <WiNightAltShowers />,
-    41: <WiNightAltStormShowers />,
-    42: <WiNightAltStormShowers />,
-    43: <WiNightAltCloudyGusts />,
-    44: <WiNightAltSnow />,
-    500: <WiRain />, // Example for Rain
-    501: <WiStormShowers />, // Example for Heavy Rain
-    802: <WiCloud />, // Example for Cloudy
-    803: <WiCloudy />, // Example for Mostly Cloudy
-    804: <WiCloudyGusts />, // Example for Overcast
-  };
-  const executeIcon = (weatherIcon: number) => {
-    if (!weatherIcon) {
-      console.warn("No weatherIcon provided");
-      return <WiDaySunny />;
-    }
-    const icon = weatherIconMap[weatherIcon];
-    if (!icon) {
-      console.warn(`No icon mapped for weatherIcon: ${weatherIcon}`);
-      return <WiDaySunny />;
-    }
-    return icon;
-  };
-
-  const squirrelImages = [
-    basic,
-    knight,
-    samurai,
-    space,
-    cook,
-    pilot,
-    hiphop,
-    // 추가 이미지 URL을 여기다 추가하세요
-  ];
-  const [randomImage, setRandomImage] = useState("");
-
-  useEffect(() => {
-    const randomIndex = Math.floor(Math.random() * squirrelImages.length);
-    setRandomImage(squirrelImages[randomIndex]);
-  }, []);
-  // 대기질 메시지 설정 함수
   const getAirQualityMessage = (value: number) => {
     if (value <= 50) {
       return "오늘의 공기는 깨끗하고 상쾌해요! 야외 활동하기에 딱 좋은 날입니다.";
@@ -313,7 +248,6 @@ const Home: React.FC = () => {
     }
   };
 
-  // 날씨 메시지 설정 함수
   const getWeatherMessage = (weather: string) => {
     switch (weather) {
       case "맑음":
@@ -361,11 +295,9 @@ const Home: React.FC = () => {
     }
   };
 
-  // 다람쥐와 대화하는 부분에 대한 메시지 설정 함수
   const getSquirrelMessage = (airQualityValue: number, weather: string) => {
     let message = "";
 
-    // 대기질과 날씨를 모두 고려한 메시지 생성
     if (airQualityValue > 100) {
       message = "공기가 나빠요. 실내에서 활동하는 것이 좋아요.";
     } else if (airQualityValue > 50 && airQualityValue <= 100) {
@@ -385,7 +317,7 @@ const Home: React.FC = () => {
           isDropdownOpen={isDropdownOpen}
           toggleDropdown={toggleDropdown}
           selectLocation={selectLocation}
-          loadCurrentLocation={loadCurrentLocation} // GPS 버튼 클릭 시 현재 위치 로드
+          loadCurrentLocation={loadCurrentLocation}
         />
         <Swiper
           modules={[Navigation, Pagination]}
@@ -399,12 +331,18 @@ const Home: React.FC = () => {
               <h1 className="air-quality-title">통합대기환경지수</h1>
               <img
                 className="home-air-quality-image"
-                src={khaiInfo.image}
+                src={
+                  airQualityData?.khaiValue
+                    ? getAirQualityGrade(airQualityData.khaiValue).image
+                    : ""
+                }
                 alt="통합대기환경지수 이미지"
               />
               {airQualityData ? (
                 <>
-                  <p className="air-quality-status">{khaiInfo.status}</p>
+                  <p className="air-quality-status">
+                    {getAirQualityGrade(airQualityData.khaiValue).status}
+                  </p>
                   <p className="air-quality-value">
                     {airQualityData.khaiValue}
                   </p>
@@ -420,14 +358,21 @@ const Home: React.FC = () => {
           <SwiperSlide>
             <div className="home-weather-section">
               <h1 className="weather-title">날씨</h1>
-              {/* <img className="home-weather-icon" src={sun} alt="날씨 이미지" /> */}
               <div className="home-weather-icon">
-                {executeIcon(weatherData?.current?.weather[0]?.id)}
+                {executeIcon(
+                  weatherData?.current?.weather[0]
+                    ?.main as keyof typeof weatherIconMap
+                )}
               </div>
               {weatherData ? (
                 <>
                   <p className="weather-status">
-                    {weatherData.current.weather[0].description}
+                    {
+                      weatherMainToKorean[
+                        weatherData.current.weather[0]
+                          .main as keyof typeof weatherMainToKorean
+                      ]
+                    }
                   </p>
                   <p className="home-weather-current-temperature">
                     {Math.round(weatherData.current.temp)}°C
@@ -438,7 +383,8 @@ const Home: React.FC = () => {
                   </p>
                   <p className="weather-description">
                     {getWeatherMessage(
-                      weatherData.current.weather[0].description
+                      weatherData.current.weather[0]
+                        .main as keyof typeof weatherMainToKorean
                     )}
                   </p>
                 </>
@@ -455,7 +401,7 @@ const Home: React.FC = () => {
               <p>
                 {getSquirrelMessage(
                   airQualityData.khaiValue,
-                  weatherData.current.weather[0].description
+                  weatherData.current.weather[0].main
                 )}
               </p>
               <p>
