@@ -9,41 +9,54 @@ import visibilityIcon from "../../assets/weather/visibility.png";
 import LocationDropdown from "../../components/LocationDropdown";
 import {
   WiDaySunny,
-  WiDaySunnyOvercast,
-  WiDayHaze,
-  WiDayCloudy,
   WiCloud,
   WiCloudy,
   WiFog,
   WiShowers,
-  WiDayShowers,
   WiStormShowers,
-  WiDayStormShowers,
-  WiRain,
-  WiCloudyGusts,
-  WiDayCloudyGusts,
   WiSnow,
-  WiDaySnow,
-  WiSnowflakeCold,
-  WiSleet,
-  WiHail,
-  WiRainMix,
-  WiThermometer,
-  WiThermometerExterior,
-  WiWindy,
-  WiNightClear,
-  WiNightAltPartlyCloudy,
-  WiNightAltCloudyHigh,
-  WiNightAltCloudy,
-  WiNightAltShowers,
-  WiNightAltStormShowers,
-  WiNightAltCloudyGusts,
-  WiNightAltSnow,
+  WiThunderstorm,
 } from "react-icons/wi";
 
 interface WeatherIconMap {
-  [key: number]: JSX.Element;
+  [key: string]: JSX.Element;
 }
+
+const weatherMainToKorean: { [key: string]: string } = {
+  Thunderstorm: "천둥번개",
+  Drizzle: "이슬비",
+  Rain: "비",
+  Snow: "눈",
+  Mist: "엷은 안개",
+  Smoke: "연기",
+  Haze: "실안개",
+  Dust: "먼지",
+  Fog: "안개",
+  Sand: "모래",
+  Ash: "화산재",
+  Squall: "돌풍",
+  Tornado: "토네이도",
+  Clear: "맑음",
+  Clouds: "구름",
+};
+
+const weatherIconMap: WeatherIconMap = {
+  Thunderstorm: <WiThunderstorm />,
+  Drizzle: <WiShowers />,
+  Rain: <WiShowers />,
+  Snow: <WiSnow />,
+  Mist: <WiFog />,
+  Smoke: <WiFog />,
+  Haze: <WiFog />,
+  Dust: <WiFog />,
+  Fog: <WiFog />,
+  Sand: <WiFog />,
+  Ash: <WiFog />,
+  Squall: <WiStormShowers />,
+  Tornado: <WiStormShowers />,
+  Clear: <WiDaySunny />,
+  Clouds: <WiCloudy />,
+};
 
 const WeatherInfo: React.FC = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -189,62 +202,14 @@ const WeatherInfo: React.FC = () => {
     return `${index}일후`;
   };
 
-  const weatherIconMap: WeatherIconMap = {
-    1: <WiDaySunny />,
-    2: <WiDaySunnyOvercast />,
-    3: <WiDaySunnyOvercast />,
-    4: <WiDaySunnyOvercast />,
-    5: <WiDayHaze />,
-    6: <WiDayCloudy />,
-    7: <WiCloud />,
-    8: <WiCloudy />,
-    11: <WiFog />,
-    12: <WiShowers />,
-    13: <WiDayShowers />,
-    14: <WiDayShowers />,
-    15: <WiStormShowers />,
-    16: <WiDayStormShowers />,
-    17: <WiDayStormShowers />,
-    18: <WiRain />,
-    19: <WiCloudyGusts />,
-    20: <WiDayCloudyGusts />,
-    21: <WiDayCloudyGusts />,
-    22: <WiSnow />,
-    23: <WiDaySnow />,
-    24: <WiSnowflakeCold />,
-    25: <WiSleet />,
-    26: <WiHail />,
-    29: <WiRainMix />,
-    30: <WiThermometer />,
-    31: <WiThermometerExterior />,
-    32: <WiWindy />,
-    33: <WiNightClear />,
-    34: <WiNightAltPartlyCloudy />,
-    35: <WiNightAltPartlyCloudy />,
-    36: <WiNightAltPartlyCloudy />,
-    37: <WiNightAltCloudyHigh />,
-    38: <WiNightAltCloudy />,
-    39: <WiNightAltShowers />,
-    40: <WiNightAltShowers />,
-    41: <WiNightAltStormShowers />,
-    42: <WiNightAltStormShowers />,
-    43: <WiNightAltCloudyGusts />,
-    44: <WiNightAltSnow />,
-    500: <WiRain />, // Example for Rain
-    501: <WiStormShowers />, // Example for Heavy Rain
-    802: <WiCloud />, // Example for Cloudy
-    803: <WiCloudy />, // Example for Mostly Cloudy
-    804: <WiCloudyGusts />, // Example for Overcast
-  };
-
-  const executeIcon = (weatherIcon: number) => {
-    if (!weatherIcon) {
-      console.warn("No weatherIcon provided");
+  const executeIcon = (weatherMain: string) => {
+    if (!weatherMain) {
+      console.warn("No weatherMain provided");
       return <WiDaySunny />;
     }
-    const icon = weatherIconMap[weatherIcon];
+    const icon = weatherIconMap[weatherMain];
     if (!icon) {
-      console.warn(`No icon mapped for weatherIcon: ${weatherIcon}`);
+      console.warn(`No icon mapped for weatherMain: ${weatherMain}`);
       return <WiDaySunny />;
     }
     return icon;
@@ -269,11 +234,15 @@ const WeatherInfo: React.FC = () => {
             <div className="weather-section">
               <div className="weather-icon-container">
                 {executeIcon(
-                  weatherData?.weatherDataJson?.current?.weather[0]?.id
+                  weatherData?.weatherDataJson?.current?.weather[0]?.main
                 )}
               </div>
               <p className="weather-status">
-                {weatherData?.weatherDataJson?.current?.weather[0]?.description}
+                {
+                  weatherMainToKorean[
+                    weatherData?.weatherDataJson?.current?.weather[0]?.main
+                  ]
+                }
               </p>
               <p className="weather-current-temperature">
                 {Math.round(weatherData?.weatherDataJson?.current?.temp)}°C
@@ -310,7 +279,7 @@ const WeatherInfo: React.FC = () => {
                     icon: visibilityIcon,
                   },
                   {
-                    label: "UV Index",
+                    label: "자외선",
                     value: `${weatherData?.weatherDataJson?.current?.uvi}`,
                     icon: uvIcon,
                   },
@@ -339,8 +308,8 @@ const WeatherInfo: React.FC = () => {
               <div className="daily-forecast-items">
                 {weatherData?.weatherDataJson?.daily?.map(
                   (forecast: any, index: number) => {
-                    const weatherId = forecast.weather[0]?.id;
-                    const icon = executeIcon(weatherId);
+                    const weatherMain = forecast.weather[0]?.main;
+                    const icon = executeIcon(weatherMain);
                     return (
                       <div key={index} className="daily-forecast-item">
                         <div className="day-info">
@@ -349,6 +318,9 @@ const WeatherInfo: React.FC = () => {
                           </p>
                         </div>
                         <div className="forecast-icon-container">{icon}</div>
+                        <p className="weather-status">
+                          {weatherMainToKorean[forecast.weather[0]?.main]}
+                        </p>
                         <p className="temperature">
                           최저 {Math.round(forecast.temp.min)}° / 최고{" "}
                           {Math.round(forecast.temp.max)}°

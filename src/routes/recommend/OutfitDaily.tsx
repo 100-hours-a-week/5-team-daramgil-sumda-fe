@@ -1,19 +1,54 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./styles/OutfitDaily.css";
-import sun from "../../assets/weather/sun.png";
-import cloud from "../../assets/weather/cloud.png";
-import rain from "../../assets/weather/rainy.png";
-import snow from "../../assets/weather/snow.png";
 import LocationDropdown from "../../components/LocationDropdown";
+import {
+  WiDaySunny,
+  WiCloud,
+  WiCloudy,
+  WiFog,
+  WiShowers,
+  WiStormShowers,
+  WiSnow,
+  WiThunderstorm,
+} from "react-icons/wi";
 
-// 날씨 유형에 따른 아이콘 매핑
-const weatherIcons: { [key: string]: string } = {
-  맑음: sun,
-  흐림: cloud,
-  비: rain,
-  눈: snow,
-  구름많음: cloud,
+// Mapping for weather descriptions to Korean
+const weatherMainToKorean: { [key: string]: string } = {
+  Thunderstorm: "천둥번개",
+  Drizzle: "이슬비",
+  Rain: "비",
+  Snow: "눈",
+  Mist: "엷은 안개",
+  Smoke: "연기",
+  Haze: "실안개",
+  Dust: "먼지",
+  Fog: "안개",
+  Sand: "모래",
+  Ash: "화산재",
+  Squall: "돌풍",
+  Tornado: "토네이도",
+  Clear: "맑음",
+  Clouds: "구름",
+};
+
+// Mapping for weather descriptions to corresponding icons
+const weatherIconMap: { [key: string]: JSX.Element } = {
+  Thunderstorm: <WiThunderstorm />,
+  Drizzle: <WiShowers />,
+  Rain: <WiShowers />,
+  Snow: <WiSnow />,
+  Mist: <WiFog />,
+  Smoke: <WiFog />,
+  Haze: <WiFog />,
+  Dust: <WiFog />,
+  Fog: <WiFog />,
+  Sand: <WiFog />,
+  Ash: <WiFog />,
+  Squall: <WiStormShowers />,
+  Tornado: <WiStormShowers />,
+  Clear: <WiDaySunny />,
+  Clouds: <WiCloudy />,
 };
 
 const OutfitDailyPage: React.FC = () => {
@@ -109,14 +144,14 @@ const OutfitDailyPage: React.FC = () => {
   const fetchWeatherData = async (locationId: number) => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}weather/current?id=${locationId}`
+        `http://localhost:8080/api/acweather?id=${locationId}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch weather data");
       }
       const data = await response.json();
-      if (data.status === 200) {
-        setWeatherData(data.data);
+      if (data.weatherDataJson) {
+        setWeatherData(data.weatherDataJson.current);
       } else {
         alert("날씨 정보를 가져올 수 없습니다.");
       }
@@ -167,27 +202,28 @@ const OutfitDailyPage: React.FC = () => {
         selectLocation={selectLocation}
         loadCurrentLocation={loadCurrentLocation}
       />
-      <h2 className="outfit-daily-title">오늘의 옷차림 추천</h2>
       <div className="outfit-info-container">
         <div className="outfit-weather-section">
           {weatherData ? (
             <>
-              <img
-                className="outfit-weather-icon"
-                src={weatherIcons[weatherData.weather]}
-                alt={`${weatherData.weather} 이미지`}
-              />
-              <p className="outfit-weather-status">{weatherData.weather}</p>
-              <p className="outfit-weather-current-temperature">
-                {weatherData.temperature}
+              <div className="outfit-weather-icon-container">
+                {weatherIconMap[weatherData.weather[0].main]}
+              </div>
+              <p className="outfit-weather-status">
+                {weatherMainToKorean[weatherData.weather[0].main] ||
+                  "알 수 없음"}
               </p>
+              <p className="outfit-weather-current-temperature">
+                {Math.round(weatherData.temp)}°C
+              </p>
+
               <p className="outfit-weather-humidity">
-                습도 {weatherData.humidity}
+                습도 {weatherData.humidity}%
               </p>
               <h2 className="outfit-recommend-title">추천 옷차림</h2>
               <ul className="outfit-recommendations-list">
                 {getOutfitRecommendation(
-                  parseFloat(weatherData.temperature),
+                  parseFloat(weatherData.temp),
                   parseFloat(weatherData.humidity)
                 ).map((item, index) => (
                   <li key={index}>{item}</li>
