@@ -41,13 +41,18 @@
 }
 
 .LocalPride-upload-section {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
   margin-bottom: 20px;
+  align-items: center; /* 자식 요소 세로 중앙 정렬 */
 }
 
 .LocalPride-upload-button {
+  height: 40px;
   display: inline-block;
   padding: 10px 20px;
+  margin-top: auto;
+  margin-left: auto;
   background-color: #51cf66;
   color: #fff;
   border-radius: 5px;
@@ -63,13 +68,15 @@
 }
 
 .LocalPride-image-preview {
-  text-align: center;
+  align-items: center;
   margin-bottom: 10px;
 }
 
 .LocalPride-preview-img {
-  max-width: 100%;
+  max-width: 80%;
   height: auto;
+  margin-left: auto;
+  margin-right: auto;
   border-radius: 10px;
 }
 

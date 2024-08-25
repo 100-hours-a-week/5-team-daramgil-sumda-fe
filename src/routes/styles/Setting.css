@@ -31,7 +31,8 @@
   margin-bottom: 20px;
 }
 
-.option-button {
+.setting-button1,
+.setting-button2 {
   width: 100px;
   padding: 15px 20px;
   font-size: 18px;
@@ -44,14 +45,25 @@
   transition: background-color 0.2s ease;
 }
 
-.option-button.selected {
-  background-color: #cdcdcd;
+.setting-button1.selected {
+  background-color: #00a6ff;
+  color: #ffffff;
 }
-
-.option-button:hover {
+.setting-button2.selected {
+  background-color: #ff5f24;
+  color: #ffffff;
+}
+.setting-button1:hover {
   box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
   transform: translateY(-2px);
-  background-color: #cdcdcd;
+  color: #ffffff;
+  background-color: #000dff;
+}
+.setting-button2:hover {
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  color: #ffffff;
+  background-color: #ff0000;
 }
 
 .info {

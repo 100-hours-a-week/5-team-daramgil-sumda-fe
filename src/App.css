@@ -1,0 +1,118 @@
+/* 공통 스타일 */
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.page-container {
+  max-width: 400px;
+  min-height: calc(100vh - 338px);
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fafafa;
+  box-sizing: border-box;
+}
+
+/* 공통 타이틀 및 설명 스타일 */
+.page-title {
+  font-size: 2rem;
+  font-weight: 500;
+  color: #1976d2;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.page-description {
+  font-size: 1rem;
+  color: #666;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+/* 공통 컨테이너 스타일 */
+.info-container {
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* 공통 섹션 타이틀 */
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #1976d2;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+/* 공통 아이템 스타일 */
+.item {
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+}
+
+.item h2 {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #1976d2;
+  margin-bottom: 12px;
+}
+
+.item img {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 8px;
+  display: block;
+}
+
+.item p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+/* 스크롤 버튼 스타일 */
+.scroll-button {
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+  padding: 10px;
+  user-select: none;
+}
+
+.scroll-button:hover {
+  color: #ff6f61;
+}
+
+/* 스크롤 컨테이너 스타일 */
+.scroll-container {
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.scroll-container::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
+/* 미디어 쿼리 */
+@media (max-width: 400px) {
+  .info-container {
+    padding: 15px;
+  }
+
+  .item img {
+    width: 50px;
+    height: 50px;
+  }
+}

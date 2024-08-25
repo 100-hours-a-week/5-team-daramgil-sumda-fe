@@ -1,0 +1,262 @@
+.weatherinfo-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #f0f0f0;
+  min-height: calc(100vh - 338px);
+}
+
+.info-container {
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  box-sizing: border-box;
+  min-height: calc(100vh - 338px);
+}
+
+.loading {
+  text-align: center;
+  font-size: 16px;
+  color: #666;
+}
+
+.weather-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.weather-icon {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 10px;
+  color: #ff6f61;
+}
+
+.weather-status {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.weather-current-temperature {
+  font-size: 30px;
+  font-weight: bold;
+  color: #ff6f61;
+  margin-bottom: 10px;
+}
+
+.weather-precipitation {
+  font-size: 16px;
+  color: #555;
+}
+
+.forecast-section {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.forecast-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.forecast-scroll {
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE 10+ */
+  flex-grow: 1;
+  margin: 0 10px;
+}
+
+.forecast-scroll::-webkit-scrollbar {
+  display: none;
+  /* Safari and Chrome */
+}
+
+.forecast-items {
+  display: flex;
+  gap: 10px;
+}
+
+.forecast-item {
+  display: inline-block;
+  text-align: center;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  padding: 10px;
+  min-width: 70px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.forecast-icon {
+  width: 50px;
+  height: 50px;
+  margin: 5px 0;
+  color: #ff6f61;
+}
+
+.forecast-date {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.daily-forecast-section {
+  margin-bottom: 20px;
+}
+
+.daily-forecast-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.daily-forecast-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.daily-forecast-item .forecast-icon {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+  color: #ff6f61;
+}
+
+.day-info {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.temperature {
+  font-size: 16px;
+  color: #555;
+}
+
+.detail-forecast-section {
+  margin-bottom: 20px;
+}
+
+.detail-forecast-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.detail-forecast-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.detail-forecast-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.detail-forecast-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.detail-icon {
+  width: 30px;
+  height: 30px;
+  color: #ff6f61;
+}
+
+@media (max-width: 400px) {
+  .info-container {
+    padding: 15px;
+  }
+
+  .weather-icon {
+    width: 80px;
+    height: 80px;
+  }
+
+  .weather-current-temperature {
+    font-size: 24px;
+  }
+
+  .forecast-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .daily-forecast-item {
+    padding: 8px;
+  }
+
+  .detail-forecast-item {
+    padding: 8px;
+  }
+}
+.weather-icon-container {
+  width: 100px;
+  height: 100px;
+}
+
+.weather-icon-container>svg {
+  width: 100%;
+  height: 100%;
+}
+.scroll-button {
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+  padding: 10px;
+  user-select: none;
+}
+
+.scroll-button:hover {
+  color: #ff6f61;
+}
+.day {
+  width:41px;
+}
+
+.forecast-icon-container {
+  width: 40px;
+  /* 원하는 크기로 설정 */
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.forecast-icon-container>svg {
+  width: 100%;
+  height: 100%;
+}

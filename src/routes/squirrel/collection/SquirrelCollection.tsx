@@ -1,7 +1,7 @@
 import React from "react";
 import "./styles/SquirrelCollection.css";
 
-import pedestal from "../assets/pedestal.png";
+import pedestal from "../../../assets/pedestal.png";
 
 const squirrelData = [
   {

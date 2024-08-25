@@ -1,14 +1,142 @@
-.outfitbytemp-container {
+.outfitbytemp-page {
   min-height: calc(100vh - 338px);
+  padding: 40px 20px;
+  background-color: #ffffff;
 }
+
 .title {
   text-align: center;
-  font-size: 32px;
-  margin: 20px 0;
+  font-size: 36px;
+  margin: 30px 0;
   font-weight: 600;
   color: #333;
+  font-family: 'Roboto', sans-serif;
 }
-.outfit {
-  padding: 20px 0;
-  margin-bottom: 15px;
+
+.outfitbytemp-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: stretch;
+  /* 두 컨테이너의 높이를 맞추기 위해 추가 */
+}
+.color-container {
+  width: 40px;
+  margin-right: 10px;
+  background: linear-gradient(to bottom,
+      #ff0000,
+      /* 빨강 */
+      #ff8000,
+      /* 주황 */
+      #ffff00,
+      /* 노랑 */
+      #80ff00,
+      /* 연두 */
+      #00ff00,
+      /* 초록 */
+      #0080ff,
+      /* 파랑 */
+      #4b0082,
+      /* 남색 */
+      #800080
+      /* 보라 */
+    );
+  border-radius: 5px;
+  animation: gradientScroll 10s infinite linear;
+  /* flex-grow 추가: outfit-container와 높이를 맞춤 */
+  flex-grow: 1;
+}
+@keyframes gradientScroll {
+  0% {
+    background-position: 0% 0%;
+  }
+
+  100% {
+    background-position: 0% 100%;
+  }
+}
+
+.outfit-container {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  margin-bottom: 10px;
+  flex-grow: 1;
+  /* color-container와 동일한 높이 설정 */
+}
+.outfit-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.outfit-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+.temp-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.temp-title {
+  font-size: 1.4em;
+  font-weight: bold;
+}
+
+.outfit-description {
+  font-size: 0.9rem;
+  word-break: break-word;
+  margin-top: 3px;
+}
+
+/* 색상 조화 개선 */
+.color-very-high {
+  color: #d32f2f;
+  /* 부드러운 빨강 */
+}
+
+.color-high {
+  color: #f57c00;
+  /* 부드러운 주황 */
+}
+
+.color-mid-high {
+  color: #ffcc00;
+  /* 노랑 */
+}
+
+.color-mid-mid {
+  color: lightgreen;
+  /* 연두 */
+}
+
+.color-mid {
+  color: #388e3c;
+  /* 부드러운 초록 */
+}
+
+.color-mid-low {
+  color: #1976d2;
+  /* 부드러운 파랑 */
+}
+
+.color-low {
+  color: #1565c0;
+  /* 진한 파랑 */
+}
+
+.color-very-low {
+  color: #7b1fa2;
+  /* 부드러운 보라 */
+}
+
+.color-very-very-low {
+  color: #4a148c;
+  /* 진한 보라 */
 }
