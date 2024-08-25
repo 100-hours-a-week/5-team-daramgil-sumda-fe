@@ -5,14 +5,13 @@
   margin: 0 auto;
   padding: 20px;
   font-family: "Noto Sans KR", sans-serif;
-  background-color: #fafafa;
+  background-color: #f0f0f0;
 }
 .aqidetails-container-unique {
   min-height: calc(100vh - 338px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #fafafa;
   color: #333;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   gap: 20px;
@@ -47,8 +46,8 @@
   max-width: 100%;
   text-align: center;
   padding: 24px;
-  border-radius: 8px;
-  background-color: #fff;
+  border-radius: 12px;
+  background-color: #f9fafb;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
@@ -99,7 +98,7 @@
   text-align: center;
   padding: 16px 10px;
   border-radius: 8px;
-  background-color: #fff;
+  background-color: #f9fafb;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   margin-bottom: 15px;
 }
@@ -135,7 +134,7 @@
   width: 100%;
   max-width: 1200px;
   padding: 24px;
-  background-color: #fff;
+  background-color: #f9fafb;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
@@ -168,7 +167,7 @@
   align-items: center;
   text-align: center;
   font-size: 18px;
-  background: #fff;
+  background-color: #f9fafb;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }

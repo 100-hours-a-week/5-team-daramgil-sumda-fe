@@ -6,6 +6,7 @@ import {
   useNavigate,
   useLocation,
 } from "react-router-dom";
+import "./App.css";
 
 import Layout from "./components/layout/Layout";
 import Home from "./routes/Home";

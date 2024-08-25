@@ -21,6 +21,9 @@ import unhealthy from "../assets/grade/unhealthy.png";
 import veryUnhealthy from "../assets/grade/very_unhealthy.png";
 import hazardous from "../assets/grade/hazardous.png";
 import sun from "../assets/weather/sun.png";
+import cloud from "../assets/weather/cloud.png";
+import rain from "../assets/weather/rainy.png";
+import snow from "../assets/weather/snow.png";
 import LocationDropdown from "../components/LocationDropdown";
 
 const Home: React.FC = () => {
@@ -109,6 +112,7 @@ const Home: React.FC = () => {
         if (data.status === 200 && data.data.district) {
           setSelectedLocation(data.data.district);
           setId(data.data.id);
+          console.log(longitude, latitude);
           return { latitude, longitude };
         } else {
           alert("위치를 찾을 수 없습니다.");
@@ -161,7 +165,6 @@ const Home: React.FC = () => {
       "4": { image: veryUnhealthy, status: "매우 나쁨" },
       "5": { image: hazardous, status: "위험" },
     };
-
   const getAirQualityGrade = (value: number) => {
     if (value <= 30) return airQualityGrades["1"];
     if (value <= 50) return airQualityGrades["2"];
@@ -169,11 +172,21 @@ const Home: React.FC = () => {
     if (value <= 150) return airQualityGrades["4"];
     return airQualityGrades["5"];
   };
-
   const khaiInfo = airQualityData?.khaiValue
     ? getAirQualityGrade(airQualityData.khaiValue)
     : { image: undefined, status: "데이터 없음" };
 
+  // 날씨 유형에 따른 아이콘 매핑
+  const weatherIcons: { [key: string]: string } = {
+    맑음: sun,
+    흐림: cloud,
+    비: rain,
+    눈: snow,
+    구름많음: cloud,
+  };
+  // 날씨 아이콘 선택
+  const weatherIcon =
+    weatherIcons[weatherData?.currentWeather?.weather_type] || sun;
   const squirrelImages = [
     basic,
     knight,
@@ -209,17 +222,47 @@ const Home: React.FC = () => {
   const getWeatherMessage = (weather: string) => {
     switch (weather) {
       case "맑음":
-        return "날씨도 맑고 화창하니, 가벼운 옷차림으로 산책을 즐겨보세요.";
+        return (
+          <>
+            날씨도 맑고 화창하니,
+            <br />
+            가벼운 옷차림으로 산책을 즐겨보세요.
+          </>
+        );
       case "흐림":
-        return "오늘은 구름이 많고 흐려요. 간혹 우산이 필요할 수도 있으니 챙기세요.";
+        return (
+          <>
+            오늘은 구름이 많고 흐려요.
+            <br />
+            간혹 우산이 필요할 수도 있으니 챙기세요.
+          </>
+        );
       case "비":
-        return "오늘은 비가 내리니 우산을 꼭 챙기세요. 빗길 운전 시 조심하세요!";
+        return (
+          <>
+            오늘은 비가 내리니 우산을 꼭 챙기세요.
+            <br />
+            빗길 운전 시 조심하세요!
+          </>
+        );
       case "눈":
-        return "오늘은 눈이 내려요. 미끄럼에 주의하시고, 따뜻하게 입으세요.";
+        return (
+          <>
+            오늘은 눈이 내려요.
+            <br />
+            미끄럼에 주의하시고, 따뜻하게 입으세요.
+          </>
+        );
       case "더위":
-        return "오늘은 기온이 많이 올라 더운 날씨입니다. 충분한 수분을 섭취하고, 실내에서 쉬는 것이 좋아요.";
+        return (
+          <>
+            오늘은 기온이 많이 올라 더운 날씨입니다.
+            <br />
+            충분한 수분을 섭취하고, 실내에서 쉬는 것이 좋아요.
+          </>
+        );
       default:
-        return "오늘의 날씨 정보를 확인하세요.";
+        return <>오늘의 날씨 정보를 확인하세요.</>;
     }
   };
 
@@ -268,81 +311,88 @@ const Home: React.FC = () => {
 
   return (
     <div className="home-page">
-      <LocationDropdown
-        selectedLocation={selectedLocation}
-        isDropdownOpen={isDropdownOpen}
-        toggleDropdown={toggleDropdown}
-        selectLocation={selectLocation}
-        loadCurrentLocation={loadCurrentLocation} // GPS 버튼 클릭 시 현재 위치 로드
-      />
-
-      <Swiper
-        modules={[Navigation, Pagination]}
-        navigation
-        pagination={{ clickable: true }}
-        spaceBetween={50}
-        slidesPerView={1}
-      >
-        <SwiperSlide>
-          <div className="home-info-container air-quality-section">
-            <h1 className="air-quality-title">통합대기환경지수</h1>
-            <img
-              className="air-quality-image"
-              src={khaiInfo.image}
-              alt="통합대기환경지수 이미지"
-            />
-            {airQualityData ? (
-              <>
-                <p className="air-quality-status">{khaiInfo.status}</p>
-                <p className="air-quality-value">{airQualityData.khaiValue}</p>
-                <p className="air-quality-description">
-                  {getAirQualityMessage(airQualityData.khaiValue)}
-                </p>
-              </>
-            ) : (
-              <p>Loading air quality data...</p>
-            )}
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="home-info-container weather-section">
-            <h1 className="weather-title">날씨</h1>
-            <img className="weather-icon" src={sun} alt="날씨 이미지" />
-            {weatherData ? (
-              <>
-                <p className="weather-status">{weatherData.weather}</p>
-                <p className="weather-current-temperature">
-                  {weatherData.temperature}
-                </p>
-                <p className="weather-description">
-                  {getWeatherMessage(weatherData.weather)}
-                </p>
-              </>
-            ) : (
-              <p>Loading weather data...</p>
-            )}
-          </div>
-        </SwiperSlide>
-      </Swiper>
-
-      <div className="additional-info">
-        {airQualityData && weatherData ? (
-          <>
-            <p>
-              {getSquirrelMessage(
-                airQualityData.khaiValue,
-                weatherData.weather
+      <div className="info-container">
+        <LocationDropdown
+          selectedLocation={selectedLocation}
+          isDropdownOpen={isDropdownOpen}
+          toggleDropdown={toggleDropdown}
+          selectLocation={selectLocation}
+          loadCurrentLocation={loadCurrentLocation} // GPS 버튼 클릭 시 현재 위치 로드
+        />
+        <Swiper
+          modules={[Navigation, Pagination]}
+          navigation
+          pagination={{ clickable: true }}
+          spaceBetween={50}
+          slidesPerView={1}
+        >
+          <SwiperSlide>
+            <div className="home-air-quality-section">
+              <h1 className="air-quality-title">통합대기환경지수</h1>
+              <img
+                className="home-air-quality-image"
+                src={khaiInfo.image}
+                alt="통합대기환경지수 이미지"
+              />
+              {airQualityData ? (
+                <>
+                  <p className="air-quality-status">{khaiInfo.status}</p>
+                  <p className="air-quality-value">
+                    {airQualityData.khaiValue}
+                  </p>
+                  <p className="air-quality-description">
+                    {getAirQualityMessage(airQualityData.khaiValue)}
+                  </p>
+                </>
+              ) : (
+                <p>Loading air quality data...</p>
               )}
-            </p>
-            <p>
-              더 궁금한 점이 있다면, 아래 '다람쥐와 대화하기'를 통해
-              알려드릴게요!
-            </p>
-            <img src={randomImage} alt="다람쥐 이미지" />
-          </>
-        ) : (
-          <p>Loading additional information...</p>
-        )}
+            </div>
+          </SwiperSlide>
+          <SwiperSlide>
+            <div className="home-weather-section">
+              <h1 className="weather-title">날씨</h1>
+              <img
+                className="home-weather-icon"
+                src={weatherIcons[weatherData.weather] || sun}
+                alt="날씨 이미지"
+              />
+              {weatherData ? (
+                <>
+                  <p className="weather-status">{weatherData.weather}</p>
+                  <p className="weather-current-temperature">
+                    {weatherData.temperature}
+                  </p>
+                  <p className="weather-description">
+                    {getWeatherMessage(weatherData.weather)}
+                  </p>
+                </>
+              ) : (
+                <p>Loading weather data...</p>
+              )}
+            </div>
+          </SwiperSlide>
+        </Swiper>
+
+        <div className="additional-info">
+          {airQualityData && weatherData ? (
+            <>
+              <p>
+                {getSquirrelMessage(
+                  airQualityData.khaiValue,
+                  weatherData.weather
+                )}
+              </p>
+              <p>
+                더 궁금한 점이 있다면, 아래 '다람쥐와 대화하기'를 통해
+                알려드릴게요!
+              </p>
+              <img src={randomImage} alt="다람쥐 이미지" />
+            </>
+          ) : (
+            <p>Loading additional information...</p>
+          )}
+        </div>
       </div>
     </div>
   );

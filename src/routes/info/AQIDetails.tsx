@@ -248,131 +248,134 @@ const AQIDetails: React.FC = () => {
 
   return (
     <div className="aqidetails-page">
-      <LocationDropdown
-        selectedLocation={selectedLocation}
-        isDropdownOpen={isDropdownOpen}
-        toggleDropdown={toggleDropdown}
-        selectLocation={selectLocation}
-        loadCurrentLocation={loadCurrentLocation}
-      />
-      <div className="aqidetails-container-unique">
-        <h1 className="page-title-unique">대기 오염 정보 조회</h1>
-        <p className="page-description-unique">
-          현재 위치 또는 선택한 위치의 대기 오염 정보를 확인하세요.
-        </p>
-        <div className="info-container-unique">
-          <div className="air-quality-section-unique">
-            <h1 className="air-quality-title-unique">통합대기환경지수</h1>
-            {pollutantInfo.khai.image ? (
-              <img
-                className="air-quality-image-unique"
-                src={pollutantInfo.khai.image}
-                alt="통합대기환경지수 이미지"
-              />
-            ) : (
-              <p>데이터 없음</p>
-            )}
-            <p className="air-quality-status-unique">
-              {pollutantInfo.khai.status}
-            </p>
-            <p className="air-quality-value-unique">
-              {pollutantInfo.khai.value}
-            </p>
-          </div>
-
-          <div className="pollutants-container-unique">
-            {Object.entries(pollutantInfo).map(
-              ([key, info]) =>
-                key !== "khai" && (
-                  <div className="pollutant-item-unique" key={key}>
-                    <h2>{key.toUpperCase()}</h2>
-                    {info.image ? (
-                      <img
-                        className="pollutant-image-unique"
-                        src={info.image}
-                        alt={`${key} 등급 이미지`}
-                      />
-                    ) : (
-                      <p>데이터 없음</p>
-                    )}
-                    <p className="pollutant-status-unique">{info.status}</p>
-                    <p className="pollutant-value-unique">
-                      {info.value}{" "}
-                      {key === "pm10" || key === "pm25" ? "㎍/㎥" : "ppm"}
-                    </p>
-                  </div>
-                )
-            )}
-          </div>
-        </div>
-
-        <div className="chart-container-unique">
-          <h3>시간별 대기 오염 수치</h3>
-          <Swiper
-            modules={[Navigation, Pagination]}
-            navigation
-            pagination={{ clickable: true }}
-            spaceBetween={50}
-            slidesPerView={1}
-          >
-            {["pm10", "pm25", "no2", "o3", "co", "so2"].map((pollutant) => (
-              <SwiperSlide key={pollutant}>
-                <h3>{pollutant.toUpperCase()}</h3>
-                <ResponsiveContainer width="100%" height={250}>
-                  <LineChart
-                    data={airPollutionData.sort(
-                      (a, b) =>
-                        new Date(a.time).getTime() - new Date(b.time).getTime()
-                    )}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="dateTime" />
-                    <YAxis />
-                    <Tooltip />
-                    {/* <Legend /> */}
-                    <Line
-                      type="monotone"
-                      dataKey={pollutant}
-                      stroke="#8884d8"
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-
-        <div className="map-container-unique">
-          <h3>대기질 예측 지도</h3>
-          <Swiper
-            modules={[Navigation, Pagination]}
-            navigation
-            pagination={{ clickable: true }}
-            spaceBetween={50}
-            slidesPerView={1}
-          >
-            {airPollutionImages.map((pollutionData) => (
-              <SwiperSlide key={pollutionData.informCode}>
-                <div style={{ width: "100%", height: 400 }}>
-                  <img
-                    src={pollutionData.images[imageIndex]}
-                    alt={pollutionData.informCode}
-                    style={{ width: "100%", height: "100%" }}
-                  />
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-        <div className="map-container-unique">
-          <p>
-            * 데이터는 실시간 관측된 자료이며
-            <br />
-            측정소 현지 사정이나 데이터의 <br />
-            수신상태에 따라 미수신 될 수 있음 <br />
-            <br />
-            출처 : 환경부/한국환경공단
+      <div className="info-container">
+        <LocationDropdown
+          selectedLocation={selectedLocation}
+          isDropdownOpen={isDropdownOpen}
+          toggleDropdown={toggleDropdown}
+          selectLocation={selectLocation}
+          loadCurrentLocation={loadCurrentLocation}
+        />
+        <div className="aqidetails-container-unique">
+          <h1 className="page-title-unique">대기 오염 정보 조회</h1>
+          <p className="page-description-unique">
+            현재 위치 또는 선택한 위치의 대기 오염 정보를 확인하세요.
           </p>
+          <div className="info-container-unique">
+            <div className="air-quality-section-unique">
+              <h1 className="air-quality-title-unique">통합대기환경지수</h1>
+              {pollutantInfo.khai.image ? (
+                <img
+                  className="air-quality-image-unique"
+                  src={pollutantInfo.khai.image}
+                  alt="통합대기환경지수 이미지"
+                />
+              ) : (
+                <p>데이터 없음</p>
+              )}
+              <p className="air-quality-status-unique">
+                {pollutantInfo.khai.status}
+              </p>
+              <p className="air-quality-value-unique">
+                {pollutantInfo.khai.value}
+              </p>
+            </div>
+
+            <div className="pollutants-container-unique">
+              {Object.entries(pollutantInfo).map(
+                ([key, info]) =>
+                  key !== "khai" && (
+                    <div className="pollutant-item-unique" key={key}>
+                      <h2>{key.toUpperCase()}</h2>
+                      {info.image ? (
+                        <img
+                          className="pollutant-image-unique"
+                          src={info.image}
+                          alt={`${key} 등급 이미지`}
+                        />
+                      ) : (
+                        <p>데이터 없음</p>
+                      )}
+                      <p className="pollutant-status-unique">{info.status}</p>
+                      <p className="pollutant-value-unique">
+                        {info.value}{" "}
+                        {key === "pm10" || key === "pm25" ? "㎍/㎥" : "ppm"}
+                      </p>
+                    </div>
+                  )
+              )}
+            </div>
+          </div>
+
+          <div className="chart-container-unique">
+            <h3>시간별 대기 오염 수치</h3>
+            <Swiper
+              modules={[Navigation, Pagination]}
+              navigation
+              pagination={{ clickable: true }}
+              spaceBetween={50}
+              slidesPerView={1}
+            >
+              {["pm10", "pm25", "no2", "o3", "co", "so2"].map((pollutant) => (
+                <SwiperSlide key={pollutant}>
+                  <h3>{pollutant.toUpperCase()}</h3>
+                  <ResponsiveContainer width="100%" height={250}>
+                    <LineChart
+                      data={airPollutionData.sort(
+                        (a, b) =>
+                          new Date(a.time).getTime() -
+                          new Date(b.time).getTime()
+                      )}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="dateTime" />
+                      <YAxis />
+                      <Tooltip />
+                      {/* <Legend /> */}
+                      <Line
+                        type="monotone"
+                        dataKey={pollutant}
+                        stroke="#8884d8"
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+
+          <div className="map-container-unique">
+            <h3>대기질 예측 지도</h3>
+            <Swiper
+              modules={[Navigation, Pagination]}
+              navigation
+              pagination={{ clickable: true }}
+              spaceBetween={50}
+              slidesPerView={1}
+            >
+              {airPollutionImages.map((pollutionData) => (
+                <SwiperSlide key={pollutionData.informCode}>
+                  <div style={{ width: "100%", height: 400 }}>
+                    <img
+                      src={pollutionData.images[imageIndex]}
+                      alt={pollutionData.informCode}
+                      style={{ width: "100%", height: "100%" }}
+                    />
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+          <div className="map-container-unique">
+            <p>
+              * 데이터는 실시간 관측된 자료이며
+              <br />
+              측정소 현지 사정이나 데이터의 <br />
+              수신상태에 따라 미수신 될 수 있음 <br />
+              <br />
+              출처 : 환경부/한국환경공단
+            </p>
+          </div>
         </div>
       </div>
     </div>
