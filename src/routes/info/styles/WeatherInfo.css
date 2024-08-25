@@ -37,6 +37,7 @@
   width: 100px;
   height: 100px;
   margin-bottom: 10px;
+  color: #ff6f61;
 }
 
 .weather-status {
@@ -59,6 +60,7 @@
 }
 
 .forecast-section {
+  position: relative;
   margin-bottom: 20px;
 }
 
@@ -77,39 +79,13 @@
   /* Firefox */
   -ms-overflow-style: none;
   /* IE 10+ */
+  flex-grow: 1;
+  margin: 0 10px;
 }
 
 .forecast-scroll::-webkit-scrollbar {
   display: none;
   /* Safari and Chrome */
-}
-
-.forecast-scroll {
-  position: relative;
-  padding-bottom: 8px;
-  /* For better spacing and to position the scrollbar */
-}
-
-.forecast-scroll::before {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 4px;
-  width: 100%;
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.05));
-  border-radius: 2px;
-  pointer-events: none;
-}
-
-.forecast-scroll::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
-  height: 4px;
-}
-
-.forecast-scroll::-webkit-scrollbar-track {
-  background-color: transparent;
 }
 
 .forecast-items {
@@ -131,6 +107,7 @@
   width: 50px;
   height: 50px;
   margin: 5px 0;
+  color: #ff6f61;
 }
 
 .forecast-date {
@@ -155,8 +132,15 @@
   align-items: center;
   background-color: #f9f9f9;
   border-radius: 10px;
-  padding: 10px;
+  padding: 20px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.daily-forecast-item .forecast-icon {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+  color: #ff6f61;
 }
 
 .day-info {
@@ -207,6 +191,7 @@
 .detail-icon {
   width: 30px;
   height: 30px;
+  color: #ff6f61;
 }
 
 @media (max-width: 400px) {
@@ -236,17 +221,15 @@
     padding: 8px;
   }
 }
-
-.forecast-section {
-  position: relative;
-  margin-bottom: 20px;
+.weather-icon-container {
+  width: 100px;
+  height: 100px;
 }
 
-.forecast-controls {
-  display: flex;
-  align-items: center;
+.weather-icon-container>svg {
+  width: 100%;
+  height: 100%;
 }
-
 .scroll-button {
   background-color: transparent;
   border: none;
@@ -260,16 +243,20 @@
 .scroll-button:hover {
   color: #ff6f61;
 }
-
-.forecast-scroll {
-  overflow-x: auto;
-  white-space: nowrap;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE 10+ */
-  flex-grow: 1;
-  margin: 0 10px;
+.day {
+  width:41px;
 }
 
-.forecast-scroll::-webkit-scrollbar {
-  display: none; /* Safari and Chrome */
+.forecast-icon-container {
+  width: 40px;
+  /* 원하는 크기로 설정 */
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.forecast-icon-container>svg {
+  width: 100%;
+  height: 100%;
 }
