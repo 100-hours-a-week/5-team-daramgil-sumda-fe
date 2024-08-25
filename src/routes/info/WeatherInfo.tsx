@@ -1,46 +1,67 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./styles/WeatherInfo.css";
-import sun from "../../assets/weather/sun.png";
-import cloud from "../../assets/weather/cloud.png";
-import rain from "../../assets/weather/rainy.png";
-import snow from "../../assets/weather/snow.png";
 import humidityIcon from "../../assets/weather/humidity.png";
 import precipitationIcon from "../../assets/weather/precipitation.png";
 import windIcon from "../../assets/weather/wind.png";
+import uvIcon from "../../assets/weather/uv.png";
+import pressureIcon from "../../assets/weather/pressure.png";
+import visibilityIcon from "../../assets/weather/visibility.png";
 import LocationDropdown from "../../components/LocationDropdown";
+import {
+  WiDaySunny,
+  WiDaySunnyOvercast,
+  WiDayHaze,
+  WiDayCloudy,
+  WiCloud,
+  WiCloudy,
+  WiFog,
+  WiShowers,
+  WiDayShowers,
+  WiStormShowers,
+  WiDayStormShowers,
+  WiRain,
+  WiCloudyGusts,
+  WiDayCloudyGusts,
+  WiSnow,
+  WiDaySnow,
+  WiSnowflakeCold,
+  WiSleet,
+  WiHail,
+  WiRainMix,
+  WiThermometer,
+  WiThermometerExterior,
+  WiWindy,
+  WiNightClear,
+  WiNightAltPartlyCloudy,
+  WiNightAltCloudyHigh,
+  WiNightAltCloudy,
+  WiNightAltShowers,
+  WiNightAltStormShowers,
+  WiNightAltCloudyGusts,
+  WiNightAltSnow,
+} from "react-icons/wi";
 
-// 날씨 유형에 따른 아이콘 매핑
-const weatherIcons: { [key: string]: string } = {
-  맑음: sun,
-  흐림: cloud,
-  비: rain,
-  눈: snow,
-  구름많음: cloud,
-};
+interface WeatherIconMap {
+  [key: number]: JSX.Element;
+}
 
 const WeatherInfo: React.FC = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<string>("");
   const [id, setId] = useState<number>(0);
   const [weatherData, setWeatherData] = useState<any | null>(null);
-  const [loading, setLoading] = useState<boolean>(true); // 로딩 상태 추가
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const forecastRef = useRef<HTMLDivElement>(null); // Ref를 사용하여 forecast-scroll에 접근
+  const forecastRef = useRef<HTMLDivElement>(null);
 
-  // 컴포넌트가 처음 렌더링될 때 현재 위치 로드
   useEffect(() => {
     loadCurrentLocation();
   }, []);
 
-  // 위치 ID가 변경될 때마다 날씨 데이터 가져오기
   useEffect(() => {
     if (id) {
       setLoading(true);
-      Promise.all([
-        fetchWeatherData(id),
-        fetchHourlyWeatherData(id),
-        fetchDailyWeatherData(id),
-      ])
+      fetchWeatherData(id)
         .then(() => {
           setLoading(false);
         })
@@ -54,105 +75,16 @@ const WeatherInfo: React.FC = () => {
   const fetchWeatherData = async (id: number) => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/weather/current?id=${id}`
+        `${process.env.REACT_APP_API_URL}/acweather?id=${id}`
       );
       if (response.ok) {
         const data = await response.json();
-        setWeatherData((prevData: any) => ({
-          ...prevData,
-          currentWeather: {
-            weather_type: data.data.weather,
-            current_temperature: parseFloat(data.data.temperature),
-            precipitation: data.data.precipitationLastHour,
-            wind_speed: data.data.windSpeed,
-            wind_direction: data.data.windDirection,
-            humidity: data.data.humidity,
-            description: "", // 필요 시 데이터 조정
-          },
-        }));
+        setWeatherData(data);
       } else {
         console.error("날씨 데이터를 가져오는 데 실패했습니다.");
       }
     } catch (error) {
       console.error("날씨 데이터를 가져오는 중 오류가 발생했습니다:", error);
-    }
-  };
-
-  const fetchHourlyWeatherData = async (id: number) => {
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/weather/time?id=${id}`
-      );
-      if (response.ok) {
-        const data = await response.json();
-        const sortedData = data.data.sort(
-          (a: any, b: any) =>
-            a.date.localeCompare(b.date) || a.time.localeCompare(b.time)
-        );
-
-        setWeatherData((prevData: any) => ({
-          ...prevData,
-          hourlyForecast: sortedData.map((item: any) => ({
-            time: `${item.time.slice(0, 2)}:${item.time.slice(2, 4)}`,
-            weather_type: item.weather.sky,
-            TA: "", // 온도 데이터가 있으면 여기서 매핑
-            ...item.weather,
-          })),
-        }));
-      } else {
-        console.error("시간별 날씨 데이터를 가져오는 데 실패했습니다.");
-      }
-    } catch (error) {
-      console.error(
-        "시간별 날씨 데이터를 가져오는 중 오류가 발생했습니다:",
-        error
-      );
-    }
-  };
-
-  const fetchDailyWeatherData = async (id: number) => {
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/weather/days?id=${id}`
-      );
-      if (response.ok) {
-        const data = await response.json();
-        setWeatherData((prevData: any) => ({
-          ...prevData,
-          dailyForecast: data.data.map((item: any, index: number) => {
-            let dayLabel = `Day ${index + 1}`;
-            switch (index) {
-              case 0:
-                dayLabel = "내일";
-                break;
-              case 1:
-                dayLabel = "모레";
-                break;
-              case 2:
-                dayLabel = "3일 후";
-                break;
-              case 3:
-                dayLabel = "4일 후";
-                break;
-              default:
-                dayLabel = `${index + 1}일 후`;
-            }
-            return {
-              day: dayLabel,
-              max_temperature: parseFloat(item.maxTemperature),
-              min_temperature: parseFloat(item.minTemperature),
-              weather_type: item.weatherPm || item.weatherAm, // weatherPm이 없으면 weatherAm 사용
-            };
-          }),
-        }));
-      } else {
-        console.error("일별 날씨 데이터를 가져오는 데 실패했습니다.");
-      }
-    } catch (error) {
-      console.error(
-        "일별 날씨 데이터를 가져오는 중 오류가 발생했습니다:",
-        error
-      );
     }
   };
 
@@ -231,28 +163,91 @@ const WeatherInfo: React.FC = () => {
     }
   };
 
-  // 날씨 아이콘 선택
-  const weatherIcon =
-    weatherIcons[weatherData?.currentWeather?.weather_type] || sun;
-
-  // 스크롤을 왼쪽으로 이동하는 함수
   const scrollLeft = () => {
     if (forecastRef.current) {
       forecastRef.current.scrollBy({
-        left: -100, // 스크롤할 픽셀 값 (왼쪽으로)
+        left: -100,
         behavior: "smooth",
       });
     }
   };
 
-  // 스크롤을 오른쪽으로 이동하는 함수
   const scrollRight = () => {
     if (forecastRef.current) {
       forecastRef.current.scrollBy({
-        left: 100, // 스크롤할 픽셀 값 (오른쪽으로)
+        left: 100,
         behavior: "smooth",
       });
     }
+  };
+
+  const formatUnixTime = (unixTime: number, index: number) => {
+    const date = new Date(unixTime * 1000);
+    if (index === 0) return "오늘";
+    if (index === 1) return "내일";
+    if (index === 2) return "모레";
+    return `${index}일후`;
+  };
+
+  const weatherIconMap: WeatherIconMap = {
+    1: <WiDaySunny />,
+    2: <WiDaySunnyOvercast />,
+    3: <WiDaySunnyOvercast />,
+    4: <WiDaySunnyOvercast />,
+    5: <WiDayHaze />,
+    6: <WiDayCloudy />,
+    7: <WiCloud />,
+    8: <WiCloudy />,
+    11: <WiFog />,
+    12: <WiShowers />,
+    13: <WiDayShowers />,
+    14: <WiDayShowers />,
+    15: <WiStormShowers />,
+    16: <WiDayStormShowers />,
+    17: <WiDayStormShowers />,
+    18: <WiRain />,
+    19: <WiCloudyGusts />,
+    20: <WiDayCloudyGusts />,
+    21: <WiDayCloudyGusts />,
+    22: <WiSnow />,
+    23: <WiDaySnow />,
+    24: <WiSnowflakeCold />,
+    25: <WiSleet />,
+    26: <WiHail />,
+    29: <WiRainMix />,
+    30: <WiThermometer />,
+    31: <WiThermometerExterior />,
+    32: <WiWindy />,
+    33: <WiNightClear />,
+    34: <WiNightAltPartlyCloudy />,
+    35: <WiNightAltPartlyCloudy />,
+    36: <WiNightAltPartlyCloudy />,
+    37: <WiNightAltCloudyHigh />,
+    38: <WiNightAltCloudy />,
+    39: <WiNightAltShowers />,
+    40: <WiNightAltShowers />,
+    41: <WiNightAltStormShowers />,
+    42: <WiNightAltStormShowers />,
+    43: <WiNightAltCloudyGusts />,
+    44: <WiNightAltSnow />,
+    500: <WiRain />, // Example for Rain
+    501: <WiStormShowers />, // Example for Heavy Rain
+    802: <WiCloud />, // Example for Cloudy
+    803: <WiCloudy />, // Example for Mostly Cloudy
+    804: <WiCloudyGusts />, // Example for Overcast
+  };
+
+  const executeIcon = (weatherIcon: number) => {
+    if (!weatherIcon) {
+      console.warn("No weatherIcon provided");
+      return <WiDaySunny />;
+    }
+    const icon = weatherIconMap[weatherIcon];
+    if (!icon) {
+      console.warn(`No icon mapped for weatherIcon: ${weatherIcon}`);
+      return <WiDaySunny />;
+    }
+    return icon;
   };
 
   return (
@@ -272,104 +267,83 @@ const WeatherInfo: React.FC = () => {
         ) : (
           <>
             <div className="weather-section">
-              <img
-                className="weather-icon"
-                src={weatherIcon}
-                alt="날씨 아이콘"
-              />
+              <div className="weather-icon-container">
+                {executeIcon(
+                  weatherData?.weatherDataJson?.current?.weather[0]?.id
+                )}
+              </div>
               <p className="weather-status">
-                {weatherData?.currentWeather?.weather_type}
+                {weatherData?.weatherDataJson?.current?.weather[0]?.description}
               </p>
               <p className="weather-current-temperature">
-                {weatherData?.currentWeather?.current_temperature}°C
+                {Math.round(weatherData?.weatherDataJson?.current?.temp)}°C
               </p>
               <p className="weather-precipitation">
-                {weatherData?.currentWeather?.precipitation}
+                체감온도{" "}
+                {Math.round(weatherData?.weatherDataJson?.current?.feels_like)}
+                °C
               </p>
-              <p className="weather-description"></p>
             </div>
 
-            {/* 시간별 예보 섹션 */}
             <div className="forecast-section">
-              <h3 className="forecast-title">시간별 예보</h3>
-              <div className="forecast-controls">
-                <button onClick={scrollLeft} className="scroll-button">
-                  &#10094;
-                </button>
-                <div className="forecast-scroll" ref={forecastRef}>
-                  <div className="forecast-items">
-                    {weatherData?.hourlyForecast?.map(
-                      (forecast: any, index: number) => {
-                        return (
-                          <div key={index} className="forecast-item">
-                            <p>{forecast.time}</p>
-                            <img
-                              className="forecast-icon"
-                              src={weatherIcons[forecast.weather_type] || sun}
-                              alt="날씨 아이콘"
-                            />
-                            <p>{forecast.weather_type}</p>
-                          </div>
-                        );
-                      }
-                    )}
-                  </div>
-                </div>
-                <button onClick={scrollRight} className="scroll-button">
-                  &#10095;
-                </button>
-              </div>
-            </div>
-
-            {/* 일별 예보 섹션 */}
-            <div className="daily-forecast-section">
               <h3 className="forecast-title">일별 예보</h3>
               <div className="daily-forecast-items">
-                {weatherData?.dailyForecast?.map(
-                  (forecast: any, index: number) => (
-                    <div key={index} className="daily-forecast-item">
-                      <div className="day-info">
-                        <p className="day">{forecast.day || "일자"}</p>
+                {weatherData?.weatherDataJson?.daily?.map(
+                  (forecast: any, index: number) => {
+                    const weatherId = forecast.weather[0]?.id;
+                    const icon = executeIcon(weatherId);
+                    return (
+                      <div key={index} className="daily-forecast-item">
+                        <div className="day-info">
+                          <p className="day">
+                            {formatUnixTime(forecast.dt, index)}
+                          </p>
+                        </div>
+                        <div className="forecast-icon-container">{icon}</div>
+                        <p className="temperature">
+                          최저 {Math.round(forecast.temp.min)}° / 최고{" "}
+                          {Math.round(forecast.temp.max)}°
+                        </p>
                       </div>
-                      <img
-                        className="forecast-icon"
-                        src={weatherIcons[forecast.weather_type] || sun}
-                        alt="날씨 아이콘"
-                      />
-                      <p className="temperature">
-                        최저 {forecast.min_temperature}° / 최고{" "}
-                        {forecast.max_temperature}°
-                      </p>
-                    </div>
-                  )
+                    );
+                  }
                 )}
               </div>
             </div>
 
-            {/* 상세 날씨 섹션 */}
             <div className="detail-forecast-section">
               <h3 className="forecast-title">상세 날씨 정보</h3>
               <div className="detail-forecast-items">
                 {[
                   {
-                    label: "날씨",
-                    value: weatherData?.currentWeather?.weather_type,
-                    icon: weatherIcon,
+                    label: "습도",
+                    value: `${weatherData?.weatherDataJson?.current?.humidity}%`,
+                    icon: humidityIcon,
                   },
                   {
-                    label: "강수량",
-                    value: weatherData?.currentWeather?.precipitation,
-                    icon: precipitationIcon,
+                    label: "기압",
+                    value: `${weatherData?.weatherDataJson?.current?.pressure} hPa`,
+                    icon: pressureIcon,
                   },
                   {
                     label: "바람",
-                    value: `${weatherData?.currentWeather?.wind_speed} m/s | ${weatherData?.currentWeather?.wind_direction}`,
+                    value: `${weatherData?.weatherDataJson?.current?.wind_speed} m/s`,
                     icon: windIcon,
                   },
                   {
-                    label: "습도",
-                    value: `${weatherData?.currentWeather?.humidity}%`,
-                    icon: humidityIcon,
+                    label: "가시거리",
+                    value: `${weatherData?.weatherDataJson?.current?.visibility} m`,
+                    icon: visibilityIcon,
+                  },
+                  {
+                    label: "UV Index",
+                    value: `${weatherData?.weatherDataJson?.current?.uvi}`,
+                    icon: uvIcon,
+                  },
+                  {
+                    label: "이슬점",
+                    value: `${weatherData?.weatherDataJson?.current?.dew_point}°C`,
+                    icon: precipitationIcon, // Example icon, you can replace it
                   },
                 ].map((item, index) => (
                   <div key={index} className="detail-forecast-item">
