@@ -25,6 +25,22 @@ jobs:
           rm ./package-lock.json
           npm install
 
+      - name: Create .env file
+        run: |
+          echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}" > .env
+        # GitHub Secrets에 저장된 값을 사용하여 .env 파일을 생성
+
+      - name: Upload .env file to EC2
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          SSH_HOST: ${{ secrets.EC2_HOST }}
+          SSH_USER: ${{ secrets.EC2_USER }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          scp -o StrictHostKeyChecking=no .env ${SSH_USER}@${SSH_HOST}:/var/www/html/.env
+
       - name: Build React app
         run: CI=false npm run build
 
