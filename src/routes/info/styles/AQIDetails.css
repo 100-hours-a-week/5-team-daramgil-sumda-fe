@@ -146,11 +146,22 @@
   color: #1976d2;
   margin-bottom: 16px;
 }
-.map-container-unique p {
+.allert-container-unique {
+  width: 100%;
+  max-width: 1200px;
+  padding: 20px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: row;
+}
+.allert-container-unique p {
+  margin-left: 10px;
   line-height: 1rem;
   font-size: 0.8rem;
   font-weight: 500;
-  color: #d21919;
+  color: #6b6b6b;
 }
 
 /* Swiper 스타일을 위한 기본 설정 */
@@ -168,6 +179,5 @@
   text-align: center;
   font-size: 18px;
   background-color: #f9fafb;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
 }

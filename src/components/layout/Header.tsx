@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import "./styles/Header.css";
@@ -8,7 +8,9 @@ import menu_icon from "../../assets/icons/menu.png";
 
 const Header: React.FC = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-  const location = useLocation(); // useLocation 훅 사용
+  const location = useLocation();
+  const sidebarRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
 
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
@@ -19,13 +21,36 @@ const Header: React.FC = () => {
   };
 
   useEffect(() => {
-    // 경로가 변경될 때마다 사이드바를 닫음
+    const handleClickOutside = (event: MouseEvent) => {
+      // 클릭한 대상이 헤더나 사이드바 내부가 아닌 경우에만 닫음
+      if (
+        sidebarRef.current &&
+        headerRef.current &&
+        !sidebarRef.current.contains(event.target as Node) &&
+        !headerRef.current.contains(event.target as Node)
+      ) {
+        closeSidebar();
+      }
+    };
+
+    if (isSidebarOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isSidebarOpen]);
+
+  useEffect(() => {
     closeSidebar();
-  }, [location.pathname]); // location.pathname이 변경될 때마다 실행
+  }, [location.pathname]);
 
   return (
     <div>
-      <header className="header">
+      <header className="header" ref={headerRef}>
         <img
           src={menu_icon}
           alt="menu-icon"
@@ -41,7 +66,7 @@ const Header: React.FC = () => {
         </div>
         <p style={{ marginLeft: "30px" }}></p>
       </header>
-      <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
+      <Sidebar ref={sidebarRef} isOpen={isSidebarOpen} onClose={closeSidebar} />
     </div>
   );
 };

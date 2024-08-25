@@ -128,3 +128,26 @@
     transform: translateY(-5px);
   }
 }
+/* Swiper 좌우 화살표 기본 크기와 디자인 변경 */
+.swiper-button-next,
+.swiper-button-prev {
+  width: 50px; /* 버튼 너비 설정 */
+  height: 50px; /* 버튼 높이 설정 */
+  color: rgb(67, 67, 67); /* 화살표 색상 */
+}
+
+/* Swiper 버튼의 화살표 크기 조정 */
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 20px; /* 화살표 크기 */
+  font-weight: bold;
+}
+
+/* 추가적으로 버튼의 위치를 조정할 수 있습니다 */
+.swiper-button-next {
+  right: -20px; /* 오른쪽에서의 간격 */
+}
+
+.swiper-button-prev {
+  left: -20px; /* 왼쪽에서의 간격 */
+}
