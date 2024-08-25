@@ -285,32 +285,6 @@ const WeatherInfo: React.FC = () => {
               </p>
             </div>
 
-            <div className="forecast-section">
-              <h3 className="forecast-title">일별 예보</h3>
-              <div className="daily-forecast-items">
-                {weatherData?.weatherDataJson?.daily?.map(
-                  (forecast: any, index: number) => {
-                    const weatherId = forecast.weather[0]?.id;
-                    const icon = executeIcon(weatherId);
-                    return (
-                      <div key={index} className="daily-forecast-item">
-                        <div className="day-info">
-                          <p className="day">
-                            {formatUnixTime(forecast.dt, index)}
-                          </p>
-                        </div>
-                        <div className="forecast-icon-container">{icon}</div>
-                        <p className="temperature">
-                          최저 {Math.round(forecast.temp.min)}° / 최고{" "}
-                          {Math.round(forecast.temp.max)}°
-                        </p>
-                      </div>
-                    );
-                  }
-                )}
-              </div>
-            </div>
-
             <div className="detail-forecast-section">
               <h3 className="forecast-title">상세 날씨 정보</h3>
               <div className="detail-forecast-items">
@@ -358,6 +332,31 @@ const WeatherInfo: React.FC = () => {
                     <p>{item.value}</p>
                   </div>
                 ))}
+              </div>
+            </div>
+            <div className="forecast-section">
+              <h3 className="forecast-title">일별 예보</h3>
+              <div className="daily-forecast-items">
+                {weatherData?.weatherDataJson?.daily?.map(
+                  (forecast: any, index: number) => {
+                    const weatherId = forecast.weather[0]?.id;
+                    const icon = executeIcon(weatherId);
+                    return (
+                      <div key={index} className="daily-forecast-item">
+                        <div className="day-info">
+                          <p className="day">
+                            {formatUnixTime(forecast.dt, index)}
+                          </p>
+                        </div>
+                        <div className="forecast-icon-container">{icon}</div>
+                        <p className="temperature">
+                          최저 {Math.round(forecast.temp.min)}° / 최고{" "}
+                          {Math.round(forecast.temp.max)}°
+                        </p>
+                      </div>
+                    );
+                  }
+                )}
               </div>
             </div>
           </>
