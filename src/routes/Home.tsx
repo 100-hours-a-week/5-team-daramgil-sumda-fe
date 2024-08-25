@@ -69,12 +69,13 @@ const Home: React.FC = () => {
   const fetchWeatherData = async (id: number) => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/weather/current?id=${id}`
+        `${process.env.REACT_APP_API_URL}/acweather?id=${id}`
       );
       if (response.ok) {
         const data = await response.json();
-        setWeatherData(data.data);
-        console.log(data.data);
+        setWeatherData(data.weatherDataJson);
+        console.log(weatherData.current.temp);
+        console.log(weatherData.daily[0].temp.max);
       } else {
         console.error("Failed to fetch weather data.");
       }
@@ -185,8 +186,7 @@ const Home: React.FC = () => {
     구름많음: cloud,
   };
   // 날씨 아이콘 선택
-  const weatherIcon =
-    weatherIcons[weatherData?.currentWeather?.weather_type] || sun;
+  const weatherIcon = weatherIcons[weatherData?.current?.weather?.icon] || sun;
   const squirrelImages = [
     basic,
     knight,
@@ -229,7 +229,7 @@ const Home: React.FC = () => {
             가벼운 옷차림으로 산책을 즐겨보세요.
           </>
         );
-      case "흐림":
+      case "구름조금":
         return (
           <>
             오늘은 구름이 많고 흐려요.
@@ -273,37 +273,10 @@ const Home: React.FC = () => {
     // 대기질과 날씨를 모두 고려한 메시지 생성
     if (airQualityValue > 100) {
       message = "공기가 나빠요. 실내에서 활동하는 것이 좋아요.";
-      if (weather === "맑음") {
-        message += " 날씨가 맑지만, 공기질 때문에 외출은 피하세요.";
-      } else if (weather === "더위") {
-        message += " 또한, 더운 날씨이므로 실내에서 시원하게 보내세요.";
-      } else if (weather === "눈") {
-        message += " 눈이 오고 있어요, 실내에서 따뜻하게 지내세요.";
-      } else {
-        message += " 날씨도 좋지 않으니 실내에서 쉬는 게 좋겠어요.";
-      }
     } else if (airQualityValue > 50 && airQualityValue <= 100) {
       message = "공기가 약간 탁해요. 외출 시 주의가 필요해요.";
-      if (weather === "맑음") {
-        message += " 그래도 날씨가 맑으니 가볍게 산책해보세요.";
-      } else if (weather === "비") {
-        message += " 비가 오고 있으니 우산을 꼭 챙기세요.";
-      } else {
-        message += " 오늘 날씨도 적당하니 주의하면서 외출해보세요.";
-      }
     } else {
       message = "공기가 좋으니 활동하기 좋은 날이에요!";
-      if (weather === "맑음") {
-        message += " 맑은 날씨라 산책하기 정말 좋아요.";
-      } else if (weather === "흐림") {
-        message += " 구름이 조금 있지만 활동하기 괜찮아요.";
-      } else if (weather === "비") {
-        message += " 비가 오지만 공기가 깨끗하니 우산 챙기고 나가세요.";
-      } else if (weather === "눈") {
-        message += " 눈이 와요! 따뜻하게 입고 나가서 눈 구경해보세요.";
-      } else if (weather === "더위") {
-        message += " 날씨가 더우니 시원한 곳에서 활동하세요.";
-      }
     }
 
     return message;
@@ -352,19 +325,23 @@ const Home: React.FC = () => {
           <SwiperSlide>
             <div className="home-weather-section">
               <h1 className="weather-title">날씨</h1>
-              <img
-                className="home-weather-icon"
-                src={weatherIcons[weatherData.weather] || sun}
-                alt="날씨 이미지"
-              />
+              <img className="home-weather-icon" src={sun} alt="날씨 이미지" />
               {weatherData ? (
                 <>
-                  <p className="weather-status">{weatherData.weather}</p>
-                  <p className="weather-current-temperature">
-                    {weatherData.temperature}
+                  <p className="weather-status">
+                    {weatherData.current.weather[0].description}
+                  </p>
+                  <p className="home-weather-current-temperature">
+                    {weatherData.current.temp}°C
+                  </p>
+                  <p className="weather-range">
+                    {weatherData.daily[0].temp.max}°C /{" "}
+                    {weatherData.daily[0].temp.min}°C
                   </p>
                   <p className="weather-description">
-                    {getWeatherMessage(weatherData.weather)}
+                    {getWeatherMessage(
+                      weatherData.current.weather[0].description
+                    )}
                   </p>
                 </>
               ) : (
