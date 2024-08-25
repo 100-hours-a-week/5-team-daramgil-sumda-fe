@@ -22,6 +22,7 @@ import moderate from "../../assets/grade/moderate.png";
 import unhealthy from "../../assets/grade/unhealthy.png";
 import veryUnhealthy from "../../assets/grade/very_unhealthy.png";
 import hazardous from "../../assets/grade/hazardous.png";
+import callout from "../../assets/info.png";
 
 const AQIDetails: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
@@ -41,6 +42,7 @@ const AQIDetails: React.FC = () => {
     fetchAirPollutionData(id || 1);
     fetchAirQualityData(id || 1);
     fetchAirPollutionImages();
+    console.log("Updated ID:", id);
   }, [id]);
 
   const fetchAirPollutionData = async (id: number) => {
@@ -143,6 +145,7 @@ const AQIDetails: React.FC = () => {
       setSelectedLocation(location);
       setId(id);
       setDropdownOpen(false);
+      console.log("즐겨찾기 " + id);
     }
   };
 
@@ -162,6 +165,9 @@ const AQIDetails: React.FC = () => {
         const data = await response.json();
         if (data.status === 200 && data.data.district) {
           setSelectedLocation(data.data.district);
+          setId(data.data.id);
+          console.log(latitude, longitude);
+          console.log(id);
           return { latitude, longitude };
         } else {
           alert("위치를 찾을 수 없습니다.");
@@ -180,7 +186,6 @@ const AQIDetails: React.FC = () => {
             async (position) => {
               const { latitude, longitude } = position.coords;
               const locationData = await fetchLocationData(latitude, longitude);
-              setId(0); // 초기화 시도
               resolve(locationData);
             },
             async (error) => {
@@ -241,6 +246,15 @@ const AQIDetails: React.FC = () => {
     co: getAirQualityInfo(airQualityData?.coValue, airQualityData?.coGrade),
     so2: getAirQualityInfo(airQualityData?.so2Value, airQualityData?.so2Grade),
   };
+  const pollutantNames: { [key: string]: string } = {
+    pm10: "미세먼지",
+    pm25: "초미세먼지",
+    no2: "이산화질소",
+    o3: "오존",
+    co: "일산화탄소",
+    so2: "아황산가스",
+    khai: "통합대기환경지수", // 이 부분은 필요에 따라 변경
+  };
 
   if (!airQualityData) {
     return <div>Loading...</div>;
@@ -257,10 +271,6 @@ const AQIDetails: React.FC = () => {
           loadCurrentLocation={loadCurrentLocation}
         />
         <div className="aqidetails-container-unique">
-          <h1 className="page-title-unique">대기 오염 정보 조회</h1>
-          <p className="page-description-unique">
-            현재 위치 또는 선택한 위치의 대기 오염 정보를 확인하세요.
-          </p>
           <div className="info-container-unique">
             <div className="air-quality-section-unique">
               <h1 className="air-quality-title-unique">통합대기환경지수</h1>
@@ -286,7 +296,7 @@ const AQIDetails: React.FC = () => {
                 ([key, info]) =>
                   key !== "khai" && (
                     <div className="pollutant-item-unique" key={key}>
-                      <h2>{key.toUpperCase()}</h2>
+                      <h2>{pollutantNames[key] || key.toUpperCase()}</h2>
                       {info.image ? (
                         <img
                           className="pollutant-image-unique"
@@ -318,7 +328,9 @@ const AQIDetails: React.FC = () => {
             >
               {["pm10", "pm25", "no2", "o3", "co", "so2"].map((pollutant) => (
                 <SwiperSlide key={pollutant}>
-                  <h3>{pollutant.toUpperCase()}</h3>
+                  <h3>
+                    {pollutantNames[pollutant] || pollutant.toUpperCase()}
+                  </h3>
                   <ResponsiveContainer width="100%" height={250}>
                     <LineChart
                       data={airPollutionData.sort(
@@ -331,7 +343,6 @@ const AQIDetails: React.FC = () => {
                       <XAxis dataKey="dateTime" />
                       <YAxis />
                       <Tooltip />
-                      {/* <Legend /> */}
                       <Line
                         type="monotone"
                         dataKey={pollutant}
@@ -366,12 +377,13 @@ const AQIDetails: React.FC = () => {
               ))}
             </Swiper>
           </div>
-          <div className="map-container-unique">
+          <div className="allert-container-unique">
+            <img style={{ width: "12%", height: "12%" }} src={callout} />
             <p>
               * 데이터는 실시간 관측된 자료이며
               <br />
               측정소 현지 사정이나 데이터의 <br />
-              수신상태에 따라 미수신 될 수 있음 <br />
+              수신상태에 따라 미수신 될 수 있습니다. <br />
               <br />
               출처 : 환경부/한국환경공단
             </p>

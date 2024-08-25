@@ -78,6 +78,7 @@ const Home: React.FC = () => {
   useEffect(() => {
     fetchAirQualityData(id || 1);
     fetchWeatherData(id || 1);
+    console.log("Updated ID:", id);
   }, [id]);
 
   const fetchAirQualityData = async (id: number) => {
@@ -109,8 +110,6 @@ const Home: React.FC = () => {
       if (response.ok) {
         const data = await response.json();
         setWeatherData(data.weatherDataJson);
-        console.log(weatherData.current.temp);
-        console.log(weatherData.daily[0].temp.max);
       } else {
         console.error("Failed to fetch weather data.");
       }
@@ -128,6 +127,7 @@ const Home: React.FC = () => {
       setSelectedLocation(location);
       setId(id);
       setDropdownOpen(false);
+      console.log("즐겨찾기 " + id);
     }
   };
 
@@ -147,8 +147,9 @@ const Home: React.FC = () => {
         const data = await response.json();
         if (data.status === 200 && data.data.district) {
           setSelectedLocation(data.data.district);
-          setId(data.data.id);
-          console.log(longitude, latitude);
+          setId(data.data.id); // 상태 업데이트 요청
+          console.log(latitude, longitude);
+          console.log(id);
           return { latitude, longitude };
         } else {
           alert("위치를 찾을 수 없습니다.");
@@ -202,10 +203,10 @@ const Home: React.FC = () => {
       "5": { image: hazardous, status: "위험" },
     };
   const getAirQualityGrade = (value: number) => {
-    if (value <= 30) return airQualityGrades["1"];
-    if (value <= 50) return airQualityGrades["2"];
-    if (value <= 100) return airQualityGrades["3"];
-    if (value <= 150) return airQualityGrades["4"];
+    if (value <= 50) return airQualityGrades["1"];
+    if (value <= 100) return airQualityGrades["2"];
+    if (value <= 250) return airQualityGrades["3"];
+    if (value <= 350) return airQualityGrades["4"];
     return airQualityGrades["5"];
   };
   const khaiInfo = airQualityData?.khaiValue
@@ -269,7 +270,6 @@ const Home: React.FC = () => {
     804: <WiCloudyGusts />, // Example for Overcast
   };
   const executeIcon = (weatherIcon: number) => {
-    console.log(weatherIcon);
     if (!weatherIcon) {
       console.warn("No weatherIcon provided");
       return <WiDaySunny />;
@@ -300,13 +300,13 @@ const Home: React.FC = () => {
   }, []);
   // 대기질 메시지 설정 함수
   const getAirQualityMessage = (value: number) => {
-    if (value <= 30) {
+    if (value <= 50) {
       return "오늘의 공기는 깨끗하고 상쾌해요! 야외 활동하기에 딱 좋은 날입니다.";
-    } else if (value <= 50) {
-      return "오늘은 공기가 무난해요. 평소처럼 야외 활동을 즐기셔도 좋습니다.";
     } else if (value <= 100) {
+      return "오늘은 공기가 무난해요. 평소처럼 야외 활동을 즐기셔도 좋습니다.";
+    } else if (value <= 250) {
       return "오늘은 공기가 다소 탁하네요. 민감한 분들은 실내 활동을 추천드려요.";
-    } else if (value <= 150) {
+    } else if (value <= 350) {
       return "오늘은 공기가 많이 안 좋아요. 가능하면 야외 활동을 피하시고, 외출 시 마스크를 꼭 착용하세요.";
     } else {
       return "오늘은 공기가 매우 나쁩니다. 꼭 실내에서 활동하시고, 창문을 닫아두세요.";
