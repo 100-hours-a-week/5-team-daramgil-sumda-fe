@@ -25,7 +25,42 @@ import cloud from "../assets/weather/cloud.png";
 import rain from "../assets/weather/rainy.png";
 import snow from "../assets/weather/snow.png";
 import LocationDropdown from "../components/LocationDropdown";
-
+import {
+  WiDaySunny,
+  WiDaySunnyOvercast,
+  WiDayHaze,
+  WiDayCloudy,
+  WiCloud,
+  WiCloudy,
+  WiFog,
+  WiShowers,
+  WiDayShowers,
+  WiStormShowers,
+  WiDayStormShowers,
+  WiRain,
+  WiCloudyGusts,
+  WiDayCloudyGusts,
+  WiSnow,
+  WiDaySnow,
+  WiSnowflakeCold,
+  WiSleet,
+  WiHail,
+  WiRainMix,
+  WiThermometer,
+  WiThermometerExterior,
+  WiWindy,
+  WiNightClear,
+  WiNightAltPartlyCloudy,
+  WiNightAltCloudyHigh,
+  WiNightAltCloudy,
+  WiNightAltShowers,
+  WiNightAltStormShowers,
+  WiNightAltCloudyGusts,
+  WiNightAltSnow,
+} from "react-icons/wi";
+interface WeatherIconMap {
+  [key: number]: JSX.Element;
+}
 const Home: React.FC = () => {
   const [airQualityData, setAirQualityData] = useState<any>(null);
   const [weatherData, setWeatherData] = useState<any>(null);
@@ -186,7 +221,67 @@ const Home: React.FC = () => {
     구름많음: cloud,
   };
   // 날씨 아이콘 선택
-  const weatherIcon = weatherIcons[weatherData?.current?.weather?.icon] || sun;
+  const weatherIconMap: WeatherIconMap = {
+    1: <WiDaySunny />,
+    2: <WiDaySunnyOvercast />,
+    3: <WiDaySunnyOvercast />,
+    4: <WiDaySunnyOvercast />,
+    5: <WiDayHaze />,
+    6: <WiDayCloudy />,
+    7: <WiCloud />,
+    8: <WiCloudy />,
+    11: <WiFog />,
+    12: <WiShowers />,
+    13: <WiDayShowers />,
+    14: <WiDayShowers />,
+    15: <WiStormShowers />,
+    16: <WiDayStormShowers />,
+    17: <WiDayStormShowers />,
+    18: <WiRain />,
+    19: <WiCloudyGusts />,
+    20: <WiDayCloudyGusts />,
+    21: <WiDayCloudyGusts />,
+    22: <WiSnow />,
+    23: <WiDaySnow />,
+    24: <WiSnowflakeCold />,
+    25: <WiSleet />,
+    26: <WiHail />,
+    29: <WiRainMix />,
+    30: <WiThermometer />,
+    31: <WiThermometerExterior />,
+    32: <WiWindy />,
+    33: <WiNightClear />,
+    34: <WiNightAltPartlyCloudy />,
+    35: <WiNightAltPartlyCloudy />,
+    36: <WiNightAltPartlyCloudy />,
+    37: <WiNightAltCloudyHigh />,
+    38: <WiNightAltCloudy />,
+    39: <WiNightAltShowers />,
+    40: <WiNightAltShowers />,
+    41: <WiNightAltStormShowers />,
+    42: <WiNightAltStormShowers />,
+    43: <WiNightAltCloudyGusts />,
+    44: <WiNightAltSnow />,
+    500: <WiRain />, // Example for Rain
+    501: <WiStormShowers />, // Example for Heavy Rain
+    802: <WiCloud />, // Example for Cloudy
+    803: <WiCloudy />, // Example for Mostly Cloudy
+    804: <WiCloudyGusts />, // Example for Overcast
+  };
+  const executeIcon = (weatherIcon: number) => {
+    console.log(weatherIcon);
+    if (!weatherIcon) {
+      console.warn("No weatherIcon provided");
+      return <WiDaySunny />;
+    }
+    const icon = weatherIconMap[weatherIcon];
+    if (!icon) {
+      console.warn(`No icon mapped for weatherIcon: ${weatherIcon}`);
+      return <WiDaySunny />;
+    }
+    return icon;
+  };
+
   const squirrelImages = [
     basic,
     knight,
@@ -325,18 +420,21 @@ const Home: React.FC = () => {
           <SwiperSlide>
             <div className="home-weather-section">
               <h1 className="weather-title">날씨</h1>
-              <img className="home-weather-icon" src={sun} alt="날씨 이미지" />
+              {/* <img className="home-weather-icon" src={sun} alt="날씨 이미지" /> */}
+              <div className="home-weather-icon">
+                {executeIcon(weatherData?.current?.weather[0]?.id)}
+              </div>
               {weatherData ? (
                 <>
                   <p className="weather-status">
                     {weatherData.current.weather[0].description}
                   </p>
                   <p className="home-weather-current-temperature">
-                    {weatherData.current.temp}°C
+                    {Math.round(weatherData.current.temp)}°C
                   </p>
                   <p className="weather-range">
-                    {weatherData.daily[0].temp.max}°C /{" "}
-                    {weatherData.daily[0].temp.min}°C
+                    {Math.round(weatherData.daily[0].temp.max)}°C /{" "}
+                    {Math.round(weatherData.daily[0].temp.min)}°C
                   </p>
                   <p className="weather-description">
                     {getWeatherMessage(
@@ -357,7 +455,7 @@ const Home: React.FC = () => {
               <p>
                 {getSquirrelMessage(
                   airQualityData.khaiValue,
-                  weatherData.weather
+                  weatherData.current.weather[0].description
                 )}
               </p>
               <p>
