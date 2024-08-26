@@ -1,4 +1,4 @@
-name: Build and Deploy React App to EC2
+name: React 앱 빌드 및 EC2 배포
 
 on:
   push:
@@ -10,27 +10,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: 코드 체크아웃
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
+      - name: Node.js 설정
         uses: actions/setup-node@v2
         with:
           node-version: "14"
 
-      - name: Clean npm cache and install dependencies
+      - name: npm 캐시 정리 및 종속성 설치
         run: |
           npm cache clean --force
           rm -rf node_modules
           rm ./package-lock.json
           npm install
 
-      - name: Create .env file
+      - name: .env 파일 생성
         run: |
           echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}" > .env
-        # GitHub Secrets에 저장된 값을 사용하여 .env 파일을 생성
 
-      - name: Upload .env file to EC2
+      - name: .env 파일을 EC2로 업로드
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
           SSH_HOST: ${{ secrets.EC2_HOST }}
@@ -41,22 +40,25 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           scp -o StrictHostKeyChecking=no .env ${SSH_USER}@${SSH_HOST}:/var/www/html/.env
 
-      - name: Build and upload source maps on EC2
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-          SSH_HOST: ${{ secrets.EC2_HOST }}
-          SSH_USER: ${{ secrets.EC2_USER }}
-        run: |
-          ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} << 'EOF'
-            cd /var/www/html
-            # Optional: Load environment variables if necessary
-            source ~/.bash_profile || true
-            CI=false npm run build
-            npx sentry-cli --auth-token=$SENTRY_AUTH_TOKEN --log-level=debug sourcemaps inject --org daramgil --project sumda-fe ./build
-            npx sentry-cli --auth-token=$SENTRY_AUTH_TOKEN --log-level=debug sourcemaps upload --org daramgil --project sumda-fe ./build
-          EOF
+      - name: React 앱 빌드
+        run: CI=false npm run build
 
-      - name: Deploy React App to EC2
+      - name: Sentry 릴리스 생성
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          environment: production
+          sourcemaps: "./build/static/js"
+
+      - name: 소스맵을 Sentry로 업로드
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        run: npm run sentry:sourcemaps
+
+      - name: React 앱을 EC2로 배포
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
           SSH_HOST: ${{ secrets.EC2_HOST }}
