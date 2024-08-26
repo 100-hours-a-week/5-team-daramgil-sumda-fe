@@ -46,8 +46,8 @@ jobs:
 
       - name: Upload source maps to Sentry
         run: |
-          npx sentry-cli --auth-token=${{ secrets.SENTRY_AUTH_TOKEN }} --log-level=debug sourcemaps inject --org daramgil --project sumda-fe ./build
-          npx sentry-cli --auth-token=${{ secrets.SENTRY_AUTH_TOKEN }} --log-level=debug sourcemaps upload --org daramgil --project sumda-fe ./build
+          SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }} npx sentry-cli --auth-token=${{ secrets.SENTRY_AUTH_TOKEN }} --log-level=debug sourcemaps inject --org daramgil --project sumda-fe ./build
+          SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }} npx sentry-cli --auth-token=${{ secrets.SENTRY_AUTH_TOKEN }} --log-level=debug sourcemaps upload --org daramgil --project sumda-fe ./build
 
       - name: Deploy React App to EC2
         env:
