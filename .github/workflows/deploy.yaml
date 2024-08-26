@@ -41,15 +41,18 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           scp -o StrictHostKeyChecking=no .env ${SSH_USER}@${SSH_HOST}:/var/www/html/.env
 
-      - name: Build React app
-        run: CI=false npm run build
-
-      - name: Upload source maps to Sentry
+      - name: Build and upload source maps on EC2
         env:
-          SENTRY_AUTH_TOKEN: $SENTRY_AUTH_TOKEN # EC2에 설정된 환경 변수를 사용
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          SSH_HOST: ${{ secrets.EC2_HOST }}
+          SSH_USER: ${{ secrets.EC2_USER }}
         run: |
-          npx sentry-cli --auth-token=$SENTRY_AUTH_TOKEN --log-level=debug sourcemaps inject --org daramgil --project sumda-fe ./build
-          npx sentry-cli --auth-token=$SENTRY_AUTH_TOKEN --log-level=debug sourcemaps upload --org daramgil --project sumda-fe ./build
+          ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} << 'EOF'
+            cd /var/www/html
+            CI=false npm run build
+            npx sentry-cli --auth-token=$SENTRY_AUTH_TOKEN --log-level=debug sourcemaps inject --org daramgil --project sumda-fe ./build
+            npx sentry-cli --auth-token=$SENTRY_AUTH_TOKEN --log-level=debug sourcemaps upload --org daramgil --project sumda-fe ./build
+          EOF
 
       - name: Deploy React App to EC2
         env:
