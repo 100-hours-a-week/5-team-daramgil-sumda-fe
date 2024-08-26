@@ -353,7 +353,9 @@ const Home: React.FC = () => {
                   </p>
                 </>
               ) : (
-                <p>Loading air quality data...</p>
+                <p className="loading-text">
+                  대기질 정보를 불러오는 중입니다...
+                </p>
               )}
             </div>
           </SwiperSlide>
@@ -391,7 +393,9 @@ const Home: React.FC = () => {
                   </p>
                 </>
               ) : (
-                <p>Loading weather data...</p>
+                <p className="loading-text">
+                  날씨 데이터를 불러오는 중입니다...
+                </p>
               )}
             </div>
           </SwiperSlide>
@@ -413,7 +417,7 @@ const Home: React.FC = () => {
               <img src={randomImage} alt="다람쥐 이미지" onClick={gosq} />
             </>
           ) : (
-            <p>Loading additional information...</p>
+            <p className="loading-text">추가적인 정보를 불러오는 중입니다...</p>
           )}
         </div>
       </div>

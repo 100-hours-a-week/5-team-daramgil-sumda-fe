@@ -151,3 +151,10 @@
 .swiper-button-prev {
   left: -20px; /* 왼쪽에서의 간격 */
 }
+
+.loading-text {
+  color: #999;
+  font-size: 16px;
+  text-align: center;
+  margin-top: 20px;
+}

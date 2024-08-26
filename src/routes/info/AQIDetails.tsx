@@ -257,7 +257,12 @@ const AQIDetails: React.FC = () => {
   };
 
   if (!airQualityData) {
-    return <div>Loading...</div>;
+    return (
+      <div className="AQI-Loading-container">
+        대기 정보를 조회 중입니다. <br />
+        잠시만 기다려 주세요
+      </div>
+    );
   }
 
   return (
