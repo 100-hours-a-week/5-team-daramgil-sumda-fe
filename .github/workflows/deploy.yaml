@@ -28,6 +28,9 @@ jobs:
       - name: .env 파일 생성
         run: |
           echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}" > .env
+          echo "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}" >> .env
+          echo "SENTRY_ORG=${{ secrets.SENTRY_ORG }}" >> .env
+          echo "SENTRY_PROJECT=${{ secrets.SENTRY_PROJECT }}" >> .env
 
       - name: .env 파일을 EC2로 업로드
         env:
@@ -41,22 +44,13 @@ jobs:
           scp -o StrictHostKeyChecking=no .env ${SSH_USER}@${SSH_HOST}:/var/www/html/.env
 
       - name: React 앱 빌드
-        run: CI=false npm run build
+        run: |
+          CI=false npm run build
 
-      - name: Sentry 릴리스 생성
-        uses: getsentry/action-release@v1
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-        with:
-          environment: production
-          sourcemaps: "./build/static/js"
-
-      - name: 소스맵을 Sentry로 업로드
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-        run: npm run sentry:sourcemaps
+      - name: Sentry 소스맵 업로드
+        run: |
+          export $(cat .env | xargs)
+          npm run sentry:sourcemaps
 
       - name: React 앱을 EC2로 배포
         env:
