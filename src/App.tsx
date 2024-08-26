@@ -6,7 +6,6 @@ import {
   useNavigate,
   useLocation,
 } from "react-router-dom";
-import * as Sentry from "@sentry/react";
 import "./App.css";
 
 import Layout from "./components/layout/Layout";
@@ -52,20 +51,9 @@ const App: React.FC = () => {
       navigate("/sensitivecheck");
     }
   }, [navigate, location.pathname]);
-  const handleError = () => {
-    console.log("클릭됨");
-    try {
-      // 의도적으로 오류를 발생시킴
-      throw new Error("This is a test error for Sentry.");
-    } catch (error) {
-      // Sentry로 오류를 보고
-      Sentry.captureException(error);
-      console.error(error);
-    }
-  };
+
   return (
     <div>
-      return <button onClick={handleError}>Break the world</button>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="/sensitivecheck" element={<SensitiveCheck />} />
