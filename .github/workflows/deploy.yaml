@@ -44,6 +44,11 @@ jobs:
       - name: Build React app
         run: CI=false npm run build
 
+      - name: Upload source maps to Sentry
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        run: npm run sentry:sourcemaps
+
       - name: Deploy React App to EC2
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
