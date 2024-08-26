@@ -75,7 +75,9 @@ const Home: React.FC = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   const navigate = useNavigate();
-
+  const gosq = () => {
+    navigate("/underConstruction");
+  };
   useEffect(() => {
     loadCurrentLocation();
   }, []);
@@ -408,7 +410,7 @@ const Home: React.FC = () => {
                 더 궁금한 점이 있다면, 아래 '다람쥐와 대화하기'를 통해
                 알려드릴게요!
               </p>
-              <img src={randomImage} alt="다람쥐 이미지" />
+              <img src={randomImage} alt="다람쥐 이미지" onClick={gosq} />
             </>
           ) : (
             <p>Loading additional information...</p>

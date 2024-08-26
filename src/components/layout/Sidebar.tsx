@@ -15,7 +15,7 @@ const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
         <Link to="/favorites" className="menu-item" onClick={onClose}>
           즐겨찾는 위치
         </Link>
-        <Link to="/underConstruction" className="menu-item" onClick={onClose}>
+        {/* <Link to="/underConstruction" className="menu-item" onClick={onClose}>
           컬렉션
         </Link>
         <Link to="/underConstruction" className="menu-item" onClick={onClose}>
@@ -23,19 +23,19 @@ const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
         </Link>
         <Link to="/underConstruction" className="menu-item" onClick={onClose}>
           우리동네 날씨자랑
-        </Link>
+        </Link> */}
         <Link to="/outfitbytemp" className="menu-item" onClick={onClose}>
           기온별 옷차림 추천
         </Link>
         <Link to="/outfitdaily" className="menu-item" onClick={onClose}>
           오늘의 옷차림 추천
         </Link>
-        <Link to="/underConstruction" className="menu-item" onClick={onClose}>
+        {/* <Link to="/underConstruction" className="menu-item" onClick={onClose}>
           야외활동 추천
         </Link>
         <Link to="/underConstruction" className="menu-item" onClick={onClose}>
           도토리 주으러 가기
-        </Link>
+        </Link> */}
 
         <div className="footer-section">
           <Link to="/notice" className="footer-item" onClick={onClose}>

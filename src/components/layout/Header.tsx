@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom"; // useNavigate 추가
 import Sidebar from "./Sidebar";
 import "./styles/Header.css";
 
@@ -9,6 +9,7 @@ import menu_icon from "../../assets/icons/menu.png";
 const Header: React.FC = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate(); // useNavigate 초기화
   const sidebarRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
 
@@ -18,6 +19,10 @@ const Header: React.FC = () => {
 
   const closeSidebar = () => {
     setSidebarOpen(false);
+  };
+
+  const goHome = () => {
+    navigate("/"); // "/"로 리다이렉트
   };
 
   useEffect(() => {
@@ -57,7 +62,7 @@ const Header: React.FC = () => {
           className="menu-icon"
           onClick={toggleSidebar}
         />
-        <div className="header-logo">
+        <div className="header-logo" onClick={goHome}>
           <img src={logo} alt="Logo" className="logo" />
           <p className="logo-text">
             <strong className="logo-strong">숨</strong>쉬는{" "}
