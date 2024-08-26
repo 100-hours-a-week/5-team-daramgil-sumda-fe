@@ -24,7 +24,6 @@ const Notice: React.FC = () => {
 
       if (response.ok) {
         const data = await response.json();
-
         setNotices(data.data);
       } else {
         const errorData = await response.json();
@@ -56,17 +55,16 @@ const Notice: React.FC = () => {
             </div>
             {openIndex === index && (
               <div className="notice-item">
-                <div className="notice-content">
-                  {notice.content.split("\n").map((line, i) => (
-                    <p key={i}>{line}</p>
-                  ))}
-                  {/* 길이 제한 */}
-                </div>
+                <div
+                  className="notice-content"
+                  dangerouslySetInnerHTML={{ __html: notice.content }}
+                />
               </div>
             )}
           </div>
         ))}
       </div>
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
     </div>
   );
 };
