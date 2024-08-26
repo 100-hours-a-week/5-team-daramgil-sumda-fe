@@ -25,12 +25,18 @@ const Contact: React.FC = () => {
     if (!title) {
       setTitleError("*제목을 입력해주세요.");
       isValid = false;
+    } else if (title.length > 32) {
+      setTitleError("*제목은 32글자 이내로 입력해주세요.");
+      isValid = false;
     } else {
       setTitleError("");
     }
 
     if (!content) {
       setContentError("*내용을 입력해주세요.");
+      isValid = false;
+    } else if (content.length > 1000) {
+      setContentError("*내용은 1000글자 이내로 입력해주세요.");
       isValid = false;
     } else {
       setContentError("");
@@ -41,6 +47,9 @@ const Contact: React.FC = () => {
       isValid = false;
     } else if (!validateEmail(email)) {
       setEmailError("*유효한 이메일을 입력해주세요.");
+      isValid = false;
+    } else if (email.length > 50) {
+      setEmailError("*이메일은 50글자 이내로 입력해주세요.");
       isValid = false;
     } else {
       setEmailError("");
@@ -80,6 +89,36 @@ const Contact: React.FC = () => {
     }
   };
 
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value.length <= 32) {
+      setTitle(value);
+      setTitleError(""); // Clear error message when typing within the limit
+    } else {
+      setTitleError("*제목은 32글자 이내로 입력해주세요.");
+    }
+  };
+
+  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    if (value.length <= 1000) {
+      setContent(value);
+      setContentError(""); // Clear error message when typing within the limit
+    } else {
+      setContentError("*내용은 1000글자 이내로 입력해주세요.");
+    }
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value.length <= 50) {
+      setEmail(value);
+      setEmailError(""); // Clear error message when typing within the limit
+    } else {
+      setEmailError("*이메일은 50글자 이내로 입력해주세요.");
+    }
+  };
+
   return (
     <div className="contact-container">
       <h1 className="contact-title">문의하기</h1>
@@ -92,7 +131,7 @@ const Contact: React.FC = () => {
             type="text"
             id="title"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={handleTitleChange}
             className="contact-form-input"
             placeholder="제목을 입력하세요"
             disabled={isLoading}
@@ -108,7 +147,7 @@ const Contact: React.FC = () => {
           <textarea
             id="content"
             value={content}
-            onChange={(e) => setContent(e.target.value)}
+            onChange={handleContentChange}
             className="contact-form-textarea"
             placeholder="내용을 입력하세요"
             disabled={isLoading}
@@ -125,7 +164,7 @@ const Contact: React.FC = () => {
             type="email"
             id="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={handleEmailChange}
             className="contact-form-input"
             placeholder="이메일을 입력하세요"
             disabled={isLoading}
