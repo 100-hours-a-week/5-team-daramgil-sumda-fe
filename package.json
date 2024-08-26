@@ -34,7 +34,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && npm run sentry:sourcemaps && npm run sentry:sourcemaps",
+    "build": "react-scripts build && npm run sentry:sourcemaps && npm run sentry:sourcemaps && npm run sentry:sourcemaps",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "sentry:sourcemaps": "sentry-cli sourcemaps inject --org daramgil --project sumda-fe ./build && sentry-cli sourcemaps upload --org daramgil --project sumda-fe ./build"
