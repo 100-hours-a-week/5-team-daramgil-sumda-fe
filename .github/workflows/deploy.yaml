@@ -49,6 +49,8 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} << 'EOF'
             cd /var/www/html
+            # Optional: Load environment variables if necessary
+            source ~/.bash_profile || true
             CI=false npm run build
             npx sentry-cli --auth-token=$SENTRY_AUTH_TOKEN --log-level=debug sourcemaps inject --org daramgil --project sumda-fe ./build
             npx sentry-cli --auth-token=$SENTRY_AUTH_TOKEN --log-level=debug sourcemaps upload --org daramgil --project sumda-fe ./build
