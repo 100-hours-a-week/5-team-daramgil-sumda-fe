@@ -37,6 +37,7 @@ import SensitiveCheck from "./routes/SensitiveCheck";
 import Setting from "./routes/Setting";
 
 import UnderConstruction from "./routes/UnderConstruction";
+import Login from "./routes/Login";
 
 const App: React.FC = () => {
   const navigate = useNavigate();
@@ -65,13 +66,13 @@ const App: React.FC = () => {
 
           <Route path="/notice" element={<Notice />} />
           <Route path="/contact" element={<Contact />} />
-          {/* <Route path="/localpride" element={<LocalPride />} />
+          <Route path="/localpride" element={<LocalPride />} />
 
-          <Route path="/activityRecommed" element={<ActivityRecommed />} /> */}
+          <Route path="/activityRecommed" element={<ActivityRecommed />} />
           <Route path="/outfitdaily" element={<OutfitDaily />} />
           <Route path="/outfitbytemp" element={<OutfitByTemp />} />
 
-          {/* <Route path="/squirrel" element={<Squirrel />} />
+          <Route path="/squirrel" element={<Squirrel />} />
           <Route path="/adopt" element={<Adopt />} />
           <Route path="/collection" element={<Collection />} />
 
@@ -79,9 +80,10 @@ const App: React.FC = () => {
           <Route path="/games" element={<GameList />} />
           <Route path="/games/ox" element={<OX />} />
           <Route path="/games/answer" element={<Answer />} />
-          <Route path="/games/fallingacorn" element={<FallingAcorn />} />*/}
+          <Route path="/games/fallingacorn" element={<FallingAcorn />} />
 
           <Route path="/setting" element={<Setting />} />
+          <Route path="/login" element={<Login />} />
 
           <Route path="/underConstruction" element={<UnderConstruction />} />
         </Route>
