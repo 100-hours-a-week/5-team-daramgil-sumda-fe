@@ -20,6 +20,8 @@ import moderate from "../assets/grade/moderate.png";
 import unhealthy from "../assets/grade/unhealthy.png";
 import veryUnhealthy from "../assets/grade/very_unhealthy.png";
 import hazardous from "../assets/grade/hazardous.png";
+
+import loading_gif from "../assets/loading.gif";
 import LocationDropdown from "../components/LocationDropdown"; // 올바르게 임포트
 
 import {
@@ -72,6 +74,11 @@ const Home: React.FC = () => {
   const [weatherData, setWeatherData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [id, setId] = useState<number>(0);
+  const [aiSummary, setAiSummary] = useState<{
+    airQualityComment: string;
+    weatherComment: string;
+    actionRecommendation: string;
+  } | null>(null);
 
   const navigate = useNavigate();
   const gosq = () => {
@@ -85,9 +92,13 @@ const Home: React.FC = () => {
       fetchAirQualityData(id);
     }
   }, [id]);
+  const handleLocationSelect = (location: string, id: number) => {
+    setId(id); // 선택된 위치의 id를 설정하여 데이터를 가져옴
+  };
 
   const fetchWeatherData = async (id: number) => {
     try {
+      setLoading(true); // 로딩 시작
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/acweather?id=${id}`
       );
@@ -99,11 +110,14 @@ const Home: React.FC = () => {
       }
     } catch (error) {
       console.error("날씨 데이터를 가져오는 중 오류가 발생했습니다:", error);
+    } finally {
+      setLoading(false); // 로딩 종료
     }
   };
 
   const fetchAirQualityData = async (id: number) => {
     try {
+      setLoading(true); // 로딩 시작
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/air/current?id=${id}`,
         {
@@ -120,12 +134,56 @@ const Home: React.FC = () => {
       setAirQualityData(data.data);
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false); // 로딩 종료
     }
   };
 
-  const handleLocationSelect = (location: string, id: number) => {
-    setId(id); // 선택된 위치의 id를 설정하여 데이터를 가져옴
+  // New function to fetch AI response
+  // API 요청 및 응답 처리
+  const fetchSimpleAIResponse = async (
+    khaiGrade: number,
+    khaiValue: number,
+    weatherType: string,
+    currentTemperature: number
+  ) => {
+    try {
+      setLoading(true); // 로딩 시작
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/ai/simple?khaiGrade=${khaiGrade}&khaiValue=${khaiValue}&sensitiveGroup=0&weatherType=${weatherType}&currentTemperature=${currentTemperature}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setAiSummary(data.data); // 응답 데이터를 전체 객체로 저장
+        console.log(aiSummary);
+      } else {
+        console.error("AI 데이터를 가져오는 데 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("AI 데이터를 가져오는 중 오류가 발생했습니다:", error);
+    } finally {
+      setLoading(false); // 로딩 종료
+    }
   };
+  useEffect(() => {
+    if (airQualityData && weatherData) {
+      const khaiGrade = airQualityData.khaiGrade;
+      const khaiValue = airQualityData.khaiValue;
+      const weatherType =
+        weatherMainToKorean[
+          weatherData.current.weather[0]
+            .main as keyof typeof weatherMainToKorean
+        ];
+      const currentTemperature = weatherData.current.temp;
+
+      fetchSimpleAIResponse(
+        khaiGrade,
+        khaiValue,
+        weatherType,
+        currentTemperature
+      );
+    }
+  }, [airQualityData, weatherData]);
 
   const squirrelImages = [basic, knight, samurai, space, cook, pilot, hiphop];
 
@@ -163,79 +221,14 @@ const Home: React.FC = () => {
     return airQualityGrades["5"];
   };
 
-  const getAirQualityMessage = (value: number) => {
-    if (value <= 50) {
-      return "오늘의 공기는 깨끗하고 상쾌해요! 야외 활동하기에 딱 좋은 날입니다.";
-    } else if (value <= 100) {
-      return "오늘은 공기가 무난해요. 평소처럼 야외 활동을 즐기셔도 좋습니다.";
-    } else if (value <= 250) {
-      return "오늘은 공기가 다소 탁하네요. 민감한 분들은 실내 활동을 추천드려요.";
-    } else if (value <= 350) {
-      return "오늘은 공기가 많이 안 좋아요. 가능하면 야외 활동을 피하시고, 외출 시 마스크를 꼭 착용하세요.";
-    } else {
-      return "오늘은 공기가 매우 나쁩니다. 꼭 실내에서 활동하시고, 창문을 닫아두세요.";
-    }
-  };
-
-  const getWeatherMessage = (weather: string) => {
-    switch (weather) {
-      case "맑음":
-        return (
-          <>
-            날씨도 맑고 화창하니,
-            <br />
-            가벼운 옷차림으로 산책을 즐겨보세요.
-          </>
-        );
-      case "구름조금":
-        return (
-          <>
-            오늘은 구름이 많고 흐려요.
-            <br />
-            간혹 우산이 필요할 수도 있으니 챙기세요.
-          </>
-        );
-      case "비":
-        return (
-          <>
-            오늘은 비가 내리니 우산을 꼭 챙기세요.
-            <br />
-            빗길 운전 시 조심하세요!
-          </>
-        );
-      case "눈":
-        return (
-          <>
-            오늘은 눈이 내려요.
-            <br />
-            미끄럼에 주의하시고, 따뜻하게 입으세요.
-          </>
-        );
-      case "더위":
-        return (
-          <>
-            오늘은 기온이 많이 올라 더운 날씨입니다.
-            <br />
-            충분한 수분을 섭취하고, 실내에서 쉬는 것이 좋아요.
-          </>
-        );
-      default:
-        return <>오늘의 날씨 정보를 확인하세요.</>;
-    }
-  };
-
-  const getSquirrelMessage = (airQualityValue: number, weather: string) => {
-    let message = "";
-
-    if (airQualityValue > 100) {
-      message = "공기가 나빠요. 실내에서 활동하는 것이 좋아요.";
-    } else if (airQualityValue > 50 && airQualityValue <= 100) {
-      message = "공기가 약간 탁해요. 외출 시 주의가 필요해요.";
-    } else {
-      message = "공기가 좋으니 활동하기 좋은 날이에요!";
-    }
-
-    return message;
+  // 데이터가 여러 줄일 경우 각 줄을 <li> 태그로 감싸기 위해서
+  const formatRecommendations = (text: string) => {
+    return text.split("\n").map((line, index) => (
+      <li key={index}>
+        {line}
+        <br />
+      </li>
+    ));
   };
 
   return (
@@ -253,15 +246,23 @@ const Home: React.FC = () => {
           <SwiperSlide>
             <div className="home-air-quality-section">
               <h1 className="air-quality-title">통합대기환경지수</h1>
-              <img
-                className="home-air-quality-image"
-                src={
-                  airQualityData?.khaiValue
-                    ? getAirQualityGrade(airQualityData.khaiValue).image
-                    : ""
-                }
-                alt="통합대기환경지수 이미지"
-              />
+              {loading ? (
+                <img
+                  className="home-air-quality-image"
+                  src={loading_gif}
+                  alt="통합대기환경지수 로딩 이미지"
+                />
+              ) : (
+                <img
+                  className="home-air-quality-image"
+                  src={
+                    airQualityData?.khaiValue
+                      ? getAirQualityGrade(airQualityData.khaiValue).image
+                      : ""
+                  }
+                  alt="통합대기환경지수 이미지"
+                />
+              )}
               {airQualityData ? (
                 <>
                   <p className="air-quality-status">
@@ -271,7 +272,7 @@ const Home: React.FC = () => {
                     {airQualityData.khaiValue}
                   </p>
                   <p className="air-quality-description">
-                    {getAirQualityMessage(airQualityData.khaiValue)}
+                    {aiSummary?.airQualityComment}
                   </p>
                 </>
               ) : (
@@ -308,10 +309,7 @@ const Home: React.FC = () => {
                     {Math.round(weatherData.daily[0].temp.min)}°C
                   </p>
                   <p className="weather-description">
-                    {getWeatherMessage(
-                      weatherData.current.weather[0]
-                        .main as keyof typeof weatherMainToKorean
-                    )}
+                    {aiSummary?.weatherComment}
                   </p>
                 </>
               ) : (
@@ -324,22 +322,23 @@ const Home: React.FC = () => {
         </Swiper>
 
         <div className="additional-info">
-          {airQualityData && weatherData ? (
-            <>
-              <p>
-                {getSquirrelMessage(
-                  airQualityData.khaiValue,
-                  weatherData.current.weather[0].main
-                )}
-              </p>
-              <p>
-                더 궁금한 점이 있다면, 아래 '다람쥐와 대화하기'를 통해
-                알려드릴게요!
-              </p>
-              <img src={randomImage} alt="다람쥐 이미지" onClick={gosq} />
-            </>
-          ) : (
+          {loading ? (
             <p className="loading-text">추가적인 정보를 불러오는 중입니다...</p>
+          ) : (
+            airQualityData &&
+            weatherData && (
+              <>
+                <ul>
+                  {aiSummary?.actionRecommendation &&
+                    formatRecommendations(aiSummary.actionRecommendation)}
+                </ul>
+                <p>
+                  더 궁금한 점이 있다면, 아래 '다람쥐와 대화하기'를 통해
+                  알려드릴게요!
+                </p>
+                <img src={randomImage} alt="다람쥐 이미지" onClick={gosq} />
+              </>
+            )
           )}
         </div>
       </div>

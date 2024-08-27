@@ -54,6 +54,11 @@ const weatherIconMap: { [key: string]: JSX.Element } = {
 const OutfitDailyPage: React.FC = () => {
   const [id, setId] = useState<number>(0);
   const [weatherData, setWeatherData] = useState<any>(null);
+  const [aiClothes, setAiClothes] = useState<
+    { clothesName: string; reason: string }[]
+  >([]);
+  const [loading, setLoading] = useState<boolean>(false); // 로딩 상태 추가
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -76,7 +81,7 @@ const OutfitDailyPage: React.FC = () => {
       }
       const data = await response.json();
       if (data.weatherDataJson) {
-        setWeatherData(data.weatherDataJson.current);
+        setWeatherData(data.weatherDataJson);
       } else {
         alert("날씨 정보를 가져올 수 없습니다.");
       }
@@ -86,37 +91,50 @@ const OutfitDailyPage: React.FC = () => {
     }
   };
 
-  const getOutfitRecommendation = (
-    temperature: number,
-    humidity: number
-  ): string[] => {
-    if (temperature >= 30) {
-      if (humidity > 70) {
-        return ["통기성 좋은 반팔", "반바지", "모자", "선글라스"];
+  // New function to fetch AI response
+  // API 요청 및 응답 처리
+  const fetchSimpleAIResponse = async (
+    weatherType: string,
+    currentTemp: number,
+    highTemp: number,
+    lowTemp: number
+  ) => {
+    try {
+      setLoading(true); // 로딩 시작
+      // 쿼리 스트링 생성
+      console.log(weatherType, currentTemp, highTemp, lowTemp);
+      // API 요청 시 쿼리 스트링 포함
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/ai/clothes?weatherType=${weatherType}&currentTemp=${currentTemp}&highTemp=${highTemp}&lowTemp=${lowTemp}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setAiClothes(data.data);
+        console.log(aiClothes);
       } else {
-        return ["반팔", "반바지", "가벼운 원피스", "샌들"];
+        console.error("AI 데이터를 가져오는 데 실패했습니다.");
       }
-    } else if (temperature >= 25) {
-      return ["반팔", "반바지", "얇은 긴바지", "스니커즈"];
-    } else if (temperature >= 20) {
-      return ["반팔", "얇은 긴팔", "청바지", "가디건"];
-    } else if (temperature >= 15) {
-      return ["얇은 긴팔", "얇은 스웨터", "긴 바지", "재킷"];
-    } else if (temperature >= 10) {
-      return ["두꺼운 긴팔", "니트", "코트", "긴 바지"];
-    } else if (temperature >= 5) {
-      return ["두꺼운 스웨터", "코트", "스카프", "장갑", "긴 바지"];
-    } else {
-      return [
-        "패딩",
-        "두꺼운 코트",
-        "목도리",
-        "장갑",
-        "털모자",
-        "두꺼운 긴 바지",
-      ];
+    } catch (error) {
+      console.error("AI 데이터를 가져오는 중 오류가 발생했습니다:", error);
+    } finally {
+      setLoading(false); // 로딩 종료
     }
   };
+
+  useEffect(() => {
+    if (weatherData) {
+      const weatherType =
+        weatherMainToKorean[
+          weatherData.current.weather[0]
+            .main as keyof typeof weatherMainToKorean
+        ];
+      const currentTemp = Math.round(weatherData.current.temp); // 현재 온도를 반올림
+      const highTemp = Math.round(weatherData.daily[0].temp.max); // 최댓값 온도를 반올림
+      const lowTemp = Math.round(weatherData.daily[0].temp.min); // 최솟값 온도를 반올림
+
+      fetchSimpleAIResponse(weatherType, currentTemp, highTemp, lowTemp);
+    }
+  }, [weatherData]);
 
   return (
     <div className="outfit-daily-page">
@@ -126,28 +144,35 @@ const OutfitDailyPage: React.FC = () => {
           {weatherData ? (
             <>
               <div className="outfit-weather-icon-container">
-                {weatherIconMap[weatherData.weather[0].main]}
+                {weatherIconMap[weatherData.current.weather[0].main]}
               </div>
               <p className="outfit-weather-status">
-                {weatherMainToKorean[weatherData.weather[0].main] ||
+                {weatherMainToKorean[weatherData.current.weather[0].main] ||
                   "알 수 없음"}
               </p>
               <p className="outfit-weather-current-temperature">
-                {Math.round(weatherData.temp)}°C
+                {Math.round(weatherData.current.temp)}°C
               </p>
 
               <p className="outfit-weather-humidity">
-                습도 {weatherData.humidity}%
+                습도 {weatherData.current.humidity}%
               </p>
               <h2 className="outfit-recommend-title">추천 옷차림</h2>
-              <ul className="outfit-recommendations-list">
-                {getOutfitRecommendation(
-                  parseFloat(weatherData.temp),
-                  parseFloat(weatherData.humidity)
-                ).map((item, index) => (
-                  <li key={index}>{item}</li>
-                ))}
-              </ul>
+              {loading ? ( // 로딩 중일 때
+                <ul className="outfit-recommendations-list">
+                  <li>불러오는 중입니다...</li>
+                </ul>
+              ) : (
+                <ul className="outfit-recommendations-list">
+                  {aiClothes.map((item, index) => (
+                    <li key={index}>
+                      <strong>{item.clothesName}</strong>
+                      <br />
+                      {item.reason}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </>
           ) : (
             <p>날씨 정보를 가져오는 중...</p>
