@@ -52,15 +52,9 @@ const weatherIconMap: { [key: string]: JSX.Element } = {
 };
 
 const OutfitDailyPage: React.FC = () => {
-  const [selectedLocation, setSelectedLocation] = useState<string>("");
   const [id, setId] = useState<number>(0);
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [weatherData, setWeatherData] = useState<any>(null);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    loadCurrentLocation();
-  }, []);
 
   useEffect(() => {
     if (id) {
@@ -68,77 +62,8 @@ const OutfitDailyPage: React.FC = () => {
     }
   }, [id]);
 
-  const toggleDropdown = () => setDropdownOpen(!isDropdownOpen);
-
-  const selectLocation = (location: string, id: number) => {
-    if (location === "등록하기") {
-      navigate("/favorites");
-    } else {
-      setSelectedLocation(location);
-      setId(id);
-      setDropdownOpen(false);
-    }
-  };
-
-  const loadCurrentLocation = async (): Promise<{
-    latitude: number;
-    longitude: number;
-  } | null> => {
-    const defaultLocation = { latitude: 37.5665, longitude: 126.978 };
-    const fetchLocationData = async (latitude: number, longitude: number) => {
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/locations/convert?latitude=${latitude}&longitude=${longitude}`
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch location data");
-        }
-        const data = await response.json();
-        if (data.status === 200 && data.data.district) {
-          setSelectedLocation(data.data.district);
-          setId(data.data.id);
-          return { latitude, longitude };
-        } else {
-          alert("위치를 찾을 수 없습니다.");
-          return null;
-        }
-      } catch (error) {
-        console.error("위치 정보를 가져오는 중 오류가 발생했습니다:", error);
-        alert("위치 정보를 가져오는 중 오류가 발생했습니다.");
-        return null;
-      }
-    };
-
-    if (navigator.geolocation) {
-      return new Promise<{ latitude: number; longitude: number } | null>(
-        (resolve) => {
-          navigator.geolocation.getCurrentPosition(
-            async (position) => {
-              const { latitude, longitude } = position.coords;
-              const locationData = await fetchLocationData(latitude, longitude);
-              resolve(locationData);
-            },
-            async () => {
-              console.error(
-                "위치 권한이 거부되었습니다. 기본 위치로 설정합니다."
-              );
-              const locationData = await fetchLocationData(
-                defaultLocation.latitude,
-                defaultLocation.longitude
-              );
-              resolve(locationData);
-            }
-          );
-        }
-      );
-    } else {
-      console.error("Geolocation API를 지원하지 않는 브라우저입니다.");
-      const locationData = await fetchLocationData(
-        defaultLocation.latitude,
-        defaultLocation.longitude
-      );
-      return locationData;
-    }
+  const handleLocationSelect = (location: string, id: number) => {
+    setId(id); // LocationDropdown에서 전달된 ID로 데이터를 가져옴
   };
 
   const fetchWeatherData = async (locationId: number) => {
@@ -195,13 +120,7 @@ const OutfitDailyPage: React.FC = () => {
 
   return (
     <div className="outfit-daily-page">
-      <LocationDropdown
-        selectedLocation={selectedLocation}
-        isDropdownOpen={isDropdownOpen}
-        toggleDropdown={toggleDropdown}
-        selectLocation={selectLocation}
-        loadCurrentLocation={loadCurrentLocation}
-      />
+      <LocationDropdown onLocationSelect={handleLocationSelect} />
       <div className="outfit-info-container">
         <div className="outfit-weather-section">
           {weatherData ? (
