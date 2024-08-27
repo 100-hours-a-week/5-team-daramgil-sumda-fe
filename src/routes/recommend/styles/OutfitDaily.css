@@ -74,7 +74,6 @@
 
 /* Recommendation title styling */
 .outfit-recommend-title {
-  text-align: center;
   font-size: 20px;
   margin: 16px 0;
   font-weight: 600;
@@ -84,10 +83,15 @@
 
 /* Daily outfit section styling */
 .outfit-recommendations-list {
-  text-align: center;
+  text-align: left;
   font-size: 16px;
   line-height: 1.8;
   color: #333;
+}
+.outfit-recommendations-list strong {
+  font-size: 20px;
+  line-height: 1.8;
+  color: #005eff;
 }
 
 /* Responsive design tweaks */
