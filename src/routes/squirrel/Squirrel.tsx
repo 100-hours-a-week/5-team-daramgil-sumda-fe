@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./styles/Squirrel.css";
 
 import Acorn_img from "../../assets/acorn.png";
-import squirrel from "../../assets/기본_다람쥐_lv4-removebg-preview.png";
+import squirrel from "../../assets/squirrel/기본_다람쥐_lv4-removebg-preview.png";
 
 const Squirrel: React.FC = () => {
   const [level, setLevel] = useState<number>(2);
