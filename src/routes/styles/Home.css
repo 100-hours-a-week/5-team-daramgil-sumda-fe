@@ -79,7 +79,8 @@
   margin: 20px auto;
 }
 
-.additional-info p {
+.additional-info p,
+ul {
   margin: 0;
   padding: 10px;
   font-size: 14px;

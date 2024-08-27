@@ -9,85 +9,23 @@ import yoga from "../../assets/icons/yoga.png";
 import LocationDropdown from "../../components/LocationDropdown";
 
 const ActivityRecommed: React.FC = () => {
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const [id, setId] = useState<number>(0);
   const [selectedLocation, setSelectedLocation] = useState<string>("");
 
-  const [coordinates, setCoordinates] = useState<{ lat: number; lng: number }>({
-    lat: 37.5665,
-    lng: 126.978,
-  });
-
   useEffect(() => {
-    loadCurrentLocation();
-  }, []);
-
-  const toggleDropdown = () => {
-    setDropdownOpen(!isDropdownOpen);
-  };
-
-  const selectLocation = (location: string) => {
-    if (location === "등록하기") {
-      console.log("페이지 이동: 등록 페이지로 이동합니다.");
-    } else {
-      setSelectedLocation(location);
-      const [lat, lng] = location
-        .split(",")
-        .map((item) => parseFloat(item.split(": ")[1]));
-      setCoordinates({ lat, lng });
+    if (id) {
+      // 필요시 id를 사용하여 데이터를 가져오거나 다른 작업 수행
     }
-    setDropdownOpen(false);
-  };
+  }, [id]);
 
-  const loadCurrentLocation = async () => {
-    if (navigator.geolocation) {
-      return new Promise<{ latitude: number; longitude: number } | null>(
-        (resolve) => {
-          navigator.geolocation.getCurrentPosition(
-            async (position) => {
-              const { latitude, longitude } = position.coords;
-              setCoordinates({ lat: latitude, lng: longitude });
-              setSelectedLocation(
-                `위도: ${latitude.toFixed(4)}, 경도: ${longitude.toFixed(4)}`
-              );
-              console.log(`현재 위치: 위도 ${latitude}, 경도 ${longitude}`);
-
-              // 현재 위치 정보를 반환
-              resolve({ latitude, longitude });
-            },
-            (error) => {
-              console.error(
-                "위치 권한이 거부되었습니다. 기본 위치로 설정합니다."
-              );
-              const seoulCityHall = { lat: 37.5665, lng: 126.978 };
-              setCoordinates(seoulCityHall);
-              setSelectedLocation("위도: 37.5665, 경도: 126.9780");
-
-              // 기본 위치를 반환 (에러 발생 시)
-              resolve({ latitude: 37.5665, longitude: 126.978 });
-            }
-          );
-        }
-      );
-    } else {
-      console.error("Geolocation API를 지원하지 않는 브라우저입니다.");
-      const seoulCityHall = { lat: 37.5665, lng: 126.978 };
-      setCoordinates(seoulCityHall);
-      setSelectedLocation("위도: 37.5665, 경도: 126.9780");
-
-      // 기본 위치를 반환 (Geolocation API 미지원 시)
-      return { latitude: 37.5665, longitude: 126.978 };
-    }
+  const handleLocationSelect = (location: string, id: number) => {
+    setSelectedLocation(location);
+    setId(id); // 선택된 위치의 ID를 설정
   };
 
   return (
     <div className="activityRecommend-page">
-      <LocationDropdown
-        selectedLocation={selectedLocation}
-        isDropdownOpen={isDropdownOpen}
-        toggleDropdown={toggleDropdown}
-        selectLocation={selectLocation}
-        loadCurrentLocation={loadCurrentLocation}
-      />
+      <LocationDropdown onLocationSelect={handleLocationSelect} />
 
       <div className="info-container-activity">
         <div className="air-quality-section-activity">

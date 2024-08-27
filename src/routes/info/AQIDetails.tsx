@@ -8,14 +8,15 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
+  Legend,
 } from "recharts";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
+
 // 등급 이미지 임포트
 import good from "../../assets/grade/good.png";
 import moderate from "../../assets/grade/moderate.png";
@@ -26,8 +27,6 @@ import callout from "../../assets/info.png";
 
 const AQIDetails: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
-  const [selectedLocation, setSelectedLocation] = useState<string>("");
   const [airPollutionData, setAirPollutionData] = useState<any[]>([]);
   const [airQualityData, setAirQualityData] = useState<any | null>(null);
   const [airPollutionImages, setAirPollutionImages] = useState<any[]>([]);
@@ -35,14 +34,11 @@ const AQIDetails: React.FC = () => {
   const [id, setId] = useState<number>(0);
 
   useEffect(() => {
-    loadCurrentLocation();
-  }, []);
-
-  useEffect(() => {
-    fetchAirPollutionData(id || 1);
-    fetchAirQualityData(id || 1);
-    fetchAirPollutionImages();
-    console.log("Updated ID:", id);
+    if (id) {
+      fetchAirPollutionData(id);
+      fetchAirQualityData(id);
+      fetchAirPollutionImages();
+    }
   }, [id]);
 
   const fetchAirPollutionData = async (id: number) => {
@@ -134,81 +130,8 @@ const AQIDetails: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const toggleDropdown = () => {
-    setDropdownOpen(!isDropdownOpen);
-  };
-
-  const selectLocation = (location: string, id: number) => {
-    if (location === "등록하기") {
-      window.location.href = "/favorites";
-    } else {
-      setSelectedLocation(location);
-      setId(id);
-      setDropdownOpen(false);
-      console.log("즐겨찾기 " + id);
-    }
-  };
-
-  const loadCurrentLocation = async (): Promise<{
-    latitude: number;
-    longitude: number;
-  } | null> => {
-    const defaultLocation = { latitude: 37.5665, longitude: 126.978 };
-    const fetchLocationData = async (latitude: number, longitude: number) => {
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/locations/convert?latitude=${latitude}&longitude=${longitude}`
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch location data");
-        }
-        const data = await response.json();
-        if (data.status === 200 && data.data.district) {
-          setSelectedLocation(data.data.district);
-          setId(data.data.id);
-          console.log(latitude, longitude);
-          console.log(id);
-          return { latitude, longitude };
-        } else {
-          alert("위치를 찾을 수 없습니다.");
-          return null;
-        }
-      } catch (error) {
-        console.error("위치 정보를 가져오는 중 오류가 발생했습니다:", error);
-        alert("위치 정보를 가져오는 중 오류가 발생했습니다.");
-        return null;
-      }
-    };
-    if (navigator.geolocation) {
-      return new Promise<{ latitude: number; longitude: number } | null>(
-        (resolve) => {
-          navigator.geolocation.getCurrentPosition(
-            async (position) => {
-              const { latitude, longitude } = position.coords;
-              const locationData = await fetchLocationData(latitude, longitude);
-              resolve(locationData);
-            },
-            async (error) => {
-              console.error(
-                "위치 권한이 거부되었습니다. 기본 위치로 설정합니다."
-              );
-              const locationData = await fetchLocationData(
-                defaultLocation.latitude,
-                defaultLocation.longitude
-              );
-              resolve(locationData);
-            }
-          );
-        }
-      );
-    } else {
-      console.error("Geolocation API를 지원하지 않는 브라우저입니다.");
-      const locationData = await fetchLocationData(
-        defaultLocation.latitude,
-        defaultLocation.longitude
-      );
-      return locationData;
-    }
+  const handleLocationSelect = (location: string, id: number) => {
+    setId(id); // LocationDropdown에서 전달된 ID로 데이터를 가져옴
   };
 
   const airQualityGrades: { [key: string]: { image: string; status: string } } =
@@ -246,6 +169,7 @@ const AQIDetails: React.FC = () => {
     co: getAirQualityInfo(airQualityData?.coValue, airQualityData?.coGrade),
     so2: getAirQualityInfo(airQualityData?.so2Value, airQualityData?.so2Grade),
   };
+
   const pollutantNames: { [key: string]: string } = {
     pm10: "미세먼지",
     pm25: "초미세먼지",
@@ -253,7 +177,7 @@ const AQIDetails: React.FC = () => {
     o3: "오존",
     co: "일산화탄소",
     so2: "아황산가스",
-    khai: "통합대기환경지수", // 이 부분은 필요에 따라 변경
+    khai: "통합대기환경지수",
   };
 
   if (!airQualityData) {
@@ -268,13 +192,7 @@ const AQIDetails: React.FC = () => {
   return (
     <div className="aqidetails-page">
       <div className="info-container">
-        <LocationDropdown
-          selectedLocation={selectedLocation}
-          isDropdownOpen={isDropdownOpen}
-          toggleDropdown={toggleDropdown}
-          selectLocation={selectLocation}
-          loadCurrentLocation={loadCurrentLocation}
-        />
+        <LocationDropdown onLocationSelect={handleLocationSelect} />
         <div className="aqidetails-container-unique">
           <div className="info-container-unique">
             <div className="air-quality-section-unique">

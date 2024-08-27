@@ -1,0 +1,80 @@
+/* login-container 스타일 */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    min-height: 80vh;
+    box-sizing: border-box;
+}
+
+/* 로고 이미지 스타일 */
+.login-logo {
+  width: 100px;
+  height: auto;
+  margin-bottom: 20px;
+}
+.logo {
+    width: 60px;
+    margin-right: 10px;
+}
+
+.logo-text {
+    font-weight: bold;
+}
+
+.logo-strong {
+    font-weight: bold;
+    font-size: 30px;
+}
+/* 서비스 제목 스타일 */
+.login-service-title {
+  font-size: 24px;
+  font-weight: 400;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* 강조된 텍스트 스타일 */
+.login-service-title-b {
+  font-weight: 700;
+  font-size: 36px;
+}
+
+/* 설명 텍스트 스타일 */
+.login-explain1 {
+  font-size: 16px;
+  color: #555;
+  text-align: center;
+  margin-top: 10px;
+}
+.login-explain2 {
+    font-size: 16px;
+    color: #555;
+    text-align: center;
+    margin-bottom: 30px;
+    margin-top: 10px;
+}
+
+/* 로그인 버튼 컨테이너 스타일 */
+.login-button-container {
+  display: flex;
+  justify-content: center;
+  width: 80%;
+}
+
+/* 로그인 버튼 스타일 */
+.login-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* 카카오 로그인 버튼 이미지 스타일 */
+.login-button-img {
+  width: 100%;
+  height: auto;
+}
