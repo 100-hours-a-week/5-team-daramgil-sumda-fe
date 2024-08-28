@@ -180,14 +180,14 @@ const AQIDetails: React.FC = () => {
     khai: "통합대기환경지수",
   };
 
-  if (!airQualityData) {
-    return (
-      <div className="AQI-Loading-container">
-        대기 정보를 조회 중입니다. <br />
-        잠시만 기다려 주세요
-      </div>
-    );
-  }
+  // if (!airQualityData) {
+  //   return (
+  //     <div className="AQI-Loading-container">
+  //       대기 정보를 조회 중입니다. <br />
+  //       잠시만 기다려 주세요
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="aqidetails-page">
