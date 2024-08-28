@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import gps from "../assets/icons/gps.png";
 import "./styles/LocationDropdown.css";
 
@@ -14,7 +15,7 @@ const LocationDropdown: React.FC<LocationDropdownProps> = ({
   >([]);
   const [selectedLocation, setSelectedLocation] = useState<string>("");
   const [isDropdownOpen, setDropdownOpen] = useState<boolean>(false);
-
+  const navigate = useNavigate();
   useEffect(() => {
     loadCurrentLocation();
     const storedFavorites = localStorage.getItem("favorites");
@@ -101,6 +102,9 @@ const LocationDropdown: React.FC<LocationDropdownProps> = ({
     setSelectedLocation(location);
     onLocationSelect(location, id); // 선택된 위치를 부모 컴포넌트로 전달
     setDropdownOpen(false);
+    if (location == "등록하기") {
+      navigate("/favorites");
+    }
   };
 
   return (
