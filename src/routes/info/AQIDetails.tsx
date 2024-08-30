@@ -56,17 +56,19 @@ const AQIDetails: React.FC = () => {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
+      console.log(data);
       const transformedData = data.data.map((entry: any) => ({
         time: entry.dataTime,
         khai: entry.khaiValue,
-        pm10: entry.pm10Value,
-        pm25: entry.pm25Value,
-        o3: entry.o3Value,
-        no2: entry.no2Value,
-        co: entry.coValue,
-        so2: entry.so2Value,
+        pm10: entry.pm10,
+        pm25: entry.pm25,
+        o3: entry.o3,
+        no2: entry.no2,
+        co: entry.co,
+        so2: entry.so2,
       }));
       setAirPollutionData(transformedData);
+      console.log(airPollutionData);
     } catch (error) {
       console.error("Error fetching air pollution data:", error);
     }
