@@ -253,9 +253,9 @@ const AQIDetails: React.FC = () => {
             >
               {["pm10", "pm25", "no2", "o3", "co", "so2"].map((pollutant) => (
                 <SwiperSlide key={pollutant}>
-                  <h3>
+                  <h4>
                     {pollutantNames[pollutant] || pollutant.toUpperCase()}
-                  </h3>
+                  </h4>
                   <ResponsiveContainer width="100%" height={250}>
                     <LineChart
                       data={airPollutionData.sort(
@@ -263,6 +263,7 @@ const AQIDetails: React.FC = () => {
                           new Date(a.time).getTime() -
                           new Date(b.time).getTime()
                       )}
+                      margin={{ top: 10, left: -10, right: 30 }}
                     >
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="dateTime" />
@@ -272,6 +273,7 @@ const AQIDetails: React.FC = () => {
                         type="monotone"
                         dataKey={pollutant}
                         stroke="#8884d8"
+                        strokeWidth={2}
                       />
                     </LineChart>
                   </ResponsiveContainer>
