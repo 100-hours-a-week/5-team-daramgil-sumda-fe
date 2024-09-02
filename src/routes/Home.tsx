@@ -22,7 +22,7 @@ import veryUnhealthy from "../assets/grade/very_unhealthy.png";
 import hazardous from "../assets/grade/hazardous.png";
 
 import loading_gif from "../assets/loading.gif";
-import LocationDropdown from "../components/LocationDropdown"; // 올바르게 임포트
+import LocationDropdown from "../components/LocationDropdown"; // 위치 드롭다운 컴포넌트
 
 import {
   WiDaySunny,
@@ -33,6 +33,7 @@ import {
   WiStormShowers,
 } from "react-icons/wi";
 
+// 날씨 상태와 대응하는 한국어 텍스트 매핑
 const weatherMainToKorean: { [key in keyof typeof weatherIconMap]: string } = {
   Thunderstorm: "천둥번개",
   Drizzle: "이슬비",
@@ -51,6 +52,7 @@ const weatherMainToKorean: { [key in keyof typeof weatherIconMap]: string } = {
   Clouds: "구름",
 };
 
+// 날씨 상태와 대응하는 아이콘 매핑
 const weatherIconMap = {
   Thunderstorm: <WiStormShowers />,
   Drizzle: <WiShowers />,
@@ -70,21 +72,25 @@ const weatherIconMap = {
 };
 
 const Home: React.FC = () => {
-  const [airQualityData, setAirQualityData] = useState<any>(null);
-  const [weatherData, setWeatherData] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [id, setId] = useState<number>(0);
+  // 상태 관리
+  const [airQualityData, setAirQualityData] = useState<any>(null); // 대기질 데이터
+  const [weatherData, setWeatherData] = useState<any>(null); // 날씨 데이터
+  const [loading, setLoading] = useState<boolean>(true); // 로딩 상태
+  const [id, setId] = useState<number>(0); // 선택된 위치의 ID
   const [aiSummary, setAiSummary] = useState<{
     airQualityComment: string;
     weatherComment: string;
     actionRecommendation: string;
-  } | null>(null);
+  } | null>(null); // AI 요약 정보
 
   const navigate = useNavigate();
+
+  // 특정 경로로 이동하는 함수
   const gosq = () => {
     navigate("/underConstruction");
   };
 
+  // 위치 ID가 변경될 때마다 날씨 및 대기질 데이터를 가져옴
   useEffect(() => {
     if (id) {
       setLoading(true);
@@ -92,10 +98,13 @@ const Home: React.FC = () => {
       fetchAirQualityData(id);
     }
   }, [id]);
+
+  // 위치 선택 핸들러
   const handleLocationSelect = (location: string, id: number) => {
-    setId(id); // 선택된 위치의 id를 설정하여 데이터를 가져옴
+    setId(id); // 선택된 위치의 ID 설정
   };
 
+  // 날씨 데이터를 가져오는 함수
   const fetchWeatherData = async (id: number) => {
     try {
       setLoading(true); // 로딩 시작
@@ -104,7 +113,7 @@ const Home: React.FC = () => {
       );
       if (response.ok) {
         const data = await response.json();
-        setWeatherData(data.weatherDataJson);
+        setWeatherData(data.weatherDataJson); // 날씨 데이터 설정
       } else {
         console.error("날씨 데이터를 가져오는 데 실패했습니다.");
       }
@@ -115,6 +124,7 @@ const Home: React.FC = () => {
     }
   };
 
+  // 대기질 데이터를 가져오는 함수
   const fetchAirQualityData = async (id: number) => {
     try {
       setLoading(true); // 로딩 시작
@@ -131,7 +141,7 @@ const Home: React.FC = () => {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
-      setAirQualityData(data.data);
+      setAirQualityData(data.data); // 대기질 데이터 설정
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -139,8 +149,7 @@ const Home: React.FC = () => {
     }
   };
 
-  // New function to fetch AI response
-  // API 요청 및 응답 처리
+  // AI 응답 데이터를 가져오는 함수
   const fetchSimpleAIResponse = async (
     khaiGrade: number,
     khaiValue: number,
@@ -150,11 +159,15 @@ const Home: React.FC = () => {
     try {
       setLoading(true); // 로딩 시작
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/ai/simple?khaiGrade=${khaiGrade}&khaiValue=${khaiValue}&sensitiveGroup=0&weatherType=${weatherType}&currentTemperature=${currentTemperature}`
+        `${
+          process.env.REACT_APP_API_URL
+        }/ai/simple?khaiGrade=${khaiGrade}&khaiValue=${khaiValue}&sensitiveGroup=0&weatherType=${weatherType}&currentTemperature=${Math.round(
+          currentTemperature
+        )}`
       );
       if (response.ok) {
         const data = await response.json();
-        setAiSummary(data.data); // 응답 데이터를 전체 객체로 저장
+        setAiSummary(data.data); // AI 요약 정보 설정
         console.log(aiSummary);
       } else {
         console.error("AI 데이터를 가져오는 데 실패했습니다.");
@@ -165,6 +178,8 @@ const Home: React.FC = () => {
       setLoading(false); // 로딩 종료
     }
   };
+
+  // 대기질 데이터와 날씨 데이터를 기반으로 AI 요약 정보를 가져옴
   useEffect(() => {
     if (airQualityData && weatherData) {
       const khaiGrade = airQualityData.khaiGrade;
@@ -174,7 +189,7 @@ const Home: React.FC = () => {
           weatherData.current.weather[0]
             .main as keyof typeof weatherMainToKorean
         ];
-      const currentTemperature = weatherData.current.temp;
+      const currentTemperature = Math.round(weatherData.current.temp); // 온도 반올림
 
       fetchSimpleAIResponse(
         khaiGrade,
@@ -185,15 +200,17 @@ const Home: React.FC = () => {
     }
   }, [airQualityData, weatherData]);
 
+  // 다람쥐 이미지 목록
   const squirrelImages = [basic, knight, samurai, space, cook, pilot, hiphop];
-
   const [randomImage, setRandomImage] = useState("");
 
+  // 컴포넌트가 마운트될 때 랜덤으로 다람쥐 이미지 선택
   useEffect(() => {
     const randomIndex = Math.floor(Math.random() * squirrelImages.length);
     setRandomImage(squirrelImages[randomIndex]);
   }, []);
 
+  // 날씨 상태에 따른 아이콘을 반환하는 함수
   const executeIcon = (weatherMain: keyof typeof weatherIconMap) => {
     if (!weatherMain) {
       return <WiDaySunny />;
@@ -205,6 +222,7 @@ const Home: React.FC = () => {
     return icon;
   };
 
+  // 대기질 등급에 따른 이미지와 상태를 반환하는 함수
   const airQualityGrades = {
     "1": { image: good, status: "좋음" },
     "2": { image: moderate, status: "보통" },
@@ -213,6 +231,7 @@ const Home: React.FC = () => {
     "5": { image: hazardous, status: "위험" },
   };
 
+  // 대기질 값을 바탕으로 등급을 결정하는 함수
   const getAirQualityGrade = (value: number) => {
     if (value <= 50) return airQualityGrades["1"];
     if (value <= 100) return airQualityGrades["2"];
@@ -221,7 +240,7 @@ const Home: React.FC = () => {
     return airQualityGrades["5"];
   };
 
-  // 데이터가 여러 줄일 경우 각 줄을 <li> 태그로 감싸기 위해서
+  // 여러 줄의 텍스트를 <li>로 포맷팅하는 함수
   const formatRecommendations = (text: string) => {
     return text.split("\n").map((line, index) => (
       <li key={index}>
@@ -234,6 +253,7 @@ const Home: React.FC = () => {
   return (
     <div className="home-page">
       <div className="info-container">
+        {/* 위치 선택 드롭다운 */}
         <LocationDropdown onLocationSelect={handleLocationSelect} />
 
         <Swiper
@@ -243,6 +263,7 @@ const Home: React.FC = () => {
           spaceBetween={50}
           slidesPerView={1}
         >
+          {/* 대기질 정보 슬라이드 */}
           <SwiperSlide>
             <div className="home-air-quality-section">
               <h1 className="air-quality-title">통합대기환경지수</h1>
@@ -282,6 +303,8 @@ const Home: React.FC = () => {
               )}
             </div>
           </SwiperSlide>
+
+          {/* 날씨 정보 슬라이드 */}
           <SwiperSlide>
             <div className="home-weather-section">
               <h1 className="weather-title">날씨</h1>
