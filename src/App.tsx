@@ -39,6 +39,8 @@ import Setting from "./routes/Setting";
 import UnderConstruction from "./routes/UnderConstruction";
 import Login from "./routes/Login";
 
+import PrivateRoute from "./components/PrivateRoute";
+
 const App: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -66,17 +68,53 @@ const App: React.FC = () => {
 
           <Route path="/notice" element={<Notice />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/localpride" element={<LocalPride />} />
+          <Route
+            path="/localpride"
+            element={
+              <PrivateRoute>
+                <LocalPride />
+              </PrivateRoute>
+            }
+          />
 
           <Route path="/activityRecommed" element={<ActivityRecommed />} />
+
           <Route path="/outfitdaily" element={<OutfitDaily />} />
           <Route path="/outfitbytemp" element={<OutfitByTemp />} />
 
-          <Route path="/squirrel" element={<Squirrel />} />
-          <Route path="/adopt" element={<Adopt />} />
-          <Route path="/collection" element={<Collection />} />
+          <Route
+            path="/squirrel"
+            element={
+              <PrivateRoute>
+                <Squirrel />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/adopt"
+            element={
+              <PrivateRoute>
+                <Adopt />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/collection"
+            element={
+              <PrivateRoute>
+                <Collection />
+              </PrivateRoute>
+            }
+          />
 
-          <Route path="/daily" element={<DaliyMission />} />
+          <Route
+            path="/daily"
+            element={
+              <PrivateRoute>
+                <DaliyMission />
+              </PrivateRoute>
+            }
+          />
           <Route path="/games" element={<GameList />} />
           <Route path="/games/ox" element={<OX />} />
           <Route path="/games/answer" element={<Answer />} />

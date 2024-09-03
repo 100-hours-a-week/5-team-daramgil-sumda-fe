@@ -327,7 +327,7 @@ const AQIDetails: React.FC = () => {
                         margin={{ top: 10, left: -10, right: 30 }}
                       >
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="dateTime" />
+                        <XAxis dataKey="dataTime" />
                         <YAxis domain={[0, maxPollutantValue]} />{" "}
                         {/* YAxis domain 수정 */}
                         <Tooltip />
