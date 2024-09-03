@@ -22,7 +22,7 @@ jobs:
         run: npm install
 
       - name: Docker 빌드
-        run: docker build -t my-react-app .
+        run: docker build --build-arg SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }} -t my-react-app .
 
       - name: Docker 이미지 EC2로 배포
         env:
