@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import "./styles/Favorites.css";
 
+interface Location {
+  id: number;
+  location: string;
+}
+
 const Favorites: React.FC = () => {
-  const [favorites, setFavorites] = useState<
-    { id: number; location: string }[]
-  >([]);
+  const [favorites, setFavorites] = useState<Location[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState<
-    { id: number; location: string }[]
-  >([]);
+  const [searchResults, setSearchResults] = useState<Location[]>([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
+  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const storedFavorites = localStorage.getItem("favorites");
@@ -18,13 +20,9 @@ const Favorites: React.FC = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (searchQuery.trim() !== "") {
-      handleSearch();
-    }
-  }, [searchQuery]);
+  const handleSearch = useCallback(async () => {
+    if (searchQuery.trim() === "") return;
 
-  const handleSearch = async () => {
     try {
       const response = await fetch(
         `${
@@ -48,27 +46,50 @@ const Favorites: React.FC = () => {
       setSearchResults([]);
       setShowSearchResults(false);
     }
-  };
+  }, [searchQuery]);
 
-  const handleAddFavorite = (id: number, location: string) => {
-    if (!favorites.some((favorite) => favorite.id === id)) {
-      const newFavorite = { id, location };
-      const updatedFavorites = [...favorites, newFavorite];
-      setFavorites(updatedFavorites);
-      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+  useEffect(() => {
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
     }
 
-    // 검색어 초기화 및 검색 결과 숨기기
-    setSearchQuery(""); // 검색어 초기화
-    setSearchResults([]); // 검색 결과 초기화
-    setShowSearchResults(false); // 검색 결과 목록 숨기기
-  };
+    searchTimeoutRef.current = setTimeout(() => {
+      handleSearch();
+    }, 300);
 
-  const handleDelete = (id: number) => {
-    const updatedFavorites = favorites.filter((favorite) => favorite.id !== id);
-    setFavorites(updatedFavorites);
-    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-  };
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+    };
+  }, [searchQuery, handleSearch]);
+
+  const handleAddFavorite = useCallback(
+    (id: number, location: string) => {
+      if (!favorites.some((favorite) => favorite.id === id)) {
+        const newFavorite = { id, location };
+        const updatedFavorites = [...favorites, newFavorite];
+        setFavorites(updatedFavorites);
+        localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+      }
+
+      setSearchQuery("");
+      setSearchResults([]);
+      setShowSearchResults(false);
+    },
+    [favorites]
+  );
+
+  const handleDelete = useCallback(
+    (id: number) => {
+      const updatedFavorites = favorites.filter(
+        (favorite) => favorite.id !== id
+      );
+      setFavorites(updatedFavorites);
+      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+    },
+    [favorites]
+  );
 
   return (
     <div className="favorites-container">
