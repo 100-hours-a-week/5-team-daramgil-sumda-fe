@@ -24,9 +24,6 @@ FROM nginx:alpine
 # 빌드 단계에서 생성된 파일들을 Nginx의 HTML 디렉토리로 복사
 COPY --from=build /app/build /usr/share/nginx/html
 
-# Nginx 설정 파일을 컨테이너 내부로 복사 (필요시 사용자 정의 설정을 포함)
-COPY nginx.conf /etc/nginx/nginx.conf
-
 # 80번 포트를 노출
 EXPOSE 80
 
