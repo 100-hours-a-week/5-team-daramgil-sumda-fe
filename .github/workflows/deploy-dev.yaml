@@ -13,16 +13,9 @@ jobs:
       - name: 코드 체크아웃
         uses: actions/checkout@v2
 
-      - name: Node.js 환경 설정
-        uses: actions/setup-node@v2
-        with:
-          node-version: "14"
-
-      - name: 종속성 설치
-        run: npm install
-
       - name: Docker 빌드
-        run: docker build -t my-react-app .
+        run: |
+          docker build -t my-react-app .
 
       - name: Docker 이미지 EC2로 배포
         env:
