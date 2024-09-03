@@ -1,0 +1,30 @@
+name: React 앱 Docker 빌드 및 배포 서버에 배포
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 코드 체크아웃
+        uses: actions/checkout@v2
+
+      - name: Docker 빌드
+        run: |
+          docker build -t my-react-app .
+
+      - name: Docker 이미지 EC2로 배포
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          SSH_HOST: ${{ secrets.DEPLOY_EC2_HOST }}
+          SSH_USER: ${{ secrets.DEPLOY_EC2_USER }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          scp -o StrictHostKeyChecking=no Dockerfile nginx.conf ${SSH_USER}@${SSH_HOST}:/home/ec2-user/
+          ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} "docker build -t my-react-app /home/ec2-user/ && docker run -d -p 80:80 my-react-app"
