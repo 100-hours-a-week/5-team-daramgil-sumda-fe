@@ -22,7 +22,7 @@ jobs:
         run: npm install
 
       - name: Docker 빌드
-        run: docker build --build-arg SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }} -t my-react-app .
+        run: docker build -t my-react-app .
 
       - name: Docker 이미지 EC2로 배포
         env:
@@ -33,5 +33,5 @@ jobs:
           mkdir -p ~/.ssh
           echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          scp -o StrictHostKeyChecking=no Dockerfile nginx.conf ${SSH_USER}@${SSH_HOST}:/home/ec2-user/
-          ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} "docker build -t my-react-app /home/ec2-user/ && docker run -d -p 80:80 my-react-app"
+          scp -o StrictHostKeyChecking=no -v Dockerfile nginx.conf ${SSH_USER}@${SSH_HOST}:/home/ec2-user/
+          ssh -o StrictHostKeyChecking=no -v ${SSH_USER}@${SSH_HOST} "docker build -t my-react-app /home/ec2-user/ && docker run -d -p 80:80 my-react-app"
