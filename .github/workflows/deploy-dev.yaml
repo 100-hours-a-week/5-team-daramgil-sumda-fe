@@ -46,5 +46,5 @@ jobs:
           mkdir -p ~/.ssh
           echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          scp -o StrictHostKeyChecking=no -v Dockerfile nginx.conf ${SSH_USER}@${SSH_HOST}:/home/ubuntu/
+          scp -o StrictHostKeyChecking=no -v dockerfile nginx.conf ${SSH_USER}@${SSH_HOST}:/home/ubuntu/
           ssh -o StrictHostKeyChecking=no -v ${SSH_USER}@${SSH_HOST} "docker build -t my-react-app /home/ubuntu/ && docker run -d -p 80:80 my-react-app"
