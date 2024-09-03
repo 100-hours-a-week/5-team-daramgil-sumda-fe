@@ -1,0 +1,50 @@
+name: React 앱 Docker 빌드 및 Sentry 릴리스
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 코드 체크아웃
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # 모든 Git 히스토리를 가져옵니다.
+
+      - name: Node.js 환경 설정
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: 종속성 설치
+        run: npm install
+
+      - name: Create Sentry release
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          environment: "production" # 환경 설정 (production, staging 등)
+          sourcemaps: "./build/static/js" # 소스 맵이 저장된 경로
+          finalize: true # 릴리스를 완료하고 릴리스로 표시합니다.
+
+      - name: Docker 빌드
+        run: docker build --build-arg SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }} -t my-react-app .
+
+      - name: Docker 이미지 EC2로 배포
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          SSH_HOST: ${{ secrets.DEPLOY_EC2_HOST }}
+          SSH_USER: ${{ secrets.DEPLOY_EC2_USER }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          scp -o StrictHostKeyChecking=no -v dockerfile nginx.conf ${SSH_USER}@${SSH_HOST}:/home/ubuntu/
+          ssh -o StrictHostKeyChecking=no -v ${SSH_USER}@${SSH_HOST} "docker build -t my-react-app /home/ubuntu/ && docker run -d -p 80:80 my-react-app"
