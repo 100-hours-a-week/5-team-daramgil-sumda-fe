@@ -15,8 +15,8 @@ RUN echo "SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN" >> .env
 RUN echo "SENTRY_ORG=$SENTRY_ORG" >> .env
 RUN echo "SENTRY_PROJECT=$SENTRY_PROJECT" >> .env
 
-# React 애플리케이션 빌드
-RUN npm run build
+# React 애플리케이션 빌드 (Sentry 소스맵 업로드를 제외)
+RUN react-scripts build
 
 # 2단계: Nginx 설정을 통해 정적 파일 서빙
 FROM nginx:alpine
