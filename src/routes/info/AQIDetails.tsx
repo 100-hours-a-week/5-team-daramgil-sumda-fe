@@ -241,6 +241,10 @@ const AQIDetails: React.FC = () => {
     if (key === "khai") return "";
     return "ppm";
   };
+  // 데이터가 업데이트될 때 최대값 계산
+  const calculateMaxValue = (data: any[], pollutant: string) => {
+    return Math.max(...data.map((entry) => entry[pollutant] || 0));
+  };
 
   return (
     <div className="aqidetails-page">
@@ -301,34 +305,43 @@ const AQIDetails: React.FC = () => {
               spaceBetween={50}
               slidesPerView={1}
             >
-              {["pm10", "pm25", "no2", "o3", "co", "so2"].map((pollutant) => (
-                <SwiperSlide key={pollutant}>
-                  <h4>
-                    {pollutantNames[pollutant] || pollutant.toUpperCase()}
-                  </h4>
-                  <ResponsiveContainer width="100%" height={250}>
-                    <LineChart
-                      data={airPollutionData.sort(
-                        (a, b) =>
-                          new Date(a.time).getTime() -
-                          new Date(b.time).getTime()
-                      )}
-                      margin={{ top: 10, left: -10, right: 30 }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="dateTime" />
-                      <YAxis />
-                      <Tooltip />
-                      <Line
-                        type="monotone"
-                        dataKey={pollutant}
-                        stroke="#8884d8"
-                        strokeWidth={2}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </SwiperSlide>
-              ))}
+              {["pm10", "pm25", "no2", "o3", "co", "so2"].map((pollutant) => {
+                // 최대값 계산
+                const maxPollutantValue = calculateMaxValue(
+                  airPollutionData,
+                  pollutant
+                );
+
+                return (
+                  <SwiperSlide key={pollutant}>
+                    <h4>
+                      {pollutantNames[pollutant] || pollutant.toUpperCase()}
+                    </h4>
+                    <ResponsiveContainer width="100%" height={250}>
+                      <LineChart
+                        data={airPollutionData.sort(
+                          (a, b) =>
+                            new Date(a.time).getTime() -
+                            new Date(b.time).getTime()
+                        )}
+                        margin={{ top: 10, left: -10, right: 30 }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="dateTime" />
+                        <YAxis domain={[0, maxPollutantValue]} />{" "}
+                        {/* YAxis domain 수정 */}
+                        <Tooltip />
+                        <Line
+                          type="monotone"
+                          dataKey={pollutant}
+                          stroke="#8884d8"
+                          strokeWidth={2}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </SwiperSlide>
+                );
+              })}
             </Swiper>
           </div>
 
