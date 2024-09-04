@@ -16,19 +16,26 @@ jobs:
 
       # 2. Docker 로그인 (GHCR에 로그인)
       - name: Log in to GitHub Container Registry
-        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
+        run: |
+          set -x  # 로그 출력 추가
+          echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
 
-      # 3. Docker 이미지 빌드
+      # 3. Docker 이미지 빌드 (로그 수준을 올림)
       - name: Build Docker image
-        run: docker build --build-arg SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }} -t ghcr.io/${{ github.repository_owner }}/sumda-fe-dev:latest .
+        run: |
+          set -x  # 로그 출력 추가
+          docker build --build-arg SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }} --progress=plain -t ghcr.io/${{ github.repository_owner }}/sumda-fe-dev:latest .
 
-      # 4. GHCR에 이미지 푸시
+      # 4. GHCR에 이미지 푸시 (로그 출력 추가)
       - name: Push Docker image to GHCR
-        run: docker push ghcr.io/${{ github.repository_owner }}/sumda-fe-dev:latest
+        run: |
+          set -x  # 로그 출력 추가
+          docker push ghcr.io/${{ github.repository_owner }}/sumda-fe-dev:latest
 
       # 5. EC2 서버로 빌드된 정적 파일 전송
       - name: Copy built files to EC2
         run: |
+          set -x  # 로그 출력 추가
           docker create --name temp_container ghcr.io/${{ github.repository_owner }}/sumda-fe-dev:latest
           docker cp temp_container:/app/build ./build
           docker rm temp_container
@@ -42,5 +49,6 @@ jobs:
       # 1. SSH 키 설정 및 에이전트에 추가
       - name: Setup SSH Key
         run: |
+          set -x  # 로그 출력 추가
           eval $(ssh-agent -s)
           echo "${{ secrets.EC2_SSH_KEY }}" | tr -d '\r' | ssh-add -
