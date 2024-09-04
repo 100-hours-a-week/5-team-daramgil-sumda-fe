@@ -38,7 +38,16 @@ jobs:
           mkdir -p ~/.ssh  # ~/.ssh 디렉토리 생성
           ssh-keyscan -H ${{ secrets.DEPLOY_EC2_HOST }} >> ~/.ssh/known_hosts  # EC2 호스트 키 추가
 
-      # 6. EC2 서버로 빌드된 정적 파일 전송
+      # 6. SSH 키 설정 및 에이전트에 추가
+      - name: Setup SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa  # 적절한 권한 설정
+          eval $(ssh-agent -s)
+          ssh-add ~/.ssh/id_rsa
+
+      # 7. EC2 서버로 빌드된 정적 파일 전송
       - name: Copy built files to EC2
         run: |
           set -x
@@ -52,8 +61,8 @@ jobs:
     needs: build
 
     steps:
-      # 1. SSH 키 설정 및 에이전트에 추가
-      - name: Setup SSH Key
+      # 1. SSH 키 설정 및 에이전트에 추가 (배포 단계에서도 SSH 설정)
+      - name: Setup SSH Key for deployment
         run: |
           set -x
           eval $(ssh-agent -s)
