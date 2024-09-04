@@ -1,4 +1,4 @@
-name: React 앱 Docker 빌드 및 Sentry 릴리스
+name: 숨다 FE dev 서버, GHCR 을 사용하여 도커 배포
 
 on:
   push:
@@ -6,45 +6,41 @@ on:
       - develop
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 코드 체크아웃
+      # 1. 리포지토리 클론
+      - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0 # 모든 Git 히스토리를 가져옵니다.
 
-      - name: Node.js 환경 설정
-        uses: actions/setup-node@v2
-        with:
-          node-version: "14"
+      # 2. Docker 로그인 (GHCR에 로그인)
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
 
-      - name: 종속성 설치
-        run: npm install
+      # 3. Docker 이미지 빌드
+      - name: Build Docker image
+        run: docker build --build-arg SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }} -t ghcr.io/${{ github.repository_owner }}/sumda-fe-dev:latest .
 
-      - name: Create Sentry release
-        uses: getsentry/action-release@v1
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-        with:
-          environment: "production" # 환경 설정 (production, staging 등)
-          sourcemaps: "./build/static/js" # 소스 맵이 저장된 경로
-          finalize: true # 릴리스를 완료하고 릴리스로 표시합니다.
+      # 4. GHCR에 이미지 푸시
+      - name: Push Docker image to GHCR
+        run: docker push ghcr.io/${{ github.repository_owner }}/sumda-fe-dev:latest
 
-      - name: Docker 빌드
-        run: docker build --build-arg SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }} -t my-react-app .
-
-      - name: Docker 이미지 EC2로 배포
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-          SSH_HOST: ${{ secrets.DEPLOY_EC2_HOST }}
-          SSH_USER: ${{ secrets.DEPLOY_EC2_USER }}
+      # 5. EC2 서버로 빌드된 정적 파일 전송
+      - name: Copy built files to EC2
         run: |
-          mkdir -p ~/.ssh
-          echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          scp -o StrictHostKeyChecking=no -v dockerfile nginx.conf ${SSH_USER}@${SSH_HOST}:/home/ubuntu/
-          ssh -o StrictHostKeyChecking=no -v ${SSH_USER}@${SSH_HOST} "docker build -t my-react-app /home/ubuntu/ && docker run -d -p 80:80 my-react-app"
+          docker create --name temp_container ghcr.io/${{ github.repository_owner }}/sumda-fe-dev:latest
+          docker cp temp_container:/app/build ./build
+          docker rm temp_container
+          scp -r ./build/* ${{ secrets.DEPLOY_EC2_USER }}@${{ secrets.DEPLOY_EC2_HOST }}:/var/www/html/
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      # 1. SSH 키 설정 및 에이전트에 추가
+      - name: Setup SSH Key
+        run: |
+          eval $(ssh-agent -s)
+          echo "${{ secrets.EC2_SSH_KEY }}" | tr -d '\r' | ssh-add -

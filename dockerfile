@@ -1,30 +1,26 @@
-# 1단계: React 애플리케이션 빌드
-FROM node:14 AS build
+# Node.js 20.17.0 이미지 사용
+FROM node:20.17.0-alpine AS build
 
+# 작업 디렉토리 설정
 WORKDIR /app
 
-COPY package*.json ./
+# package.json과 package-lock.json 파일을 복사
+COPY package.json package-lock.json ./
 
-# GitHub Actions에서 전달된 SENTRY_AUTH_TOKEN을 환경 변수로 설정
+# 의존성 설치
+RUN npm install --production
+
+# 소스 파일 복사
+COPY . .
+
+# 환경 변수 설정 (Sentry 관련)
 ARG SENTRY_AUTH_TOKEN
 ENV SENTRY_AUTH_TOKEN=${SENTRY_AUTH_TOKEN}
 
-# npm 설치 및 확인
-RUN npm install && ls -la node_modules/react-scripts
-
-COPY . .
-
-# React 애플리케이션 빌드
+# 빌드 수행
 RUN npm run build
 
-# 2단계: Nginx 설정을 통해 정적 파일 서빙
-FROM nginx:alpine
+# Sentry sourcemap 업로드 (SENTRY_AUTH_TOKEN이 설정된 경우에만 수행)
+RUN if [ "$SENTRY_AUTH_TOKEN" != "" ]; then npm run sentry:sourcemaps; fi
 
-# 빌드 단계에서 생성된 파일들을 Nginx의 HTML 디렉토리로 복사
-COPY --from=build /app/build /usr/share/nginx/html
-
-# 80번 포트를 노출
-EXPOSE 80
-
-# Nginx를 실행
-CMD ["nginx", "-g", "daemon off;"]
+# 빌드된 파일은 /app/build 폴더에 저장됨
