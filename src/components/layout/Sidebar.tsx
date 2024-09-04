@@ -15,9 +15,10 @@ const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
         <Link to="/favorites" className="menu-item" onClick={onClose}>
           즐겨찾는 위치
         </Link>
-        {/* <Link to="/underConstruction" className="menu-item" onClick={onClose}>
+        <Link to="/collection" className="menu-item" onClick={onClose}>
           컬렉션
         </Link>
+        {/*
         <Link to="/underConstruction" className="menu-item" onClick={onClose}>
           지역별 익명 채팅방
         </Link>
