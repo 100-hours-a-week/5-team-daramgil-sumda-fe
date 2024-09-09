@@ -71,7 +71,6 @@ const useMissionStore = create<MissionState>()(
           }
         } catch (error) {
           console.error("대기오염 조회 미션 처리 실패:", error);
-          alert("대기오염 조회 미션 처리 중 오류가 발생했습니다.");
         }
       },
       completeDailyQuiz: async () => {

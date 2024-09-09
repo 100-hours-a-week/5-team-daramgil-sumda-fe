@@ -7,7 +7,7 @@
   background-position: center;
   background-repeat: no-repeat;
 }
-  
+
 @media (max-width: 768px) {
   .background-container {
     background-image: none;
@@ -17,11 +17,9 @@
 .mobile-frame {
   width: 400px;
   min-height: 100vh;
-  border: 1px solid #ccc;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  background-color: white;
 }
 
 .content-container {

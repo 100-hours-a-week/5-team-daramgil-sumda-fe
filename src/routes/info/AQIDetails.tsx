@@ -17,10 +17,19 @@ import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
 
 import good from "../../assets/grade/good.png";
+import { FaRegFaceGrinBeam } from "react-icons/fa6";
+
 import moderate from "../../assets/grade/moderate.png";
+import { FaRegFaceSmile } from "react-icons/fa6";
+
 import unhealthy from "../../assets/grade/unhealthy.png";
+import { FaRegFaceMeh } from "react-icons/fa6";
+
 import veryUnhealthy from "../../assets/grade/very_unhealthy.png";
+import { FaRegFaceFrown } from "react-icons/fa6";
+
 import hazardous from "../../assets/grade/hazardous.png";
+import { FaRegFaceDizzy } from "react-icons/fa6";
 
 import callout from "../../assets/info.png";
 
@@ -191,27 +200,34 @@ const AQIDetails: React.FC = () => {
 
   // 대기질 등급에 따른 이미지와 상태 정보
   const airQualityGrades: {
-    [key: string]: { image: string; status: string };
+    [key: string]: { icon: JSX.Element; status: string };
   } = {
-    "1": { image: good, status: "좋음" },
-    "2": { image: moderate, status: "보통" },
-    "3": { image: unhealthy, status: "나쁨" },
-    "4": { image: veryUnhealthy, status: "매우 나쁨" },
-    "5": { image: hazardous, status: "위험" },
+    "1": {
+      status: "좋음",
+      icon: <FaRegFaceGrinBeam style={{ color: "white" }} />,
+    },
+    "2": {
+      status: "보통",
+      icon: <FaRegFaceSmile style={{ color: "white" }} />,
+    },
+    "3": { status: "나쁨", icon: <FaRegFaceMeh style={{ color: "white" }} /> },
+    "4": {
+      status: "매우 나쁨",
+      icon: <FaRegFaceFrown style={{ color: "white" }} />,
+    },
+    "5": {
+      status: "위험",
+      icon: <FaRegFaceDizzy style={{ color: "white" }} />,
+    },
   };
-
-  // 대기질 정보 가져오기
   const getAirQualityInfo = (value: string | null, grade: string | null) => {
     if (!value || !grade) {
-      return { image: "", status: "데이터 없음", value: "데이터 없음" };
+      return { icon: null, status: "데이터 없음", value: "데이터 없음" };
     }
-
     const info = airQualityGrades[grade] || {
-      image: "",
-      background: "",
+      icon: null,
       status: "데이터 없음",
     };
-
     return { ...info, value };
   };
 
@@ -270,51 +286,54 @@ const AQIDetails: React.FC = () => {
 
   return (
     <div className="aqidetails-page">
-      <div className="info-container">
+      <div className="aqidetail-container">
         <LocationDropdown onLocationSelect={handleLocationSelect} />
         <div className="aqidetails-container-unique">
           <div className="info-container-unique">
             <div className="air-quality-section-unique">
-              <h1 className="air-quality-title-unique">통합대기환경지수</h1>
-              {pollutantInfo.khai.image ? (
-                <img
-                  className="air-quality-image-unique"
-                  src={pollutantInfo.khai.image}
-                  alt="통합대기환경지수 이미지"
-                />
-              ) : (
-                <p>데이터 없음</p>
-              )}
-              <p className="air-quality-status-unique">
-                {pollutantInfo.khai.status}
-              </p>
+              {/* <h1 className="air-quality-title-unique">통합대기환경지수</h1> */}
+
+              <div className="air-quality-status-container-unique">
+                <p className="air-quality-status-unique">
+                  {pollutantInfo.khai.status}
+                </p>
+                {pollutantInfo.khai.icon ? (
+                  <div className="air-quality-icon-unique">
+                    {pollutantInfo.khai.icon}
+                  </div>
+                ) : (
+                  <p>데이터 없음</p>
+                )}
+              </div>
+
               <p className="air-quality-value-unique">
                 {pollutantInfo.khai.value} {getUnit("khai")}
               </p>
+              <p className="air-quality-name">통합대기환경지수</p>
             </div>
 
             <div className="pollutants-container-unique">
-              {Object.entries(pollutantInfo).map(
-                ([key, info]) =>
-                  key !== "khai" && (
-                    <div className="pollutant-item-unique" key={key}>
-                      <h2>{pollutantNames[key] || key.toUpperCase()}</h2>
-                      {info.image ? (
-                        <img
-                          className="pollutant-image-unique"
-                          src={info.image}
-                          alt={`${key} 등급 이미지`}
-                        />
-                      ) : (
-                        <p>데이터 없음</p>
-                      )}
-                      <p className="pollutant-status-unique">{info.status}</p>
-                      <p className="pollutant-value-unique">
-                        {info.value} {getUnit(key)}
-                      </p>
-                    </div>
-                  )
-              )}
+              <div className="pollutants-items-unique">
+                {Object.entries(pollutantInfo).map(
+                  ([key, info]) =>
+                    key !== "khai" && (
+                      <div className="pollutant-item-unique" key={key}>
+                        <h2>{pollutantNames[key] || key.toUpperCase()}</h2>
+                        {info.icon ? (
+                          <div className="pollutant-icon-unique">
+                            {info.icon}
+                          </div>
+                        ) : (
+                          <p>데이터 없음</p>
+                        )}
+                        <p className="pollutant-status-unique">{info.status}</p>
+                        <p className="pollutant-value-unique">
+                          {info.value} {getUnit(key)}
+                        </p>
+                      </div>
+                    )
+                )}
+              </div>
             </div>
           </div>
 
