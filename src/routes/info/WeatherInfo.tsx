@@ -5,7 +5,7 @@ import precipitationIcon from "../../assets/weather/precipitation.png";
 import windIcon from "../../assets/weather/wind.png";
 import uvIcon from "../../assets/weather/uv.png";
 import pressureIcon from "../../assets/weather/pressure.png";
-import visibilityIcon from "../../assets/weather/visibility.png";
+import visibilityIcon from "../../assets/weather/visibility2.png";
 import LocationDropdown from "../../components/LocationDropdown";
 import {
   WiDaySunny,
@@ -39,22 +39,34 @@ const weatherMainToKorean: { [key: string]: string } = {
   Clouds: "구름",
 };
 
+// WeatherInfo.tsx
+const weatherClassMap: { [key: string]: string } = {
+  Clear: "daysunny",
+  Clouds: "cloudy",
+  Rain: "showers",
+  Snow: "snow",
+  Thunderstorm: "thunderstorm",
+  Fog: "fog",
+  StormShowers: "stormshowers",
+  // 필요한 경우 더 많은 매핑 추가
+};
+
 const weatherIconMap: WeatherIconMap = {
-  Thunderstorm: <WiThunderstorm />,
-  Drizzle: <WiShowers />,
-  Rain: <WiShowers />,
-  Snow: <WiSnow />,
-  Mist: <WiFog />,
-  Smoke: <WiFog />,
-  Haze: <WiFog />,
-  Dust: <WiFog />,
-  Fog: <WiFog />,
-  Sand: <WiFog />,
-  Ash: <WiFog />,
-  Squall: <WiStormShowers />,
-  Tornado: <WiStormShowers />,
-  Clear: <WiDaySunny />,
-  Clouds: <WiCloudy />,
+  Thunderstorm: <WiThunderstorm style={{ color: "white" }} />,
+  Drizzle: <WiShowers style={{ color: "white" }} />,
+  Rain: <WiShowers style={{ color: "white" }} />,
+  Snow: <WiSnow style={{ color: "white" }} />,
+  Mist: <WiFog style={{ color: "white" }} />,
+  Smoke: <WiFog style={{ color: "white" }} />,
+  Haze: <WiFog style={{ color: "white" }} />,
+  Dust: <WiFog style={{ color: "white" }} />,
+  Fog: <WiFog style={{ color: "white" }} />,
+  Sand: <WiFog style={{ color: "white" }} />,
+  Ash: <WiFog style={{ color: "white" }} />,
+  Squall: <WiStormShowers style={{ color: "white" }} />,
+  Tornado: <WiStormShowers style={{ color: "white" }} />,
+  Clear: <WiDaySunny style={{ color: "white" }} />,
+  Clouds: <WiCloudy style={{ color: "white" }} />,
 };
 
 const WeatherInfo: React.FC = () => {
@@ -119,9 +131,20 @@ const WeatherInfo: React.FC = () => {
     return icon;
   };
 
+  const getWeatherClass = (weatherMain: string | undefined) => {
+    if (!weatherMain) {
+      return "default";
+    }
+    return weatherClassMap[weatherMain] || "default";
+  };
+
   return (
-    <div className="weatherinfo-page">
-      <div className="info-container">
+    <div
+      className={`weatherinfo-page ${getWeatherClass(
+        weatherData?.weatherDataJson?.current?.weather[0]?.main
+      )}`}
+    >
+      <div className="weatherinfo-container">
         <LocationDropdown onLocationSelect={handleLocationSelect} />
         {loading ? (
           <div className="loading">

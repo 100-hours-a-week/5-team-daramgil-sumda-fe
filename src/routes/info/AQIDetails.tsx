@@ -21,7 +21,11 @@ import moderate from "../../assets/grade/moderate.png";
 import unhealthy from "../../assets/grade/unhealthy.png";
 import veryUnhealthy from "../../assets/grade/very_unhealthy.png";
 import hazardous from "../../assets/grade/hazardous.png";
+
 import callout from "../../assets/info.png";
+
+import { toast } from "react-toastify";
+import useMissionStore from "../../store/useMissionStore";
 
 const AQIDetails: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
@@ -33,6 +37,8 @@ const AQIDetails: React.FC = () => {
 
   const prevIdRef = useRef<number | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
+
+  const { completeDailyAir } = useMissionStore();
 
   // id가 변경될 때마다 데이터 요청
   useEffect(() => {
@@ -164,20 +170,35 @@ const AQIDetails: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    // 컴포넌트 마운트 시 출석 체크 호출
+    const checkAir = async () => {
+      try {
+        await completeDailyAir();
+        toast.success("출석 미션을 완료했습니다. 도토리 1개가 지급됩니다.");
+      } catch (error) {
+        toast.error("이미 완료된 미션입니다."); // 에러 시 처리
+      }
+    };
+
+    checkAir();
+  }, [completeDailyAir]);
+
   // 위치 선택 핸들러
   const handleLocationSelect = (location: string, id: number) => {
     setId(id);
   };
 
   // 대기질 등급에 따른 이미지와 상태 정보
-  const airQualityGrades: { [key: string]: { image: string; status: string } } =
-    {
-      "1": { image: good, status: "좋음" },
-      "2": { image: moderate, status: "보통" },
-      "3": { image: unhealthy, status: "나쁨" },
-      "4": { image: veryUnhealthy, status: "매우 나쁨" },
-      "5": { image: hazardous, status: "위험" },
-    };
+  const airQualityGrades: {
+    [key: string]: { image: string; status: string };
+  } = {
+    "1": { image: good, status: "좋음" },
+    "2": { image: moderate, status: "보통" },
+    "3": { image: unhealthy, status: "나쁨" },
+    "4": { image: veryUnhealthy, status: "매우 나쁨" },
+    "5": { image: hazardous, status: "위험" },
+  };
 
   // 대기질 정보 가져오기
   const getAirQualityInfo = (value: string | null, grade: string | null) => {
@@ -187,6 +208,7 @@ const AQIDetails: React.FC = () => {
 
     const info = airQualityGrades[grade] || {
       image: "",
+      background: "",
       status: "데이터 없음",
     };
 

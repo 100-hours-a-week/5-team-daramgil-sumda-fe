@@ -29,6 +29,7 @@
     "react-scripts": "^5.0.1",
     "react-select": "^5.8.0",
     "react-switch": "^7.0.0",
+    "react-toastify": "^10.0.5",
     "recharts": "^2.12.7",
     "swiper": "^11.1.9",
     "typescript": "^4.9.5",

@@ -1,5 +1,5 @@
 // src/stores/useAuthStore.ts
-import create from "zustand";
+import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface SquirrelData {
@@ -17,11 +17,12 @@ interface AuthState {
   setSquirrelData: (data: SquirrelData) => void;
   login: (token: string) => void;
   logout: () => void;
+  checkAuth: () => void;
 }
 
 const useAuthStore = create<AuthState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       isLoggedIn: false,
       jwtToken: null,
       squirrelData: null,
@@ -29,9 +30,29 @@ const useAuthStore = create<AuthState>()(
       login: (token) => set({ isLoggedIn: true, jwtToken: token }),
       logout: () =>
         set({ isLoggedIn: false, jwtToken: null, squirrelData: null }),
+      checkAuth: async () => {
+        try {
+          const response = await fetch(
+            `${process.env.REACT_APP_API_URL}/auth/check`,
+            {
+              method: "GET",
+              credentials: "include", // 쿠키를 포함하여 요청
+            }
+          );
+
+          if (response.ok) {
+            set({ isLoggedIn: true });
+          } else {
+            set({ isLoggedIn: false });
+          }
+        } catch (error) {
+          console.error("Authentication check failed:", error);
+          set({ isLoggedIn: false });
+        }
+      },
     }),
     {
-      name: "auth-storage", // 로컬 스토리지에 저장될 키 이름
+      name: "auth-storage",
     }
   )
 );

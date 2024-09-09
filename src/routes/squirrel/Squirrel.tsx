@@ -13,7 +13,7 @@ interface SquirrelData {
 }
 
 const Squirrel: React.FC = () => {
-  const { squirrelData, setSquirrelData, jwtToken } = useAuthStore();
+  const { squirrelData, setSquirrelData, jwtToken } = useAuthStore.getState();
   const [progress, setProgress] = useState<number>(squirrelData?.feed || 0);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedAcorns, setSelectedAcorns] = useState<number>(0);
@@ -22,10 +22,8 @@ const Squirrel: React.FC = () => {
   const maxLevels = [10, 20, 30, 40]; // 각 레벨에 필요한 도토리 수
 
   useEffect(() => {
-    if (jwtToken) {
-      fetchSquirrelData();
-    }
-  }, [jwtToken]);
+    fetchSquirrelData();
+  }, []);
 
   // API 호출 함수
   const fetchSquirrelData = async () => {
@@ -34,6 +32,7 @@ const Squirrel: React.FC = () => {
         `${process.env.REACT_APP_API_URL}/squirrel/`,
         {
           method: "GET",
+          credentials: "include", // 쿠키를 요청에 포함
           headers: {
             Authorization: `Bearer ${jwtToken}`,
           },
@@ -45,6 +44,7 @@ const Squirrel: React.FC = () => {
       const data = await response.json();
       setSquirrelData(data.data);
       console.log(squirrelData);
+
       setProgress(data.data.feed);
     } catch (error) {
       console.error("API 호출 에러:", error);

@@ -1,23 +1,23 @@
-// src/components/Login.tsx
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import logo from "../assets/icons/logo.png";
 import kakao_login_button_img from "../assets/icons/kakao_login_large_wide.png";
 import "./styles/Login.css";
 import useAuthStore from "../store/useAuthStore";
 
 const Login: React.FC = () => {
-  const { login } = useAuthStore();
+  const { isLoggedIn, logout } = useAuthStore(); // Zustand 상태와 액션 가져오기
+  const navigate = useNavigate();
 
-  // 임시 JWT 토큰 생성 함수
-  const generateMockJwtToken = () => {
-    // 여기서 임의로 생성된 토큰을 사용합니다. 실제로는 서버로부터 받아야 합니다.
-    return "mock-jwt-token-1234";
+  const handleKakaoLogin = () => {
+    // 카카오 로그인 엔드포인트로 리디렉션 (백엔드에서 처리)
+    window.location.href = `http://localhost:8080/oauth2/authorization/kakao`;
   };
 
-  const handleLogin = () => {
-    const token = generateMockJwtToken();
-    login(token); // Zustand 상태에 토큰 저장 및 로그인 처리
-    alert("로그인 되었습니다.");
+  const handleLogout = () => {
+    logout();
+    alert("로그아웃 되었습니다.");
+    navigate("/login");
   };
 
   return (
@@ -30,8 +30,8 @@ const Login: React.FC = () => {
       <p className="login-explain1">해당 서비스는 회원만 이용할 수 있습니다.</p>
       <p className="login-explain2">이용하려면 로그인해주세요.</p>
       <div className="login-button-container">
-        {!login ? (
-          <button className="login-button" onClick={handleLogin}>
+        {!isLoggedIn ? (
+          <button className="login-button" onClick={handleKakaoLogin}>
             <img
               className="login-button-img"
               src={kakao_login_button_img}
@@ -39,7 +39,13 @@ const Login: React.FC = () => {
             />
           </button>
         ) : (
-          <p>이미 로그인 되었습니다.</p>
+          <div className="login-oauth-container">
+            <p>로그인 정보 : KAKAO ID1234567890</p>
+            <button className="logout-button" onClick={handleLogout}>
+              로그아웃
+            </button>
+            <button className="quit-button">탈퇴하기</button>
+          </div>
         )}
       </div>
     </div>
