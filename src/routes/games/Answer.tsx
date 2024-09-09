@@ -17,7 +17,18 @@ const Answer: React.FC = () => {
         await completeDailyQuiz();
         toast.success("OX퀴즈 미션을 완료했습니다. 도토리 1개가 지급됩니다.");
       } catch (error) {
-        toast.error("이미 완료된 미션입니다."); // 에러 시 처리
+        // error가 unknown 타입이므로 명시적으로 처리
+        if (error instanceof Error) {
+          if (error.message.includes("이미 완료된 미션")) {
+            toast.info(
+              "오늘은 이미 OX 퀴즈를 통해 도토리를 주웠네요 내일 참여해주세요"
+            );
+          } else {
+            toast.error("OX퀴즈 미션 처리 중 오류가 발생했습니다.");
+          }
+        } else {
+          toast.error("알 수 없는 오류가 발생했습니다.");
+        }
       }
     };
 
