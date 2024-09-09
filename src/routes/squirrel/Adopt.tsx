@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./styles/Adopt.css";
 import useAuthStore from "../../store/useAuthStore"; // Zustand store import
 
@@ -13,7 +14,7 @@ interface SquirrelData {
 const Adopt: React.FC = () => {
   const { jwtToken, setSquirrelData } = useAuthStore(); // Zustand에서 jwtToken과 setSquirrelData 가져오기
   const [selectedSquirrel, setSelectedSquirrel] = useState<string | null>(null);
-
+  const navigate = useNavigate();
   const squirrels = [
     {
       id: 1,
@@ -83,11 +84,13 @@ const Adopt: React.FC = () => {
         userAcorns: 0, // 초기값 설정
       });
       alert(`새로운 다람쥐가 분양되었습니다: ${data.data.type}`);
+      navigate(`/squirrel`);
     } catch (error: any) {
       alert(error.message);
       console.error("다람쥐 분양 에러:", error);
     }
   };
+
   return (
     <div className="adopt-container">
       <h2 className="adopt-title">새로운 다람쥐 고르기</h2>

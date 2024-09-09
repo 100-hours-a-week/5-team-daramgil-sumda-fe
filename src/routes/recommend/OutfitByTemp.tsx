@@ -53,7 +53,7 @@ const OutfitByTemp: React.FC = () => {
     <div className="outfitbytemp-page">
       <h2 className="title">기온별 옷차림 추천</h2>
       <div className="outfitbytemp-container">
-        <div className="color-container"></div>
+        <div className="color-container" />
         <div className="outfit-container">
           {temperatureRanges.map((range, index) => (
             <div key={index} className="outfit-item">

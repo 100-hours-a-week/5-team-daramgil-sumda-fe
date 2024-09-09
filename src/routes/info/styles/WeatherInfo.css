@@ -1,18 +1,44 @@
+.weatherinfo-page.daysunny {
+  background-image: url("../../../assets/background/weatherBackgrounds/DaySunny.jpg");
+}
+.weatherinfo-page.cloudy {
+  background-image: url("../../../assets//background/weatherBackgrounds/Cloudy.jpg");
+}
+.weatherinfo-page.showers {
+  background-image: url("../../../assets/background/weatherBackgrounds/Showers.jpg");
+}
+.weatherinfo-page.snow {
+  background-image: url("../../../assets/background/weatherBackgrounds/Snow.jpg");
+}
+.weatherinfo-page.thunderstorm {
+  background-image: url("../../../assets/background/weatherBackgrounds/ThunderStorm.jpg");
+}
+.weatherinfo-page.fog {
+  background-image: url("../../../assets/background/weatherBackgrounds/Fog.jpg");
+}
+.weatherinfo-page.stormshowers {
+  background-image: url("../../../assets/background/weatherBackgrounds/StormShowers.jpg");
+}
+.weatherinfo-page.default {
+  background-image: url("../../../assets/background/weatherBackgrounds/DaySunny.jpg");
+}
+
 .weatherinfo-page {
+  background-size: 100% 100%; /* 배경 이미지를 요소의 크기에 맞게 조정 */
+  background-position: center; /* 배경 이미지를 중앙에 위치 */
+  background-repeat: no-repeat; /* 배경 이미지가 반복되지 않도록 설정 */
+  background-attachment: fixed; /* 배경이 스크롤 시에도 고정되도록 설정 */
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   padding: 20px;
   box-sizing: border-box;
-  background-color: #f0f0f0;
   min-height: calc(100vh - 338px);
 }
 
-.info-container {
-  background-color: #ffffff;
+.weatherinfo-container {
   border-radius: 15px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
   padding: 20px;
@@ -27,10 +53,14 @@
 }
 
 .weather-section {
+  border-radius: 15px;
+  background-color: #a3a3a355;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 20px;
+  padding: 10px 0 20px 0;
 }
 
 .weather-icon {
@@ -43,7 +73,7 @@
 .weather-status {
   font-size: 16px;
   font-weight: bold;
-  color: #333;
+  color: #f7f7f7;
   margin-bottom: 5px;
 }
 
@@ -56,7 +86,7 @@
 
 .weather-precipitation {
   font-size: 16px;
-  color: #555;
+  color: #f7f7f7;
 }
 
 .forecast-section {
@@ -67,7 +97,7 @@
 .forecast-title {
   font-size: 18px;
   font-weight: bold;
-  color: #333;
+  color: #f7f7f7;
   margin-bottom: 10px;
   text-align: center;
 }
@@ -96,11 +126,11 @@
 .forecast-item {
   display: inline-block;
   text-align: center;
-  background-color: #f9f9f9;
+  background-color: #a3a3a355;
   border-radius: 10px;
   padding: 10px;
   min-width: 70px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .forecast-icon {
@@ -130,10 +160,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #f9f9f9;
+  background-color: #a3a3a355;
   border-radius: 10px;
   padding: 20px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .daily-forecast-item .forecast-icon {
@@ -146,12 +176,12 @@
 .day-info {
   font-size: 16px;
   font-weight: bold;
-  color: #333;
+  color: #f7f7f7;
 }
 
 .temperature {
   font-size: 16px;
-  color: #555;
+  color: #f7f7f7;
 }
 
 .detail-forecast-section {
@@ -161,7 +191,7 @@
 .detail-forecast-title {
   font-size: 18px;
   font-weight: bold;
-  color: #333;
+  color: #ffffff;
   margin-bottom: 10px;
   text-align: center;
 }
@@ -176,15 +206,19 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #f9f9f9;
+  background-color: #a3a3a355;
   border-radius: 10px;
   padding: 10px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+}
+.detail-forecast-item > p {
+  color: #f7f7f7;
 }
 
 .detail-forecast-label {
   display: flex;
   align-items: center;
+  color: #ffffff;
   gap: 10px;
 }
 
@@ -226,7 +260,7 @@
   height: 100px;
 }
 
-.weather-icon-container>svg {
+.weather-icon-container > svg {
   width: 100%;
   height: 100%;
 }
@@ -244,7 +278,7 @@
   color: #ff6f61;
 }
 .day {
-  width:41px;
+  width: 41px;
 }
 
 .forecast-icon-container {
@@ -256,7 +290,7 @@
   align-items: center;
 }
 
-.forecast-icon-container>svg {
+.forecast-icon-container > svg {
   width: 100%;
   height: 100%;
 }

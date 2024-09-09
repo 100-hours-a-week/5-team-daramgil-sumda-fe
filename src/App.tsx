@@ -61,11 +61,9 @@ const App: React.FC = () => {
         <Route path="/" element={<Layout />}>
           <Route path="/sensitivecheck" element={<SensitiveCheck />} />
           <Route path="/" element={<Home />} />
-
           <Route path="/aqi-details" element={<AQIDetails />} />
           <Route path="/weatherinfo" element={<WeatherInfo />} />
           <Route path="/favorites" element={<Favorites />} />
-
           <Route path="/notice" element={<Notice />} />
           <Route path="/contact" element={<Contact />} />
           <Route
@@ -76,12 +74,9 @@ const App: React.FC = () => {
               </PrivateRoute>
             }
           />
-
           <Route path="/activityRecommed" element={<ActivityRecommed />} />
-
           <Route path="/outfitdaily" element={<OutfitDaily />} />
           <Route path="/outfitbytemp" element={<OutfitByTemp />} />
-
           <Route
             path="/squirrel"
             element={
@@ -106,7 +101,6 @@ const App: React.FC = () => {
               </PrivateRoute>
             }
           />
-
           <Route
             path="/daily"
             element={

@@ -33,10 +33,10 @@ const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
         </Link>
         {/* <Link to="/underConstruction" className="menu-item" onClick={onClose}>
           야외활동 추천
-        </Link>
-        <Link to="/underConstruction" className="menu-item" onClick={onClose}>
+        </Link>*/}
+        <Link to="/games" className="menu-item" onClick={onClose}>
           도토리 주으러 가기
-        </Link> */}
+        </Link>
 
         <div className="footer-section">
           <Link to="/notice" className="footer-item" onClick={onClose}>

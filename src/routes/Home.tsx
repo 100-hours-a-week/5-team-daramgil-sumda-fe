@@ -24,6 +24,9 @@ import hazardous from "../assets/grade/hazardous.png";
 import loading_gif from "../assets/loading.gif";
 import LocationDropdown from "../components/LocationDropdown"; // 위치 드롭다운 컴포넌트
 
+import { toast } from "react-toastify";
+import useMissionStore from "../store/useMissionStore";
+
 import {
   WiDaySunny,
   WiCloudy,
@@ -82,7 +85,7 @@ const Home: React.FC = () => {
     weatherComment: string;
     actionRecommendation: string;
   } | null>(null); // AI 요약 정보
-
+  const { completeDailyAttendance } = useMissionStore(); // 출석 체크 함수 가져오기
   const navigate = useNavigate();
 
   // 특정 경로로 이동하는 함수
@@ -199,6 +202,19 @@ const Home: React.FC = () => {
       );
     }
   }, [airQualityData, weatherData]);
+  useEffect(() => {
+    // 컴포넌트 마운트 시 출석 체크 호출
+    const checkAttendance = async () => {
+      try {
+        await completeDailyAttendance();
+        toast.success("출석 미션을 완료했습니다. 도토리 1개가 지급됩니다.");
+      } catch (error) {
+        toast.error("이미 완료된 미션입니다."); // 에러 시 처리
+      }
+    };
+
+    checkAttendance();
+  }, [completeDailyAttendance]);
 
   // 다람쥐 이미지 목록
   const squirrelImages = [basic, knight, samurai, space, cook, pilot, hiphop];
