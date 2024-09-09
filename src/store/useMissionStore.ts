@@ -1,4 +1,3 @@
-// src/stores/useMissionStore.ts
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import useAuthStore from "./useAuthStore"; // AuthStore를 불러와 상태를 공유
@@ -7,6 +6,7 @@ interface MissionState {
   completeDailyAttendance: () => Promise<void>;
   completeDailyAir: () => Promise<void>;
   completeDailyQuiz: () => Promise<void>;
+  completeSquirrelChatMission: () => Promise<void>; // 다람쥐와 대화하기 미션 추가
 }
 
 const useMissionStore = create<MissionState>()(
@@ -102,6 +102,39 @@ const useMissionStore = create<MissionState>()(
         } catch (error) {
           console.error("OX퀴즈 미션 처리 실패:", error);
           alert("OX퀴즈 미션 처리 중 오류가 발생했습니다.");
+        }
+      },
+      completeSquirrelChatMission: async () => {
+        // 다람쥐와 대화하기 미션
+        const { jwtToken, squirrelData, setSquirrelData } =
+          useAuthStore.getState();
+        try {
+          const response = await fetch(
+            `${process.env.REACT_APP_API_URL}/mission/talk`,
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${jwtToken}`, // JWT 토큰을 헤더에 포함
+                "Content-Type": "application/json",
+              },
+              credentials: "include", // 쿠키를 포함하여 요청
+            }
+          );
+          const data = await response.json();
+          if (response.ok && data.data.status === "SUCCESS") {
+            setSquirrelData({
+              ...squirrelData!,
+              userAcorns: data.data.userAcorns,
+            });
+            alert(
+              "다람쥐와 대화하기 미션을 완료했습니다. 도토리 1개가 지급됩니다."
+            );
+          } else if (data.data.status === "ERROR") {
+            console.log("이미 완료된 미션입니다.(다람쥐와 대화)");
+          }
+        } catch (error) {
+          console.error("다람쥐와 대화 미션 처리 실패:", error);
+          alert("다람쥐와 대화 미션 처리 중 오류가 발생했습니다.");
         }
       },
     }),
