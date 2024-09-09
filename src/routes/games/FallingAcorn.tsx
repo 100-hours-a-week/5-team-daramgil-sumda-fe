@@ -12,16 +12,21 @@ const FallingAcorn: React.FC = () => {
   const [gameStarted, setGameStarted] = useState(false);
   const [gameOver, setGameOver] = useState(false);
 
-  const handleKeyPress = useCallback(
-    (event: KeyboardEvent) => {
-      if (event.key === "ArrowLeft" && basketPosition > 0) {
-        setBasketPosition((prev) => Math.max(prev - 5, 0));
-      } else if (event.key === "ArrowRight" && basketPosition < 90) {
-        setBasketPosition((prev) => Math.min(prev + 5, 90));
-      }
-    },
-    [basketPosition]
-  );
+  const moveBasketLeft = () => {
+    setBasketPosition((prev) => Math.max(prev - 5, 0));
+  };
+
+  const moveBasketRight = () => {
+    setBasketPosition((prev) => Math.min(prev + 5, 90));
+  };
+
+  const handleKeyPress = useCallback((event: KeyboardEvent) => {
+    if (event.key === "ArrowLeft") {
+      moveBasketLeft();
+    } else if (event.key === "ArrowRight") {
+      moveBasketRight();
+    }
+  }, []);
 
   useEffect(() => {
     if (!gameStarted) return;
@@ -31,8 +36,7 @@ const FallingAcorn: React.FC = () => {
     const fallInterval = setInterval(() => {
       setAcornPosition((prev) => {
         if (prev.y >= 90) {
-          // 바구니의 양옆을 더 넓게 판정
-          if (Math.abs(prev.x - basketPosition) < 10) {
+          if (Math.abs(prev.x - basketPosition) < 15) {
             setScore((prevScore) => {
               const newScore = prevScore + 1;
               if (newScore > highScore) {
@@ -82,6 +86,14 @@ const FallingAcorn: React.FC = () => {
               }}
             />
             <div className="basket" style={{ left: `${basketPosition}%` }} />
+            <div className="mobile-controls">
+              <button onClick={moveBasketLeft} className="control-button">
+                왼쪽
+              </button>
+              <button onClick={moveBasketRight} className="control-button">
+                오른쪽
+              </button>
+            </div>
           </>
         ) : gameOver ? (
           <div className="game-over">

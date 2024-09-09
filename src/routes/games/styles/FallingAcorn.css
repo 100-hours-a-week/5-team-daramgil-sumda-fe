@@ -13,7 +13,9 @@
   font-weight: 600;
   color: #333;
 }
-.start-button {
+
+.start-button,
+.restart-button {
   padding: 10px 20px;
   font-size: 18px;
   background-color: #ffeb3b;
@@ -23,7 +25,8 @@
   margin-top: 200px;
 }
 
-.start-button:hover {
+.start-button:hover,
+.restart-button:hover {
   background-color: #fdd835;
 }
 
@@ -33,6 +36,7 @@
   height: 450px;
   overflow: hidden;
   background-image: url("../../../assets/background.png");
+  background-size: cover;
 }
 
 .score-board {
@@ -57,4 +61,27 @@
   height: 58px;
   background-image: url("../../../assets/basket.png");
   background-size: cover;
+}
+
+.mobile-controls {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+}
+
+.control-button {
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: #ffeb3b;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.control-button:hover {
+  background-color: #fdd835;
 }
