@@ -1,20 +1,20 @@
 .location-dropdown {
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
+  position: relative;
 }
 
 .dropdown-controls {
   display: flex;
-  align-items: center;
+  align-items: right;
   flex-grow: 1;
   padding: 10px;
   font-size: 16px;
   cursor: pointer;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
-  background-color: #a3a3a355;
   color: #f7f7f7;
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .dropdown-button {
@@ -25,7 +25,6 @@
 }
 
 .gps-button {
-  margin-left: 10px;
   background-color: transparent;
   border: none;
   cursor: pointer;
@@ -39,10 +38,14 @@
 .dropdown-menu {
   list-style: none;
   padding: 0;
-  margin-top: 10px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
-  background-color: #a3a3a355;
+  background-color: #828282;
+  position: absolute; /* 절대 위치 설정 */
+  top: 100%; /* 부모 요소 바로 아래에 위치 */
+  left: 50%; /* 부모 요소의 수평 중앙에 위치 */
+  transform: translateX(-50%); /* 수평 중앙 정렬 */
+  z-index: 1000; /* 다른 요소 위에 표시되도록 설정 */
 }
 
 .dropdown-menu li {
@@ -53,5 +56,5 @@
 }
 
 .dropdown-menu li:hover {
-  background-color: #a3a3a355;
+  color: red;
 }

@@ -110,11 +110,11 @@ const LocationDropdown: React.FC<LocationDropdownProps> = ({
   return (
     <div className="location-dropdown">
       <div className="dropdown-controls">
-        <button className="dropdown-button" onClick={toggleDropdown}>
-          {selectedLocation || "위치 선택"}
-        </button>
-        <button className="gps-button" onClick={handleLoadCurrentLocation}>
+        <button className="gps-button" onClick={toggleDropdown}>
           <img className="gps-icon" src={gps} alt="gps icon" />
+        </button>
+        <button className="dropdown-button" onClick={handleLoadCurrentLocation}>
+          {selectedLocation || "위치 선택"}
         </button>
       </div>
 
