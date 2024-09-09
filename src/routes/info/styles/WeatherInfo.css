@@ -2,7 +2,7 @@
   background-image: url("../../../assets/background/weatherBackgrounds/daysunny.png");
 }
 .weatherinfo-page.cloudy {
-  background-image: url("../../../assets//background/weatherBackgrounds/clouds.png");
+  background-image: url("../../../assets//background/weatherBackgrounds/stormshowers.png");
 }
 .weatherinfo-page.showers {
   background-image: url("../../../assets/background/weatherBackgrounds/showers.png");
@@ -17,7 +17,7 @@
   background-image: url("../../../assets/background/weatherBackgrounds/fog.png");
 }
 .weatherinfo-page.stormshowers {
-  background-image: url("../../../assets/background/weatherBackgrounds/StormShowers.jpg");
+  background-image: url("../../../assets/background/weatherBackgrounds/stormshowers.png");
 }
 .weatherinfo-page.default {
   background-image: url("../../../assets/background/weatherBackgrounds/daysunny.png");
@@ -32,7 +32,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding: 20px 10px;
+  padding: 20px 10px 0 10px;
   box-sizing: border-box;
   min-height: calc(100vh - 338px);
 }
