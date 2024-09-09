@@ -110,12 +110,11 @@ const WeatherInfo: React.FC = () => {
     setId(id); // LocationDropdown에서 전달된 ID로 데이터를 가져옴
   };
 
-  const formatUnixTime = (unixTime: number, index: number) => {
-    const date = new Date(unixTime * 1000);
-    if (index === 0) return "오늘";
-    if (index === 1) return "내일";
-    if (index === 2) return "모레";
-    return `${index}일후`;
+  const formatUnixTime = (unixTime: number) => {
+    const date = new Date(unixTime * 1000); // unixTime을 Date 객체로 변환
+    const month = date.getMonth() + 1; // 월은 0부터 시작하므로 +1
+    const day = date.getDate(); // 일을 추출
+    return `${month}/${day}`; // "월/일" 형식으로 반환
   };
 
   const executeIcon = (weatherMain: string) => {
@@ -153,30 +152,37 @@ const WeatherInfo: React.FC = () => {
         ) : (
           <>
             <div className="weather-section">
-              <div className="weather-icon-container">
-                {executeIcon(
-                  weatherData?.weatherDataJson?.current?.weather[0]?.main
-                )}
-              </div>
-              <p className="weather-status">
-                {
-                  weatherMainToKorean[
+              <div className="weather-p">
+                <div className="weather-icon-container">
+                  {executeIcon(
                     weatherData?.weatherDataJson?.current?.weather[0]?.main
-                  ]
-                }
-              </p>
+                  )}
+                </div>
+                <p className="weather-status">
+                  {
+                    weatherMainToKorean[
+                      weatherData?.weatherDataJson?.current?.weather[0]?.main
+                    ]
+                  }
+                </p>
+              </div>
               <p className="weather-current-temperature">
-                {Math.round(weatherData?.weatherDataJson?.current?.temp)}°C
+                {Math.round(weatherData?.weatherDataJson?.current?.temp)}°
               </p>
-              <p className="weather-precipitation">
-                체감온도{" "}
-                {Math.round(weatherData?.weatherDataJson?.current?.feels_like)}
-                °C
-              </p>
+              <div className="weather-p">
+                <p className="weather-precipitation">
+                  체감온도 :{" "}
+                  {Math.round(
+                    weatherData?.weatherDataJson?.current?.feels_like
+                  )}
+                  °
+                </p>
+              </div>
             </div>
 
             <div className="detail-forecast-section">
-              <h3 className="forecast-title">상세 날씨 정보</h3>
+              {/* <h3 className="forecast-title">상세 날씨 정보</h3> */}
+              <button className="scroll-button left">&lt;</button>
               <div className="detail-forecast-items">
                 {[
                   {
@@ -217,12 +223,13 @@ const WeatherInfo: React.FC = () => {
                         src={item.icon}
                         alt={`${item.label} 아이콘`}
                       />
-                      <p>{item.label}</p>
+                      {/* <p>{item.label}</p> */}
                     </div>
                     <p>{item.value}</p>
                   </div>
                 ))}
               </div>
+              <button className="scroll-button right">&gt;</button>
             </div>
             <div className="forecast-section">
               <h3 className="forecast-title">일별 예보</h3>
@@ -232,18 +239,21 @@ const WeatherInfo: React.FC = () => {
                     const weatherMain = forecast.weather[0]?.main;
                     const icon = executeIcon(weatherMain);
                     return (
-                      <div key={index} className="daily-forecast-item">
+                      <div
+                        key={index}
+                        className={`daily-forecast-item ${
+                          index === 0 ? "first-item" : ""
+                        }`}
+                      >
                         <div className="day-info">
-                          <p className="day">
-                            {formatUnixTime(forecast.dt, index)}
-                          </p>
+                          <p className="day">{formatUnixTime(forecast.dt)}</p>
                         </div>
                         <div className="forecast-icon-container">{icon}</div>
-                        <p className="weather-status">
+                        {/* <p className="weather-status">
                           {weatherMainToKorean[forecast.weather[0]?.main]}
-                        </p>
+                        </p> */}
                         <p className="temperature">
-                          최저 {Math.round(forecast.temp.min)}° / 최고{" "}
+                          {Math.round(forecast.temp.min)}° /{" "}
                           {Math.round(forecast.temp.max)}°
                         </p>
                       </div>
