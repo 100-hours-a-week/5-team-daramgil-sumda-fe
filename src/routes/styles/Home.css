@@ -1,84 +1,39 @@
 .home-page {
+  background-image: url("../../assets//background/weatherBackgrounds/daysunny.png");
+  background-size: 100%; /* 배경 이미지를 컨테이너에 맞게 확장하여 잘리지 않도록 설정 */
+  background-position: top center; /* 배경 이미지를 상단 중앙에 위치 */
+  background-repeat: no-repeat; /* 배경 이미지 반복 방지 */
+  background-attachment: scroll; /* 배경 이미지를 스크롤할 때 함께 움직이도록 설정 */
+
   max-width: 400px;
   min-height: calc(100vh - 338px);
   margin: 0 auto;
-  padding: 20px;
+  padding: 20px 10px;
   font-family: "Noto Sans KR", sans-serif;
-  background-color: #f0f0f0;
 }
-
-.home-air-quality-section,
-.home-weather-section {
-  width: 100%;
-  height: 270px;
-  padding: 20px;
-  text-align: center;
-  border-radius: 12px;
-  background-color: #f9fafb;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+.homeinfo-container {
+  padding: 10px 10px;
+  box-sizing: border-box;
+  min-height: calc(100vh - 338px);
 }
-
-.air-quality-title,
-.weather-title {
-  margin-bottom: 8px;
-  font-size: 18px;
-  font-weight: 500;
-  color: #333;
+.upper-container {
+  display: flex;
+  margin: 20px 0 45px 0;
+  justify-content: space-between;
 }
-
-.home-air-quality-image,
-.home-weather-icon {
-  display: inline-block;
-  width: 64px;
-  height: 64px;
-  margin-bottom: 12px;
-}
-.home-weather-icon > svg {
-  width: 100%;
-  height: 100%;
-}
-
-.air-quality-status,
-.weather-status {
-  font-size: 16px;
-  font-weight: 500;
-  color: #1d1d1f;
-  margin-bottom: 8px;
-}
-
-.air-quality-value {
-  font-size: 28px;
-  font-weight: 700;
-  color: #ff6f61;
-  margin-bottom: 15px;
-}
-.home-weather-current-temperature {
-  font-size: 28px;
-  font-weight: 700;
-  color: #ff6f61;
-  margin-bottom: 8px;
-}
-.weather-range {
-  line-height: 1.5rem;
-  margin-bottom: 8px;
-}
-
-.air-quality-description,
-.weather-description {
-  font-size: 14px;
-  color: #6e6e73;
-}
-
 .additional-info {
-  position: relative;
+  width: 200px;
+  min-height: 300px;
+  max-height: 310px;
+  display: flex;
+  flex-direction: column;
   padding: 20px;
   text-align: left;
+  justify-content: space-between;
   background-color: #f9fafb;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  margin: 20px auto;
 }
-
 .additional-info > p ul {
   margin: 0;
   padding: 10px;
@@ -91,26 +46,130 @@
   margin-bottom: 10px;
   line-height: 1.4;
 }
-
-.additional-info p::before {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 20px;
-  border-width: 10px;
-  border-style: solid;
-  border-color: #ffffff transparent transparent transparent;
+.to-squirrel {
+  width: 100%;
+  height: 30px;
+  background-color: #ffb9b9;
+  border-radius: 12px;
+  text-align: center; /* 가로 중앙 정렬 */
+  font-size: 0.8rem;
+  color: #1d1d1f;
+  display: flex; /* Flexbox 활성화 */
+  align-items: center; /* 세로 중앙 정렬 */
+  justify-content: center; /* 가로 중앙 정렬 */
+  transition: background-color 0.3s; /* 호버 시 배경색 변경 효과를 위해 추가 */
 }
 
-.additional-info img {
+.to-squirrel:hover {
+  cursor: pointer; /* 호버 시 커서를 손가락 모양으로 변경 */
+  background-color: #ff0000; /* 호버 시 배경색 변경 (선택 사항) */
+}
+
+.main-squirrel {
+  display: flex;
+  flex-direction: column;
+  width: 130px;
+  justify-content: flex-end; /* 자식 요소를 하단으로 정렬 */
+}
+.main-squirrel img {
   display: block;
-  width: 80px;
-  margin-top: 10px;
-  margin-left: auto;
-  margin-right: auto;
+  width: 100%;
   animation: bounce 2s infinite;
 }
 
+.home-slide-section {
+  width: 330px;
+  height: 220px;
+  padding: 30px 40px;
+  margin: 10px auto;
+  border-radius: 30px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.home-slide-title {
+  margin-bottom: 8px;
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+}
+.air-quality-container {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #6e6e73;
+}
+.weather-container {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #6e6e73;
+}
+.air-quality-container-left {
+  display: flex;
+  flex-direction: column;
+}
+.home-air-quality-icon {
+  display: inline-block;
+  width: 75px;
+  height: 75px;
+}
+.home-weather-icon {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+}
+.home-air-quality-icon > svg,
+.home-weather-icon > svg {
+  width: 100%;
+  height: 100%;
+}
+.air-quality-info {
+  display: flex;
+  align-items: flex-end;
+}
+.weather-info-section {
+  display: flex;
+  gap: 10px;
+}
+
+.air-quality-status {
+  font-size: 16px;
+  font-weight: 500;
+  color: #1d1d1f;
+}
+.home-weather-status {
+  font-size: 20px;
+  font-weight: 500;
+  padding-top: 25px;
+  color: #1d1d1f;
+}
+
+.air-quality-value {
+  font-size: 50px;
+  font-weight: 700;
+  color: #000000;
+}
+.home-weather-current-temperature {
+  font-size: 50px;
+  font-weight: 700;
+  color: #000000;
+}
+.weather-range {
+  font-size: 15px;
+  line-height: 1.5rem;
+}
+
+.air-quality-description {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #6e6e73;
+}
+.weather-description {
+  margin-top: 13px;
+  font-size: 14px;
+  color: #6e6e73;
+}
 @keyframes bounce {
   0%,
   20%,
