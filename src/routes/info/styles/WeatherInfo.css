@@ -179,19 +179,19 @@
   padding: 20px 0;
 }
 .daily-forecast-item.first-item {
-  background-color: #0099ff;
-  box-shadow: 0 4px 8px rgba(0, 51, 255, 0.4);
+  background-color: #c2dfac;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.211);
 }
 .daily-forecast-item.first-item .forecast-icon-container > svg {
   width: 100%;
   height: 100%;
-  color: white !important;
+  color: #585858 !important;
 }
 .daily-forecast-item.first-item .day-info {
-  color: #ffffff;
+  color: #585858;
 }
 .daily-forecast-item.first-item .temperature {
-  color: #ffffff;
+  color: #585858;
 }
 .daily-forecast-icon {
   width: 40px;

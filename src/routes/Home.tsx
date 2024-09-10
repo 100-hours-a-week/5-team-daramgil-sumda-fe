@@ -15,11 +15,13 @@ import space from "../assets/randomSquirrels/우주비행사-다람쥐-lv4.png";
 import pilot from "../assets/randomSquirrels/파일럿-다람쥐-lv4.png";
 import hiphop from "../assets/randomSquirrels/힙합-다람쥐-lv4.png";
 
-import { FaRegFaceGrinBeam } from "react-icons/fa6";
-import { FaRegFaceSmile } from "react-icons/fa6";
-import { FaRegFaceMeh } from "react-icons/fa6";
-import { FaRegFaceFrown } from "react-icons/fa6";
-import { FaRegFaceDizzy } from "react-icons/fa6";
+import {
+  PiSmileyWinkLight,
+  PiSmileyLight,
+  PiSmileyMehLight,
+  PiSmileySadLight,
+  PiSmileyXEyesLight,
+} from "react-icons/pi";
 
 import loading_gif from "../assets/loading.gif";
 import LocationDropdown from "../components/LocationDropdown"; // 위치 드롭다운 컴포넌트
@@ -244,20 +246,20 @@ const Home: React.FC = () => {
   } = {
     "1": {
       status: "좋음",
-      icon: <FaRegFaceGrinBeam />,
+      icon: <PiSmileyWinkLight />,
     },
     "2": {
       status: "보통",
-      icon: <FaRegFaceSmile />,
+      icon: <PiSmileyLight />,
     },
-    "3": { status: "나쁨", icon: <FaRegFaceMeh /> },
+    "3": { status: "나쁨", icon: <PiSmileyMehLight /> },
     "4": {
       status: "매우 나쁨",
-      icon: <FaRegFaceFrown />,
+      icon: <PiSmileySadLight />,
     },
     "5": {
       status: "위험",
-      icon: <FaRegFaceDizzy />,
+      icon: <PiSmileyXEyesLight />,
     },
   };
 
@@ -312,115 +314,119 @@ const Home: React.FC = () => {
             <img src={randomImage} alt="다람쥐 이미지" />
           </div>
         </div>
-        <Swiper
-          modules={[Navigation, Pagination]}
-          navigation
-          spaceBetween={50}
-          slidesPerView={1}
-        >
-          {/* 대기질 정보 슬라이드 */}
-          <SwiperSlide>
-            <div className="home-slide-section">
-              <div className="air-quality-container">
-                <div className="air-quality-container-left">
-                  <h1 className="home-slide-title">통합대기환경지수</h1>
-                  {airQualityData ? (
-                    <div className="air-quality-info">
-                      <p className="air-quality-value">
-                        {airQualityData.khaiValue}
-                      </p>
-                      <p className="air-quality-status">
-                        {getAirQualityGrade(airQualityData.khaiValue).status}
-                      </p>
-                    </div>
-                  ) : (
-                    <p className="loading-text">
-                      대기질 정보를 불러오는 중입니다...
-                    </p>
-                  )}
-                </div>
-                {loading ? (
-                  <img
-                    className="home-air-quality-icon"
-                    src={loading_gif}
-                    alt="통합대기환경지수 로딩 이미지"
-                  />
-                ) : (
-                  <div className="home-air-quality-icon">
-                    {airQualityData?.khaiValue ? (
-                      getAirQualityGrade(airQualityData.khaiValue).icon
-                    ) : (
-                      <p>데이터 없음</p>
-                    )}
-                  </div>
-                )}
-              </div>
-              {airQualityData ? (
-                <>
-                  <p className="air-quality-description">
-                    {aiSummary?.airQualityComment}
-                  </p>
-                </>
-              ) : (
-                <p className="loading-text">
-                  대기질 정보를 불러오는 중입니다...
-                </p>
-              )}
-            </div>
-          </SwiperSlide>
-
-          {/* 날씨 정보 슬라이드 */}
-          <SwiperSlide>
-            <div className="home-slide-section">
-              <div className="weather-container">
-                <div className="weather-info-container">
-                  <h1 className="home-slide-title">날씨</h1>
-                  {weatherData ? (
-                    <div className="weather-info-section">
-                      <div className="weather-temperature">
-                        <p className="home-weather-current-temperature">
-                          {Math.round(weatherData.current.temp)}°
+        <div className="home-swiper">
+          <Swiper
+            modules={[Navigation, Pagination]}
+            navigation
+            spaceBetween={50}
+            slidesPerView={1}
+          >
+            {/* 대기질 정보 슬라이드 */}
+            <SwiperSlide>
+              <div className="home-slide-section">
+                <div className="air-quality-container">
+                  <div className="air-quality-container-left">
+                    <h1 className="home-slide-title">통합대기환경지수</h1>
+                    {airQualityData ? (
+                      <div className="air-quality-info">
+                        <p className="air-quality-value">
+                          {airQualityData.khaiValue}
                         </p>
-                        <p className="weather-range">
-                          {Math.round(weatherData.daily[0].temp.max)}° /{" "}
-                          {Math.round(weatherData.daily[0].temp.min)}°
+                        <p className="air-quality-status">
+                          {getAirQualityGrade(airQualityData.khaiValue).status}
                         </p>
                       </div>
-                      <p className="home-weather-status">
-                        {
-                          weatherMainToKorean[
-                            weatherData.current.weather[0]
-                              .main as keyof typeof weatherMainToKorean
-                          ]
-                        }
+                    ) : (
+                      <p className="loading-text">
+                        대기질 정보를 불러오는 중입니다...
                       </p>
-                    </div>
+                    )}
+                  </div>
+                  {loading ? (
+                    <img
+                      className="home-air-quality-icon"
+                      src={loading_gif}
+                      alt="통합대기환경지수 로딩 이미지"
+                    />
                   ) : (
-                    <p className="loading-text">
-                      날씨 데이터를 불러오는 중입니다...
+                    <div className="home-air-quality-icon">
+                      {airQualityData?.khaiValue ? (
+                        getAirQualityGrade(airQualityData.khaiValue).icon
+                      ) : (
+                        <p>데이터 없음</p>
+                      )}
+                    </div>
+                  )}
+                </div>
+                {airQualityData ? (
+                  <>
+                    <p className="air-quality-description">
+                      {aiSummary?.airQualityComment}
                     </p>
-                  )}
-                </div>
-                <div className="home-weather-icon">
-                  {executeIcon(
-                    weatherData?.current?.weather[0]
-                      ?.main as keyof typeof weatherIconMap
-                  )}
-                </div>
-              </div>
-
-              {weatherData ? (
-                <>
-                  <p className="weather-description">
-                    {aiSummary?.weatherComment}
+                  </>
+                ) : (
+                  <p className="loading-text">
+                    대기질 정보를 불러오는 중입니다...
                   </p>
-                </>
-              ) : (
-                <p className="loading-text">날씨 정보를 불러오는 중입니다...</p>
-              )}
-            </div>
-          </SwiperSlide>
-        </Swiper>
+                )}
+              </div>
+            </SwiperSlide>
+
+            {/* 날씨 정보 슬라이드 */}
+            <SwiperSlide>
+              <div className="home-slide-section">
+                <div className="weather-container">
+                  <div className="weather-info-container">
+                    <h1 className="home-slide-title">날씨</h1>
+                    {weatherData ? (
+                      <div className="weather-info-section">
+                        <div className="weather-temperature">
+                          <p className="home-weather-current-temperature">
+                            {Math.round(weatherData.current.temp)}°
+                          </p>
+                          <p className="weather-range">
+                            {Math.round(weatherData.daily[0].temp.max)}° /{" "}
+                            {Math.round(weatherData.daily[0].temp.min)}°
+                          </p>
+                        </div>
+                        <p className="home-weather-status">
+                          {
+                            weatherMainToKorean[
+                              weatherData.current.weather[0]
+                                .main as keyof typeof weatherMainToKorean
+                            ]
+                          }
+                        </p>
+                      </div>
+                    ) : (
+                      <p className="loading-text">
+                        날씨 데이터를 불러오는 중입니다...
+                      </p>
+                    )}
+                  </div>
+                  <div className="home-weather-icon">
+                    {executeIcon(
+                      weatherData?.current?.weather[0]
+                        ?.main as keyof typeof weatherIconMap
+                    )}
+                  </div>
+                </div>
+
+                {weatherData ? (
+                  <>
+                    <p className="weather-description">
+                      {aiSummary?.weatherComment}
+                    </p>
+                  </>
+                ) : (
+                  <p className="loading-text">
+                    날씨 정보를 불러오는 중입니다...
+                  </p>
+                )}
+              </div>
+            </SwiperSlide>
+          </Swiper>
+        </div>
       </div>
     </div>
   );

@@ -1,8 +1,21 @@
+.squirrel-page {
+  background-image: url("../../../assets//background/AQIBackgrounds/level1.png");
+  background-size: 100%; /* 배경 이미지를 컨테이너에 맞게 확장하여 잘리지 않도록 설정 */
+  background-position: top center; /* 배경 이미지를 상단 중앙에 위치 */
+  background-repeat: no-repeat; /* 배경 이미지 반복 방지 */
+  background-attachment: scroll; /* 배경 이미지를 스크롤할 때 함께 움직이도록 설정 */
+
+  max-width: 400px;
+  min-height: calc(100vh - 338px);
+  margin: 0 auto;
+  padding: 10px 10px 20px 10px;
+  font-family: "Noto Sans KR", sans-serif;
+}
 .squirrel-container {
   max-width: 400px;
   min-height: calc(100vh - 338px);
   margin: 0 auto;
-  padding: 20px;
+  padding: 10px;
   text-align: center;
 }
 
@@ -10,25 +23,28 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .progress-bar {
   width: 80%;
-  background-color: #ccc;
+  background-color: #e1e9e8;
   border-radius: 10px;
   height: 10px;
   overflow: hidden;
 }
 
 .progress {
-  background-color: #007bff;
+  background-color: #45857d;
   height: 100%;
+  filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.3)); /*그림자*/
 }
 
 .level-text {
   margin-right: 5px;
   font-weight: bold;
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  color: #ffffff;
 }
 
 .acorn-info {
@@ -38,12 +54,13 @@
 }
 
 .acorn-button {
-  background-color: #007bff;
-  color: #fff;
+  background-color: #c2dfac;
+  color: #585858;
   border: none;
   padding: 10px;
   border-radius: 5px;
   cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .acorn-count {
@@ -51,12 +68,15 @@
   justify-content: center;
   align-items: center;
   font-size: 18px;
+  color: #ffffff;
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
   cursor: pointer;
 }
 
 .acorn-count > img {
   width: 35px;
   height: 35px;
+  filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.3)); /*그림자*/
 }
 
 .acorn-modal {
@@ -85,28 +105,24 @@
   padding: 5px 10px;
   margin-top: 5px;
   color: white;
-  background-color: #007bff;
+  background-color: #c2dfac;
   cursor: pointer;
   border-radius: 4px;
   font-size: 12px;
 }
 
 .squirrel-section {
-  margin-top: 20px;
   position: relative;
 }
 
 .chat-squirrel {
-  background-color: #fff;
-  padding: 10px;
   border-radius: 5px;
-  margin-bottom: 10px;
   text-align: center;
 }
 
 .chat-squirrel > img {
   margin: 0 auto;
-  width: 60%;
+  width: 50%;
 }
 
 .new-squirrel-button {
@@ -125,7 +141,7 @@
 }
 
 .chat-section {
-  margin-top: 20px;
+  margin-top: 10px;
   position: relative; /* 부모 요소의 위치 기준 설정 */
 }
 
@@ -133,11 +149,12 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  background-color: #c0c0c0;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   padding: 10px;
-  border-radius: 5px;
+  border-radius: 30px;
   height: 500px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   position: relative;
   z-index: 1; /* 겹치는 요소 위에 표시되도록 설정 */
   overflow-y: auto;
@@ -148,60 +165,70 @@
   justify-content: flex-start;
   overflow-y: auto;
 }
+
 .chat-log::-webkit-scrollbar {
   display: none;
 }
 
 .message {
   margin-bottom: 10px;
+  max-width: 80%; /* 최대 너비 설정 */
 }
 
 .message.user {
-  border-radius: 5px;
-  background-color: #92febb;
-  padding: 10px 5px;
+  align-self: flex-end; /* 오른쪽 정렬 */
+  border-radius: 40px 40px 0 40px;
+  background-color: #c2dfac;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 15px;
   text-align: right;
-  color: #000000;
+  line-height: 130%;
+  color: #585858;
 }
-
 .message.bot {
-  border-radius: 5px;
-  background-color: #f8ff8f;
-  padding: 10px 5px;
+  align-self: flex-start; /* 왼쪽 정렬 */
+  border-radius: 40px 40px 40px 0;
+  background-color: #e1e9e8;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 15px;
   text-align: left;
+  line-height: 130%;
   color: #000000;
 }
 
 .common-questions-container {
   position: absolute; /* 부모 요소의 상대적인 위치를 기준으로 절대 위치 설정 */
-  bottom: 35px; /* 하단에 위치 */
+  bottom: 30px; /* 하단에 위치 */
   left: 0;
   width: 100%;
   max-height: 0;
+  padding: 0 10px;
+  background-color: #e0e0e0;
+  border-radius: 15px 15px 0 0;
   overflow: hidden;
-  transition: max-height 0.3s ease-in-out;
-  z-index: 2; /* chat-messages 위에 위치 */
-}
-.common-questions-container::-webkit-scrollbar {
-  display: none;
 }
 
 .common-questions-container.visible {
-  max-height: 150px; /* 펼쳐진 상태에서의 최대 높이 */
+  max-height: 147px; /* 펼쳐진 상태에서의 최대 높이 */
   overflow-y: auto;
 }
 
 .common-questions {
   background-color: #e0e0e0;
-  padding: 10px;
   border-radius: 5px;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
+  z-index: 2; /* chat-messages 위에 위치 */
+}
+.common-questions::-webkit-scrollbar {
+  display: none;
 }
 
 .question {
   background-color: #fff;
   padding: 10px;
-  margin-bottom: 5px;
-  border-radius: 5px;
+  margin: 10px 0;
+  border-radius: 15px;
   cursor: pointer;
 }
 
@@ -224,6 +251,7 @@
 
 .chat-input-container {
   display: flex;
+  margin-top: 10px;
 }
 
 .chat-input-container input {
@@ -236,10 +264,10 @@
 }
 
 .chat-input-container button {
-  background-color: #007bff;
-  color: #fff;
+  background-color: #45857d;
+  color: #ffffff;
   border: none;
-  padding: 10px 20px;
+  padding: 10px 11px;
   border-radius: 5px;
   cursor: pointer;
 }

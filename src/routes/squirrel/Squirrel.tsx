@@ -5,6 +5,7 @@ import Acorn_img from "../../assets/acorn.png";
 import useAuthStore from "../../store/useAuthStore";
 import useMissionStore from "../../store/useMissionStore";
 import LocationDropdown from "../../components/LocationDropdown";
+import { FaArrowUp } from "react-icons/fa6";
 interface SquirrelData {
   squirrelId: number;
   type: string;
@@ -284,141 +285,163 @@ const Squirrel: React.FC = () => {
   }
 
   return (
-    <div className="squirrel-container">
-      <LocationDropdown onLocationSelect={handleLocationSelect} />
-      <div className="level-info">
-        <div className="progress-bar">
-          <div
-            className="progress"
-            style={{
-              width: `${(progress / maxLevels[squirrelData.level - 1]) * 100}%`,
-            }}
-          />
-        </div>
-        <div className="level-text">LV. {squirrelData.level}</div>
-      </div>
-
-      <div className="acorn-info">
-        <button className="acorn-button" onClick={handleToGames}>
-          도토리 주으러 가기
-        </button>
-        <div className="acorn-count" onClick={handleAcornClick}>
-          <img src={Acorn_img} alt="acorn-icon" />
-          {squirrelData.userAcorns}
-        </div>
-      </div>
-
-      {isModalOpen && (
-        <div className="acorn-modal" onClick={() => setIsModalOpen(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h3>도토리 주기</h3>
-            <p>다람쥐에게 도토리를 주고 성장시키세요.</p>
-            <p>보유중인 도토리 {squirrelData.userAcorns}개</p>
-            <input
-              type="range"
-              min="1"
-              max={squirrelData.userAcorns}
-              value={selectedAcorns}
-              onChange={handleAcornChange}
+    <div className="squirrel-page">
+      <div className="squirrel-container">
+        <LocationDropdown onLocationSelect={handleLocationSelect} />
+        <div className="level-info">
+          <div className="progress-bar">
+            <div
+              className="progress"
+              style={{
+                width: `${
+                  (progress / maxLevels[squirrelData.level - 1]) * 100
+                }%`,
+              }}
             />
-            <div>
-              {selectedAcorns}/{maxLevels[squirrelData.level - 1]}
-            </div>
-            <button className="acorn-modal-btn" onClick={handleFeedAcorns}>
-              도토리 주기
-            </button>
           </div>
+          <div className="level-text">LV. {squirrelData.level}</div>
         </div>
-      )}
 
-      <div className="squirrel-section">
-        <div className="chat-squirrel">
-          <img src={squirrelImageSrc} alt="chat-squirrel" />
-        </div>
-        {squirrelData.level === 4 && squirrelData.feed >= 100 && (
-          <button className="new-squirrel-button" onClick={handleNewSquirrel}>
-            새 다람쥐 분양받기
+        <div className="acorn-info">
+          <button className="acorn-button" onClick={handleToGames}>
+            도토리 주으러 가기
           </button>
-        )}
-      </div>
-
-      <div className="chat-section">
-        <div className="chat-messages">
-          <div className="chat-log">
-            {chatLog.map((msg, index) => (
-              <div key={index} className={`message ${msg.sender}`}>
-                {msg.message}
-              </div>
-            ))}
-          </div>
-
-          <div
-            className={`common-questions-container ${
-              isQuestionsVisible ? "visible" : ""
-            }`}
-          >
-            <div className="common-questions">
-              <div
-                className="question"
-                onClick={() =>
-                  handleSendMessage("호흡기 질환이 있는데, 밖에서 운동해도 돼?")
-                }
-              >
-                호흡기 질환이 있는데, 밖에서 운동해도 돼?
-              </div>
-              <div
-                className="question"
-                onClick={() => handleSendMessage("창문 열고 환기 시켜도 돼?")}
-              >
-                창문 열고 환기 시켜도 돼?
-              </div>
-              <div
-                className="question"
-                onClick={() => handleSendMessage("오늘 날씨는 어때?")}
-              >
-                오늘 날씨는 어때?
-              </div>
-              <div
-                className="question"
-                onClick={() => handleSendMessage("대중교통 이용 시 주의사항")}
-              >
-                대중교통 이용 시 주의사항
-              </div>
-              <div
-                className="question"
-                onClick={() =>
-                  handleSendMessage("미세먼지에 노출되었을 시 몸에 미치는 영향")
-                }
-              >
-                미세먼지에 노출되었을 시 몸에 미치는 영향
-              </div>
-              <div
-                className="question"
-                onClick={() =>
-                  handleSendMessage("오늘 날씨와 대기질 상황을 비유로 표현해줘")
-                }
-              >
-                오늘 날씨와 대기질 상황을 비유로 표현해줘
-              </div>
-            </div>
-          </div>
-
-          <div className="toggle-button-container">
-            <div className="toggle-button" onClick={toggleQuestions}>
-              {isQuestionsVisible ? "" : ""}
-            </div>
+          <div className="acorn-count" onClick={handleAcornClick}>
+            <img src={Acorn_img} alt="acorn-icon" />
+            {squirrelData.userAcorns}
           </div>
         </div>
 
-        <div className="chat-input-container">
-          <input
-            type="text"
-            placeholder="다람쥐에게 질문을 해보세요"
-            value={inputMessage}
-            onChange={(e) => setInputMessage(e.target.value)}
-            maxLength={2000}
-          />
-          <button onClick={() => handleSendMessage()}>보내기</button>
+        {isModalOpen && (
+          <div className="acorn-modal" onClick={() => setIsModalOpen(false)}>
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+              <h3>도토리 주기</h3>
+              <p>다람쥐에게 도토리를 주고 성장시키세요.</p>
+              <p>보유중인 도토리 {squirrelData.userAcorns}개</p>
+              <input
+                type="range"
+                min="1"
+                max={squirrelData.userAcorns}
+                value={selectedAcorns}
+                onChange={handleAcornChange}
+              />
+              <div>
+                {selectedAcorns}/{maxLevels[squirrelData.level - 1]}
+              </div>
+              <button className="acorn-modal-btn" onClick={handleFeedAcorns}>
+                도토리 주기
+              </button>
+            </div>
+          </div>
+        )}
+
+        <div className="squirrel-section">
+          <div className="chat-squirrel">
+            <img src={squirrelImageSrc} alt="chat-squirrel" />
+          </div>
+          {squirrelData.level === 4 && squirrelData.feed >= 100 && (
+            <button className="new-squirrel-button" onClick={handleNewSquirrel}>
+              새 다람쥐 분양받기
+            </button>
+          )}
+        </div>
+
+        <div className="chat-section">
+          <div className="chat-messages">
+            <div className="chat-log">
+              {chatLog.map((msg, index) => (
+                <div key={index} className={`message ${msg.sender}`}>
+                  {msg.message}
+                </div>
+              ))}
+            </div>
+
+            <div
+              className={`common-questions-container ${
+                isQuestionsVisible ? "visible" : ""
+              }`}
+            >
+              <div className="common-questions">
+                <div
+                  className="question"
+                  onClick={() => {
+                    toggleQuestions();
+                    handleSendMessage(
+                      "호흡기 질환이 있는데, 밖에서 운동해도 돼?"
+                    );
+                  }}
+                >
+                  호흡기 질환이 있는데, 밖에서 운동해도 돼?
+                </div>
+                <div
+                  className="question"
+                  onClick={() => {
+                    toggleQuestions();
+                    handleSendMessage("창문 열고 환기 시켜도 돼?");
+                  }}
+                >
+                  창문 열고 환기 시켜도 돼?
+                </div>
+                <div
+                  className="question"
+                  onClick={() => {
+                    toggleQuestions();
+                    handleSendMessage("오늘 날씨는 어때?");
+                  }}
+                >
+                  오늘 날씨는 어때?
+                </div>
+                <div
+                  className="question"
+                  onClick={() => {
+                    toggleQuestions();
+                    handleSendMessage("대중교통 이용 시 주의사항");
+                  }}
+                >
+                  대중교통 이용 시 주의사항
+                </div>
+                <div
+                  className="question"
+                  onClick={() => {
+                    toggleQuestions();
+                    handleSendMessage(
+                      "미세먼지에 노출되었을 시 몸에 미치는 영향"
+                    );
+                  }}
+                >
+                  미세먼지에 노출되었을 시 몸에 미치는 영향
+                </div>
+                <div
+                  className="question"
+                  onClick={() => {
+                    toggleQuestions();
+                    handleSendMessage(
+                      "오늘 날씨와 대기질 상황을 비유로 표현해줘"
+                    );
+                  }}
+                >
+                  오늘 날씨와 대기질 상황을 비유로 표현해줘
+                </div>
+              </div>
+            </div>
+            <div className="toggle-button-container">
+              <div className="toggle-button" onClick={toggleQuestions}>
+                {isQuestionsVisible ? "" : ""}
+              </div>
+              <div className="chat-input-container">
+                <input
+                  type="text"
+                  placeholder="다람쥐에게 질문을 해보세요"
+                  value={inputMessage}
+                  onChange={(e) => setInputMessage(e.target.value)}
+                  maxLength={2000}
+                />
+                <button onClick={() => handleSendMessage()}>
+                  <FaArrowUp />
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
