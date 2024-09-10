@@ -88,16 +88,16 @@ const FallingAcorn: React.FC = () => {
             <div className="basket" style={{ left: `${basketPosition}%` }} />
             <div className="mobile-controls">
               <button onClick={moveBasketLeft} className="control-button">
-                왼쪽
+                ←
               </button>
               <button onClick={moveBasketRight} className="control-button">
-                오른쪽
+                →
               </button>
             </div>
           </>
         ) : gameOver ? (
           <div className="game-over">
-            <h3>게임 오버!</h3>
+            <h3 className="game-over-text">게임 오버!</h3>
             <button onClick={startGame} className="restart-button">
               다시 시작
             </button>
