@@ -17,19 +17,19 @@ import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
 
 import good from "../../assets/grade/good.png";
-import { FaRegFaceGrinBeam } from "react-icons/fa6";
+import { PiSmileyWinkLight } from "react-icons/pi";
 
 import moderate from "../../assets/grade/moderate.png";
-import { FaRegFaceSmile } from "react-icons/fa6";
+import { PiSmileyLight } from "react-icons/pi";
 
 import unhealthy from "../../assets/grade/unhealthy.png";
-import { FaRegFaceMeh } from "react-icons/fa6";
+import { PiSmileyMehLight } from "react-icons/pi";
 
 import veryUnhealthy from "../../assets/grade/very_unhealthy.png";
-import { FaRegFaceFrown } from "react-icons/fa6";
+import { PiSmileySadLight } from "react-icons/pi";
 
 import hazardous from "../../assets/grade/hazardous.png";
-import { FaRegFaceDizzy } from "react-icons/fa6";
+import { PiSmileyXEyesLight } from "react-icons/pi";
 
 import callout from "../../assets/info.png";
 
@@ -204,20 +204,23 @@ const AQIDetails: React.FC = () => {
   } = {
     "1": {
       status: "좋음",
-      icon: <FaRegFaceGrinBeam style={{ color: "white" }} />,
+      icon: <PiSmileyWinkLight style={{ color: "white" }} />,
     },
     "2": {
       status: "보통",
-      icon: <FaRegFaceSmile style={{ color: "white" }} />,
+      icon: <PiSmileyLight style={{ color: "white" }} />,
     },
-    "3": { status: "나쁨", icon: <FaRegFaceMeh style={{ color: "white" }} /> },
+    "3": {
+      status: "나쁨",
+      icon: <PiSmileyMehLight style={{ color: "white" }} />,
+    },
     "4": {
       status: "매우 나쁨",
-      icon: <FaRegFaceFrown style={{ color: "white" }} />,
+      icon: <PiSmileySadLight style={{ color: "white" }} />,
     },
     "5": {
       status: "위험",
-      icon: <FaRegFaceDizzy style={{ color: "white" }} />,
+      icon: <PiSmileyXEyesLight style={{ color: "white" }} />,
     },
   };
   const getAirQualityInfo = (value: string | null, grade: string | null) => {
@@ -375,7 +378,7 @@ const AQIDetails: React.FC = () => {
                         <Line
                           type="monotone"
                           dataKey={pollutant}
-                          stroke="#8884d8"
+                          stroke="#45857d"
                           strokeWidth={2}
                         />
                       </LineChart>
@@ -401,7 +404,11 @@ const AQIDetails: React.FC = () => {
                     <img
                       src={pollutionData.images[imageIndex]}
                       alt={pollutionData.informCode}
-                      style={{ width: "100%", height: "100%" }}
+                      style={{
+                        margin: "0 auto",
+                        width: "290px",
+                        height: "100%",
+                      }}
                     />
                   </div>
                 </SwiperSlide>

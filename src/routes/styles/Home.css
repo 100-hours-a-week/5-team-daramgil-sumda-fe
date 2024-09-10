@@ -12,7 +12,7 @@
   font-family: "Noto Sans KR", sans-serif;
 }
 .homeinfo-container {
-  padding: 10px 10px;
+  padding: 10px;
   box-sizing: border-box;
   min-height: calc(100vh - 338px);
 }
@@ -32,7 +32,7 @@
   justify-content: space-between;
   background-color: #f9fafb;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 7px 12px rgba(0, 0, 0, 0.3);
 }
 .additional-info li {
   font-size: 0.9rem;
@@ -50,12 +50,12 @@
 .to-squirrel-button {
   width: 100%;
   height: 30px;
-  background-color: #ffb9b9;
+  background-color: #c2dfac;
   border-radius: 8px;
   text-align: center; /* 가로 중앙 정렬 */
   font-size: 0.8rem;
   font-weight: 700;
-  color: #1d1d1f;
+  color: #585858;
   display: flex; /* Flexbox 활성화 */
   align-items: center; /* 세로 중앙 정렬 */
   justify-content: center; /* 가로 중앙 정렬 */
@@ -112,7 +112,7 @@
   flex-direction: column;
 }
 .home-air-quality-icon {
-  width: 75px;
+  width: 90px;
   height: 100px;
 }
 .home-weather-icon {
@@ -150,12 +150,12 @@
 .air-quality-value {
   font-size: 50px;
   font-weight: 700;
-  color: #000000;
+  color: #45857d;
 }
 .home-weather-current-temperature {
   font-size: 50px;
   font-weight: 700;
-  color: #000000;
+  color: #45857d;
 }
 .weather-range {
   font-size: 15px;
@@ -190,27 +190,27 @@
   }
 }
 /* Swiper 좌우 화살표 기본 크기와 디자인 변경 */
-.swiper-button-next,
-.swiper-button-prev {
+.home-swiper .swiper-button-next,
+.home-swiper .swiper-button-prev {
   width: 50px; /* 버튼 너비 설정 */
   height: 50px; /* 버튼 높이 설정 */
   color: rgb(67, 67, 67); /* 화살표 색상 */
 }
 
 /* Swiper 버튼의 화살표 크기 조정 */
-.swiper-button-next::after,
-.swiper-button-prev::after {
+.home-swiper .swiper-button-next::after,
+.home-swiper .swiper-button-prev::after {
   font-size: 20px; /* 화살표 크기 */
   font-weight: bold;
 }
 
 /* 추가적으로 버튼의 위치를 조정할 수 있습니다 */
-.swiper-button-next {
-  right: -2px; /* 오른쪽에서의 간격 */
+.home-swiper .swiper-button-next {
+  right: 9px; /* 오른쪽에서의 간격 */
 }
 
-.swiper-button-prev {
-  left: -2px; /* 왼쪽에서의 간격 */
+.home-swiper .swiper-button-prev {
+  left: 9px; /* 왼쪽에서의 간격 */
 }
 
 .loading-text {
