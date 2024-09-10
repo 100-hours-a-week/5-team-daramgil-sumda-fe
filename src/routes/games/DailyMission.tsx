@@ -126,8 +126,8 @@ const DailyMission: React.FC = () => {
         </div>
         <div className="dailymission-page-meta">
           <p className="dailymission-explanation-text">
-            * 퀘스트를 완료하면, 도토리를 받을 수 있습니다. <br />
-            아래 미션을 수행하고 도토리를 주워가세요!!
+            퀘스트를 완료하면, 도토리를 받을 수 있습니다. <br />
+            위 미션을 수행하고 도토리를 주워가세요!!
             <br />
           </p>
         </div>
