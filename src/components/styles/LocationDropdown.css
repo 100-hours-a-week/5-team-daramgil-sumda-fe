@@ -34,6 +34,7 @@
 .gps-icon {
   width: 24px;
   height: 24px;
+  filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.3));
 }
 
 .dropdown-menu {

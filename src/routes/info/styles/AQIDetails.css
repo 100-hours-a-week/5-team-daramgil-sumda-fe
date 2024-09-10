@@ -1,6 +1,18 @@
 /* AQIDetails.css */
-.aqidetails-page.cloudy {
-  background-image: url("../../../assets//background/weatherBackgrounds/stormshowers.png");
+.aqidetails-page.level1 {
+  background-image: url("../../../assets//background/AQIBackgrounds/level1.png");
+}
+.aqidetails-page.level2 {
+  background-image: url("../../../assets//background/AQIBackgrounds/level2.png");
+}
+.aqidetails-page.level3 {
+  background-image: url("../../../assets//background/AQIBackgrounds/level3.png");
+}
+.aqidetails-page.level4 {
+  background-image: url("../../../assets//background/AQIBackgrounds/level4.png");
+}
+.aqidetails-page.level5 {
+  background-image: url("../../../assets//background/AQIBackgrounds/level5.png");
 }
 .aqidetails-page {
   background-image: url("../../../assets//background/weatherBackgrounds/thunderstorm.png");
@@ -84,6 +96,7 @@
   font-size: 1.2rem;
   font-weight: 500;
   color: #ffffff;
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .air-quality-value-unique {
@@ -91,16 +104,20 @@
   padding-top: 7px;
   font-size: 4.5rem;
   color: #ffffff;
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
 .air-quality-name {
   margin-top: 7px;
   font-size: 0.7rem;
   color: #ffffff;
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
 .air-quality-icon-unique {
   font-size: 20px;
 }
-
+.air-quality-icon-unique > svg {
+  filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.3));
+}
 .pollutants-container-unique {
   padding: 10px; /* 그림자가 잘리지 않도록 여백 추가 */
   overflow: hidden;
@@ -185,22 +202,22 @@
 }
 .chart-container-unique h3 {
   font-size: 1.5rem;
-  font-weight: 500;
-  color: #1976d2;
+  font-weight: 800;
+  color: #000000;
   margin-left: 24px;
   margin-bottom: 16px;
 }
 .chart-container-unique h4 {
   font-size: 1.2rem;
-  font-weight: 500;
-  color: #1976d2;
-  margin: 0 auto;
+  font-weight: 600;
+  color: #8884d8;
+  margin-left: 30px;
   margin-bottom: 16px;
 }
 .map-container-unique h3 {
   font-size: 1.5rem;
-  font-weight: 500;
-  color: #1976d2;
+  font-weight: 800;
+  color: #000000;
   margin-left: 24px;
   margin-bottom: 16px;
 }
@@ -233,10 +250,8 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  text-align: center;
   font-size: 10px;
-  background-color: #ffffff;
+
   border-radius: 12px;
 }
 

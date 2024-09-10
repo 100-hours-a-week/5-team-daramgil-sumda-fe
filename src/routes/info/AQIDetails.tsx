@@ -283,16 +283,17 @@ const AQIDetails: React.FC = () => {
   const calculateMaxValue = (data: any[], pollutant: string) => {
     return Math.max(...data.map((entry) => entry[pollutant] || 0));
   };
+  // 대기질 등급에 따른 클래스명을 설정하는 함수
+  const airQualityLevelClass = `level${airQualityData?.khaiGrade || 1}`; // 기본값을 1로 설정
 
   return (
-    <div className="aqidetails-page">
+    <div className={`aqidetails-page ${airQualityLevelClass}`}>
       <div className="aqidetail-container">
         <LocationDropdown onLocationSelect={handleLocationSelect} />
         <div className="aqidetails-container-unique">
           <div className="info-container-unique">
             <div className="air-quality-section-unique">
               {/* <h1 className="air-quality-title-unique">통합대기환경지수</h1> */}
-
               <div className="air-quality-status-container-unique">
                 <p className="air-quality-status-unique">
                   {pollutantInfo.khai.status}
@@ -305,7 +306,6 @@ const AQIDetails: React.FC = () => {
                   <p>데이터 없음</p>
                 )}
               </div>
-
               <p className="air-quality-value-unique">
                 {pollutantInfo.khai.value} {getUnit("khai")}
               </p>

@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 import "./styles/DailyMission.css";
 import Acorn_img from "../../assets/acorn.png";
 import Check_img from "../../assets/check.png";
+import { FcCheckmark } from "react-icons/fc";
+
 import useAuthStore from "../../store/useAuthStore"; // Zustand에서 JWT 토큰 가져오기
 
 interface MissionData {
@@ -58,52 +62,75 @@ const DailyMission: React.FC = () => {
     filter: completed ? "grayscale(0%)" : "grayscale(100%)",
   });
 
+  const completedMissions = [
+    missionData.attendance,
+    missionData.checkAir,
+    missionData.talkWithSquirrel,
+    missionData.quiz,
+  ].filter(Boolean).length; // 완료된 미션 개수
+  const totalMissions = 4; // 총 미션 개수
+  const completionPercentage = (completedMissions / totalMissions) * 100;
+
   return (
-    <div className="dailymission-container">
-      <h3 className="dailymission-header">일일 미션</h3>
-      <div className="dailymission-page-meta">
-        <img src={Acorn_img} alt="도도리 이미지" className="acron-img" />
-        <p className="dailymission-explanation-text">
-          퀘스트를 완료하면, 도토리를 받을 수 있습니다. <br />
-          아래 미션을 수행하고 도토리를 주워가세요!!
-          <br />
-        </p>
-      </div>
-      <div className="mission-container">
-        <p>출석하기</p>
-        <img
-          className="check-img"
-          src={Check_img}
-          alt="체크 이미지"
-          style={checkImageStyle(missionData.attendance)}
-        />
-      </div>
-      <div className="mission-container">
-        <p>다람쥐와 대화하기</p>
-        <img
-          className="check-img"
-          src={Check_img}
-          alt="체크 이미지"
-          style={checkImageStyle(missionData.talkWithSquirrel)}
-        />
-      </div>
-      <div className="mission-container">
-        <p>OX 퀴즈 참여하기</p>
-        <img
-          className="check-img"
-          src={Check_img}
-          alt="체크 이미지"
-          style={checkImageStyle(missionData.quiz)}
-        />
-      </div>
-      <div className="mission-container">
-        <p>대기 오염 정보 조회하기</p>
-        <img
-          className="check-img"
-          src={Check_img}
-          alt="체크 이미지"
-          style={checkImageStyle(missionData.checkAir)}
-        />
+    <div className="dailymission-page">
+      <div className="dailymission-container">
+        <div className="mission-containers">
+          <div className="dailymission-header">
+            <div className="progress-circle">
+              <CircularProgressbar
+                value={completionPercentage}
+                styles={buildStyles({
+                  textSize: "16px",
+                  pathColor: "#43A047", // 진행 바 색상 변경
+                  textColor: "#333",
+                  trailColor: "#d6d6d6",
+                })}
+              />
+            </div>
+            <div className="dailymission-title">
+              <h3>일일 미션</h3>
+              <span className="progress-text">
+                {completedMissions}/{totalMissions} 완료
+              </span>
+            </div>
+            <img src={Acorn_img} alt="도도리 이미지" className="acron-img" />
+          </div>
+          <div className="mission-container">
+            <FcCheckmark
+              className="check-img"
+              style={checkImageStyle(missionData.attendance)}
+            />
+            <p>출석하기</p>
+          </div>
+          <div className="mission-container">
+            <FcCheckmark
+              className="check-img"
+              style={checkImageStyle(missionData.talkWithSquirrel)}
+            />
+            <p>다람쥐와 대화하기</p>
+          </div>
+          <div className="mission-container">
+            <FcCheckmark
+              className="check-img"
+              style={checkImageStyle(missionData.quiz)}
+            />
+            <p>OX 퀴즈 참여하기</p>
+          </div>
+          <div className="mission-container">
+            <FcCheckmark
+              className="check-img"
+              style={checkImageStyle(missionData.checkAir)}
+            />
+            <p>대기 오염 정보 조회하기</p>
+          </div>
+        </div>
+        <div className="dailymission-page-meta">
+          <p className="dailymission-explanation-text">
+            * 퀘스트를 완료하면, 도토리를 받을 수 있습니다. <br />
+            아래 미션을 수행하고 도토리를 주워가세요!!
+            <br />
+          </p>
+        </div>
       </div>
     </div>
   );
