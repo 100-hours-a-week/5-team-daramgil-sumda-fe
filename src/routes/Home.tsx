@@ -298,15 +298,14 @@ const Home: React.FC = () => {
                     {aiSummary?.actionRecommendation &&
                       formatRecommendations(aiSummary.actionRecommendation)}
                   </ul>
-                  <p>
-                    더 궁금한 점이 있다면, 아래 '다람쥐와 대화하기'를 통해
-                    알려드릴게요!
-                  </p>
                 </>
               )
             )}
-            <div className="to-squirrel" onClick={gosq}>
-              다람쥐와 대화하기
+            <div className="to-squirrel">
+              <p>더 상세한 정보는</p>
+              <div className="to-squirrel-button" onClick={gosq}>
+                다람쥐와 대화하기
+              </div>
             </div>
           </div>
           <div className="main-squirrel">
@@ -316,7 +315,6 @@ const Home: React.FC = () => {
         <Swiper
           modules={[Navigation, Pagination]}
           navigation
-          pagination={{ clickable: true }}
           spaceBetween={50}
           slidesPerView={1}
         >
