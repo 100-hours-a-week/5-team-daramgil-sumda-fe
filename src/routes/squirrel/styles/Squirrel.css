@@ -198,40 +198,43 @@
 
 .common-questions-container {
   position: absolute; /* 부모 요소의 상대적인 위치를 기준으로 절대 위치 설정 */
-  bottom: 30px; /* 하단에 위치 */
+  bottom: 57px; /* 하단에 위치 */
   left: 0;
   width: 100%;
   max-height: 0;
-  padding: 0 10px;
+  padding: 10px 10px 15px 10px;
   background-color: #e0e0e0;
   border-radius: 15px 15px 0 0;
   overflow: hidden;
 }
 
 .common-questions-container.visible {
-  max-height: 147px; /* 펼쳐진 상태에서의 최대 높이 */
-  overflow-y: auto;
+  max-height: 160px; /* 펼쳐진 상태에서의 최대 높이 */
+  overflow: hidden;
 }
-
 .common-questions {
+  max-height: 140px; /* 부모 요소의 가용 높이를 사용 */
+  overflow-y: auto; /* 내부 스크롤 활성화 */
   background-color: #e0e0e0;
   border-radius: 5px;
-  overflow: hidden;
   transition: max-height 0.3s ease-in-out;
   z-index: 2; /* chat-messages 위에 위치 */
 }
+
 .common-questions::-webkit-scrollbar {
-  display: none;
+  width: 1px; /* 스크롤바 너비 */
 }
 
 .question {
   background-color: #fff;
   padding: 10px;
-  margin: 10px 0;
+  margin: 0 0 10px 0;
   border-radius: 15px;
   cursor: pointer;
 }
-
+.question:last-child {
+  margin-bottom: 20px; /* 마지막 요소에만 하단 마진 추가 */
+}
 .question:hover {
   background-color: #ddd;
 }
@@ -239,14 +242,14 @@
   margin-top: auto;
 }
 .toggle-button {
-  background-color: #ddd;
+  width: 15%;
+  margin: 0 auto 10px auto;
+  background-color: #acacac;
   color: white;
-  padding: 5px;
+  padding: 3px;
   text-align: center;
-  border: 1px solid #5b5b5b;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 10px;
 }
 
 .chat-input-container {
