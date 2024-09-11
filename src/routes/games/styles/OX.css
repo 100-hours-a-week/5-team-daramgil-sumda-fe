@@ -1,72 +1,94 @@
-.ox-quiz-container {
+.ox-quiz-page {
+  background-image: url("../../../assets//background/missionBackground.png");
+  background-size: 100%; /* 배경 이미지를 컨테이너에 맞게 확장하여 잘리지 않도록 설정 */
+  background-position: top center; /* 배경 이미지를 상단 중앙에 위치 */
+  background-repeat: no-repeat; /* 배경 이미지 반복 방지 */
+  background-attachment: scroll; /* 배경 이미지를 스크롤할 때 함께 움직이도록 설정 */
+
   max-width: 400px;
   min-height: calc(100vh - 338px);
   margin: 0 auto;
-  padding: 20px;
-  text-align: center;
+  padding: 30px 10px;
+  font-family: "Noto Sans KR", sans-serif;
+  background-color: #ffffff;
+}
+
+.ox-quiz-container {
+  width: 90%;
+  padding: 30px;
+  background-color: #ffffff;
+  margin: 170px auto 0 auto;
+  border-radius: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
 .quiz-title {
   text-align: center;
   font-size: 32px;
-  margin: 40px 0;
+  margin-bottom: 10px;
   font-weight: 600;
-  color: #333;
+  color: #000000;
 }
 
 .quiz-description {
-  font-size: 16px;
+  font-size: 14px;
   color: #555;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
+.quiz-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .quiz-question {
-  font-size: 18px;
-  font-weight: 600;
+  background-color: #45857d;
+  color: #ffffff;
+  padding: 10px;
+  border-radius: 15px;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.5rem;
   margin-bottom: 40px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
 .options-container {
   display: flex;
   justify-content: center;
   margin-bottom: 40px;
+  gap: 40px;
 }
 
 .option-button {
   flex: 1;
-  padding: 15px;
   margin: 0 10px;
-  font-size: 18px;
+  font-size: 90px;
   font-weight: bold;
-  border-radius: 8px;
-  border: 2px solid #ccc;
-  background-color: #f0f0f0;
   cursor: pointer;
   transition: background-color 0.3s, border-color 0.3s;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
 }
 
 .option-button.selected-blue {
-  background-color: #007bff;
-  color: #fff;
-  border-color: #007bff;
+  color: #007bff;
 }
 
 .option-button.selected-red {
-  background-color: #dc3545;
-  color: #fff;
-  border-color: #dc3545;
+  color: #dc3545;
 }
 
 .submit-button {
+  width: 60%;
   padding: 10px 30px;
   font-size: 18px;
   font-weight: bold;
   color: #000000;
-  background-color: #f0f0f0;
-  border: 2px solid #ccc;
+  background-color: #c2dfac;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
 .submit-button:hover {

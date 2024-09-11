@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import "./styles/Favorites.css";
+import { CiSearch } from "react-icons/ci";
 
 interface Location {
   id: number;
@@ -92,63 +93,72 @@ const Favorites: React.FC = () => {
   );
 
   return (
-    <div className="favorites-container">
-      <div className="search-bar">
-        <input
-          type="text"
-          className="search-bar-input"
-          placeholder="검색"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          onFocus={() => setShowSearchResults(true)}
-        />
-        <button className="search-bar-button" onClick={handleSearch}>
-          검색
-        </button>
-      </div>
-      {showSearchResults && searchQuery.trim() !== "" && (
-        <div className="search-result-container">
-          {searchResults.length > 0 ? (
-            <ul>
-              {searchResults.map((result) => (
-                <li key={result.id} className="favorite-item">
-                  {result.location}
+    <div className="favorites-page">
+      <div className="favorites-container">
+        <div className="search-container">
+          <div className="search-bar">
+            <CiSearch className="search-icon" />
+            <input
+              type="text"
+              className="search-bar-input"
+              placeholder="검색"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onFocus={() => setShowSearchResults(true)}
+            />
+            {/* <button className="search-bar-button" onClick={handleSearch}>
+              검색
+            </button> */}
+          </div>
+          {showSearchResults && searchQuery.trim() !== "" && (
+            <div className="search-result-container">
+              {searchResults.length > 0 ? (
+                <ul>
+                  {searchResults.map((result) => (
+                    <li key={result.id} className="search-result-item">
+                      <span className="search-result-item-location">
+                        {result.location}
+                      </span>
+                      <button
+                        className="search-result-item-delete-button"
+                        onClick={() =>
+                          handleAddFavorite(result.id, result.location)
+                        }
+                      >
+                        추가
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="no-results">검색 결과 없음</p>
+              )}
+            </div>
+          )}
+        </div>
+        <div className="favorites-item-container">
+          <h3 className="favorites-item-header">내가 등록한 지역</h3>
+          {favorites.length > 0 ? (
+            <ul className="favorites-list">
+              {favorites.map((favorite) => (
+                <li key={favorite.id} className="favorite-item">
+                  <span className="favorite-item-location">
+                    {favorite.location}
+                  </span>
                   <button
                     className="favorite-item-delete-button"
-                    onClick={() =>
-                      handleAddFavorite(result.id, result.location)
-                    }
+                    onClick={() => handleDelete(favorite.id)}
                   >
-                    추가
+                    삭제
                   </button>
                 </li>
               ))}
             </ul>
           ) : (
-            <p className="no-results">검색 결과 없음</p>
+            <p className="no-favorites">즐겨찾기한 지역이 없습니다</p>
           )}
         </div>
-      )}
-      <h3 className="favorites-header">즐겨찾기 목록</h3>
-      {favorites.length > 0 ? (
-        <ul className="favorites-list">
-          {favorites.map((favorite) => (
-            <li key={favorite.id} className="favorite-item">
-              <span className="favorite-item-location">
-                {favorite.location}
-              </span>
-              <button
-                className="favorite-item-delete-button"
-                onClick={() => handleDelete(favorite.id)}
-              >
-                삭제
-              </button>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="no-favorites">즐겨찾기한 지역이 없습니다</p>
-      )}
+      </div>
     </div>
   );
 };

@@ -151,7 +151,7 @@
   justify-content: flex-start;
   background-color: #f9f9f9;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  padding: 10px;
+  padding: 15px;
   border-radius: 30px;
   height: 500px;
   margin-bottom: 15px;
@@ -160,9 +160,11 @@
   overflow-y: auto;
 }
 .chat-log {
+  padding-bottom: 25px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  border-radius: 30px;
   overflow-y: auto;
 }
 
@@ -198,7 +200,7 @@
 
 .common-questions-container {
   position: absolute; /* 부모 요소의 상대적인 위치를 기준으로 절대 위치 설정 */
-  bottom: 57px; /* 하단에 위치 */
+  bottom: 65px; /* 하단에 위치 */
   left: 0;
   width: 100%;
   max-height: 0;
@@ -216,7 +218,7 @@
   max-height: 140px; /* 부모 요소의 가용 높이를 사용 */
   overflow-y: auto; /* 내부 스크롤 활성화 */
   background-color: #e0e0e0;
-  border-radius: 5px;
+  border-radius: 15px;
   transition: max-height 0.3s ease-in-out;
   z-index: 2; /* chat-messages 위에 위치 */
 }
@@ -254,7 +256,7 @@
 
 .chat-input-container {
   display: flex;
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
 .chat-input-container input {

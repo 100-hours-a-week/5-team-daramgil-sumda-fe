@@ -16,20 +16,14 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
 
-import good from "../../assets/grade/good.png";
-import { PiSmileyWinkLight } from "react-icons/pi";
-
-import moderate from "../../assets/grade/moderate.png";
-import { PiSmileyLight } from "react-icons/pi";
-
-import unhealthy from "../../assets/grade/unhealthy.png";
-import { PiSmileyMehLight } from "react-icons/pi";
-
-import veryUnhealthy from "../../assets/grade/very_unhealthy.png";
-import { PiSmileySadLight } from "react-icons/pi";
-
-import hazardous from "../../assets/grade/hazardous.png";
-import { PiSmileyXEyesLight } from "react-icons/pi";
+import {
+  PiSmileyWinkLight,
+  PiSmileyLight,
+  PiSmileyMehLight,
+  PiSmileySadLight,
+  PiSmileyXEyesLight,
+  PiSmileyMeltingLight,
+} from "react-icons/pi";
 
 import callout from "../../assets/info.png";
 
