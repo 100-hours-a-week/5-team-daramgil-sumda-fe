@@ -40,10 +40,13 @@ import UnderConstruction from "./routes/UnderConstruction";
 import Login from "./routes/Login";
 
 import PrivateRoute from "./components/PrivateRoute";
+import useAuthStore from "./store/useAuthStore";
+import axios from "axios";
 
 const App: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { isLoggedIn, loginAttempted, login } = useAuthStore();
 
   useEffect(() => {
     const sensitiveGroup = localStorage.getItem("sensitiveGroup");
@@ -54,7 +57,33 @@ const App: React.FC = () => {
       navigate("/sensitivecheck");
     }
   }, [navigate, location.pathname]);
+  useEffect(() => {
+    const reissueAccessToken = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/auth/reissue",
+          {
+            withCredentials: true, // refresh_token을 쿠키에서 자동으로 전송
+          }
+        );
 
+        const { data } = response.data;
+        console.log(data);
+        if (response.status === 200) {
+          login(data.access_token); // 액세스 토큰을 상태에 저장
+        } else {
+          console.error("액세스 토큰 재발급 실패:", data);
+        }
+      } catch (error) {
+        console.error("액세스 토큰 재발급 오류:", error);
+      }
+    };
+
+    // 로그인 시도가 있었고, 로그인되지 않았다면 토큰 재발급 시도
+    if (loginAttempted && !isLoggedIn) {
+      reissueAccessToken();
+    }
+  }, [isLoggedIn, loginAttempted, login]);
   return (
     <div>
       <Routes>

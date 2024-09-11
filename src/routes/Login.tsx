@@ -6,12 +6,12 @@ import "./styles/Login.css";
 import useAuthStore from "../store/useAuthStore";
 
 const Login: React.FC = () => {
-  const { isLoggedIn, logout } = useAuthStore(); // Zustand 상태와 액션 가져오기
+  const { isLoggedIn, attemptLogin, logout } = useAuthStore();
   const navigate = useNavigate();
 
   const handleKakaoLogin = () => {
-    // 카카오 로그인 엔드포인트로 리디렉션 (백엔드에서 처리)
-    window.location.href = `http://localhost:8080/oauth2/authorization/kakao`;
+    attemptLogin(); // 로그인 시도 상태를 true로 설정
+    window.location.href = `http://localhost:8080/oauth2/authorization/kakao`; // 리다이렉트
   };
 
   const handleLogout = () => {
@@ -44,7 +44,6 @@ const Login: React.FC = () => {
             <button className="logout-button" onClick={handleLogout}>
               로그아웃
             </button>
-            <button className="quit-button">탈퇴하기</button>
           </div>
         )}
       </div>

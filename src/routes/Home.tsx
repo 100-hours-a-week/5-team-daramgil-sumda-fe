@@ -28,6 +28,7 @@ import LocationDropdown from "../components/LocationDropdown"; // 위치 드롭�
 
 import { toast } from "react-toastify";
 import useMissionStore from "../store/useMissionStore";
+import useAuthStore from "../store/useAuthStore";
 
 import {
   WiDaySunny,
@@ -89,7 +90,7 @@ const Home: React.FC = () => {
   } | null>(null); // AI 요약 정보
   const { completeDailyAttendance } = useMissionStore(); // 출석 체크 함수 가져오기
   const navigate = useNavigate();
-
+  const { isLoggedIn, login } = useAuthStore();
   // 특정 경로로 이동하는 함수
   const gosq = () => {
     navigate("/squirrel");
@@ -216,7 +217,7 @@ const Home: React.FC = () => {
     };
 
     checkAttendance();
-  }, [completeDailyAttendance]);
+  }, [completeDailyAttendance, isLoggedIn, login]);
 
   // 다람쥐 이미지 목록
   const squirrelImages = [basic, knight, samurai, space, cook, pilot, hiphop];
