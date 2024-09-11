@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import gps from "../assets/icons/gps.png";
+import {
+  MdLocationOn,
+  MdOutlineEditLocation,
+  MdAddLocation,
+} from "react-icons/md";
 import "./styles/LocationDropdown.css";
 
 interface LocationDropdownProps {
@@ -110,26 +115,36 @@ const LocationDropdown: React.FC<LocationDropdownProps> = ({
   return (
     <div className="location-dropdown">
       <div className="dropdown-controls">
-        <button className="gps-button" onClick={toggleDropdown}>
+        <button className="gps-button" onClick={handleLoadCurrentLocation}>
           <img className="gps-icon" src={gps} alt="gps icon" />
         </button>
-        <button className="dropdown-button" onClick={handleLoadCurrentLocation}>
+        <button className="dropdown-button" onClick={toggleDropdown}>
           {selectedLocation || "위치 선택"}
         </button>
       </div>
 
       {isDropdownOpen && (
-        <ul className="dropdown-menu">
-          {favorites.map((favorite) => (
+        <>
+          <ul className="dropdown-menu">
+            {favorites.map((favorite) => (
+              <li
+                key={favorite.id}
+                onClick={() => selectLocation(favorite.location, favorite.id)}
+                className="dropdown-item"
+              >
+                <MdOutlineEditLocation className="icon" />
+                <span className="text">{favorite.location}</span>
+              </li>
+            ))}
             <li
-              key={favorite.id}
-              onClick={() => selectLocation(favorite.location, favorite.id)}
+              onClick={() => selectLocation("등록하기", 0)}
+              className="dropdown-item"
             >
-              {favorite.location}
+              <MdAddLocation className="icon" />
+              <span className="text">등록하기</span>
             </li>
-          ))}
-          <li onClick={() => selectLocation("등록하기", 0)}>등록하기</li>
-        </ul>
+          </ul>
+        </>
       )}
     </div>
   );

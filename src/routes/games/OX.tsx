@@ -55,35 +55,39 @@ const OX: React.FC = () => {
   }
 
   return (
-    <div className="ox-quiz-container">
-      <h2 className="quiz-title">OX 퀴즈</h2>
-      <p className="quiz-description">OX 퀴즈를 맞추고 도토리를 받아가세요!</p>
-      {currentQuestion && (
-        <>
-          <p className="quiz-question">Q. {currentQuestion.question}</p>
-          <div className="options-container">
-            <button
-              className={`option-button ${
-                selectedOption === "O" ? "selected-blue" : ""
-              }`}
-              onClick={() => handleOptionClick("O")}
-            >
-              O
-            </button>
-            <button
-              className={`option-button ${
-                selectedOption === "X" ? "selected-red" : ""
-              }`}
-              onClick={() => handleOptionClick("X")}
-            >
-              X
+    <div className="ox-quiz-page">
+      <div className="ox-quiz-container">
+        <h2 className="quiz-title">OX 퀴즈</h2>
+        <p className="quiz-description">
+          OX 퀴즈를 맞추고 도토리를 받아가세요!
+        </p>
+        {currentQuestion && (
+          <div className="quiz-section">
+            <div className="quiz-question">{currentQuestion.question}</div>
+            <div className="options-container">
+              <button
+                className={`option-button ${
+                  selectedOption === "O" ? "selected-blue" : ""
+                }`}
+                onClick={() => handleOptionClick("O")}
+              >
+                O
+              </button>
+              <button
+                className={`option-button ${
+                  selectedOption === "X" ? "selected-red" : ""
+                }`}
+                onClick={() => handleOptionClick("X")}
+              >
+                X
+              </button>
+            </div>
+            <button className="submit-button" onClick={handleSubmit}>
+              제출하기
             </button>
           </div>
-          <button className="submit-button" onClick={handleSubmit}>
-            제출하기
-          </button>
-        </>
-      )}
+        )}
+      </div>
     </div>
   );
 };

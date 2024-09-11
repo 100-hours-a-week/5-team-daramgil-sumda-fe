@@ -7,7 +7,6 @@
 
 .dropdown-controls {
   display: flex;
-  align-items: right;
   flex-grow: 1;
   padding: 10px;
   font-size: 16px;
@@ -23,7 +22,6 @@
   font-size: 16px;
   cursor: pointer;
   color: #f7f7f7;
-  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .gps-button {
@@ -35,29 +33,41 @@
 .gps-icon {
   width: 24px;
   height: 24px;
-  filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.3));
 }
-
 .dropdown-menu {
+  width: 100%;
+  margin-top: 10px;
   list-style: none;
-  padding: 0;
-  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
-  background-color: #828282;
+  border-radius: 10px;
+  background-color: #e1e9e8;
   position: absolute; /* 절대 위치 설정 */
   top: 100%; /* 부모 요소 바로 아래에 위치 */
   left: 50%; /* 부모 요소의 수평 중앙에 위치 */
   transform: translateX(-50%); /* 수평 중앙 정렬 */
   z-index: 1000; /* 다른 요소 위에 표시되도록 설정 */
 }
+.dropdown-item {
+  display: flex;
+  align-items: center; /* 아이콘과 텍스트를 수직으로 정렬 */
+}
+
+.icon {
+  margin-right: 50px; /* 아이콘과 텍스트 사이의 거리 조정 */
+  font-size: 30px;
+}
+
+.text {
+  flex: 1; /* 텍스트가 아이콘 옆에 올 수 있도록 설정 */
+}
 
 .dropdown-menu li {
-  text-align: center;
-  padding: 10px;
+  text-align: left;
+  padding: 5px;
+  margin-bottom: 2px;
   cursor: pointer;
-  color: #f7f7f7;
+  color: #000000;
 }
 
 .dropdown-menu li:hover {
-  color: red;
+  color: #45857d;
 }

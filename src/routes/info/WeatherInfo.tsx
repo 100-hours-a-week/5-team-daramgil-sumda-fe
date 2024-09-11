@@ -16,6 +16,7 @@ import {
   WiSnow,
   WiThunderstorm,
 } from "react-icons/wi";
+import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 
 interface WeatherIconMap {
   [key: string]: JSX.Element;
@@ -137,6 +138,27 @@ const WeatherInfo: React.FC = () => {
     return weatherClassMap[weatherMain] || "default";
   };
 
+  // 스크롤할 요소를 참조하기 위해 useRef 사용
+  const scrollRef = useRef<HTMLDivElement>(null);
+  // 왼쪽으로 스크롤
+  const scrollLeft = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({
+        left: -80, // 스크롤할 픽셀 값 조정 가능
+        behavior: "smooth",
+      });
+    }
+  };
+  // 오른쪽으로 스크롤
+  const scrollRight = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({
+        left: 80, // 스크롤할 픽셀 값 조정 가능
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <div
       className={`weatherinfo-page ${getWeatherClass(
@@ -182,8 +204,8 @@ const WeatherInfo: React.FC = () => {
 
             <div className="detail-forecast-section">
               {/* <h3 className="forecast-title">상세 날씨 정보</h3> */}
-              <button className="scroll-button left">&lt;</button>
-              <div className="detail-forecast-items">
+              <BsChevronCompactLeft className="left" onClick={scrollLeft} />
+              <div className="detail-forecast-items" ref={scrollRef}>
                 {[
                   {
                     label: "습도",
@@ -229,7 +251,7 @@ const WeatherInfo: React.FC = () => {
                   </div>
                 ))}
               </div>
-              <button className="scroll-button right">&gt;</button>
+              <BsChevronCompactRight className="right" onClick={scrollRight} />
             </div>
             <div className="forecast-section">
               <h3 className="forecast-title">일별 예보</h3>

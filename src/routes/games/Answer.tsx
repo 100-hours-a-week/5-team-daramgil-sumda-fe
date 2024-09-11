@@ -40,31 +40,28 @@ const Answer: React.FC = () => {
   };
 
   return (
-    <div className="answer-container">
-      <h2 className="answer-title">OX 퀴즈</h2>
+    <div className="answer-page">
+      <div className="answer-container">
+        <h2 className="answer-title">OX 퀴즈</h2>
 
-      <div className="correct-answer-section">
-        <p className="correct-answer-text">정답은...</p>
-        <div
-          className={`correct-answer-box ${
-            selectedOption === correctAnswer ? "correct" : "wrong"
-          }`}
-        >
-          {correctAnswer === selectedOption ? "정답입니다!" : "틀렸습니다!"}
+        <div className="correct-answer-section">
+          <div
+            className={`correct-answer-box ${
+              selectedOption === correctAnswer ? "correct" : "wrong"
+            }`}
+          >
+            {correctAnswer === selectedOption ? "정답입니다!" : "틀렸습니다!"}
+          </div>
         </div>
-      </div>
 
-      <div className="explanation-section">
-        <p className="explanation-text">{explanation}</p>
-      </div>
+        <div className="explanation-section">
+          <p className="explanation-text">{explanation}</p>
+        </div>
 
-      <div className="reward-section">
-        <p className="reward-text">OX 퀴즈 참가 완료! 도토리를 주웠어요!</p>
+        <button className="confirm-button" onClick={handleSubmit}>
+          확인
+        </button>
       </div>
-
-      <button className="confirm-button" onClick={handleSubmit}>
-        확인
-      </button>
     </div>
   );
 };
