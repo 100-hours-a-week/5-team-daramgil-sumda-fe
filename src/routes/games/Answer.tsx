@@ -8,11 +8,11 @@ const Answer: React.FC = () => {
   const { completeDailyQuiz } = useMissionStore();
   const navigate = useNavigate();
   const location = useLocation();
-  const { correctAnswer, explanation } = location.state || {};
+  const { correctAnswer, explanation, selectedOption } = location.state || {};
 
   useEffect(() => {
-    // 컴포넌트 마운트 시 출석 체크 호출
-    const checkAttendance = async () => {
+    // OX 퀴즈 미션 완료 처리 호출
+    const checkDailyQuiz = async () => {
       try {
         await completeDailyQuiz();
         toast.success("OX퀴즈 미션을 완료했습니다. 도토리 1개가 지급됩니다.");
@@ -32,7 +32,7 @@ const Answer: React.FC = () => {
       }
     };
 
-    checkAttendance();
+    checkDailyQuiz();
   }, [completeDailyQuiz]);
 
   const handleSubmit = () => {
@@ -45,7 +45,13 @@ const Answer: React.FC = () => {
 
       <div className="correct-answer-section">
         <p className="correct-answer-text">정답은...</p>
-        <div className="correct-answer-box">{correctAnswer}</div>
+        <div
+          className={`correct-answer-box ${
+            selectedOption === correctAnswer ? "correct" : "wrong"
+          }`}
+        >
+          {correctAnswer === selectedOption ? "정답입니다!" : "틀렸습니다!"}
+        </div>
       </div>
 
       <div className="explanation-section">
