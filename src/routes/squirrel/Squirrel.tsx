@@ -31,7 +31,7 @@ const Squirrel: React.FC = () => {
     {
       sender: "bot",
       message:
-        "안녕하세요! 저는 다람쥐에요. 🐿 대기 오염 정보나 다른 질문이 있으면 언제든지 물어보세요!",
+        "안녕하세요! 저는 다람쥐에요. 대기 오염 정보나 다른 질문이 있으면 언제든지 물어보세요!",
     },
   ]);
   const maxLevels = [10, 20, 30, 40]; // 각 레벨에 필요한 도토리 수
@@ -361,6 +361,9 @@ const Squirrel: React.FC = () => {
                 isQuestionsVisible ? "visible" : ""
               }`}
             >
+              <div className="toggle-button" onClick={toggleQuestions}>
+                {isQuestionsVisible ? "" : ""}
+              </div>
               <div className="common-questions">
                 <div
                   className="question"
@@ -425,9 +428,6 @@ const Squirrel: React.FC = () => {
               </div>
             </div>
             <div className="toggle-button-container">
-              <div className="toggle-button" onClick={toggleQuestions}>
-                {isQuestionsVisible ? "" : ""}
-              </div>
               <div className="chat-input-container">
                 <input
                   type="text"
