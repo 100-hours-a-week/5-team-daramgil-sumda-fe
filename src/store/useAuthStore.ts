@@ -59,7 +59,7 @@ const useAuthStore = create<AuthState>()(
       reissueToken: async () => {
         try {
           const response = await axios.get(
-            "http://localhost:8080/api/auth/reissue",
+            `${process.env.REACT_APP_API_URL}/auth/reissue`,
             {
               withCredentials: true, // refresh_token을 쿠키에서 자동으로 전송
             }
