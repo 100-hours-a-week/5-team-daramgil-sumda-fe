@@ -16,7 +16,7 @@ interface MissionData {
 }
 
 const DailyMission: React.FC = () => {
-  const { jwtToken } = useAuthStore(); // Zustand에서 JWT 토큰 가져오기
+  const { jwtToken, reissueToken } = useAuthStore(); // Zustand에서 JWT 토큰 및 토큰 재발급 함수 가져오기
   const [missionData, setMissionData] = useState<MissionData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -32,12 +32,31 @@ const DailyMission: React.FC = () => {
             },
           }
         );
-        if (!response.ok) {
+        console.log(response);
+        if (response.status === 500) {
+          // 토큰 만료 시
+          console.log("토큰이 만료되었습니다. 재발급 시도 중...");
+          await reissueToken(); // 토큰 재발급 요청
+          const retryResponse = await fetch(
+            `${process.env.REACT_APP_API_URL}/mission/day`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${jwtToken}`, // 재발급 받은 토큰으로 재시도
+              },
+            }
+          );
+          if (!retryResponse.ok) {
+            throw new Error("일일 미션 정보를 불러오는데 실패했습니다.");
+          }
+          const data = await retryResponse.json();
+          setMissionData(data.data);
+        } else if (!response.ok) {
           throw new Error("일일 미션 정보를 불러오는데 실패했습니다.");
+        } else {
+          const data = await response.json();
+          setMissionData(data.data);
         }
-        const data = await response.json();
-        setMissionData(data.data);
-        console.log(missionData);
       } catch (error) {
         console.error("Error fetching daily mission data:", error);
         setMissionData(null);
@@ -47,7 +66,7 @@ const DailyMission: React.FC = () => {
     };
 
     fetchMissionData();
-  }, [jwtToken]);
+  }, [jwtToken, reissueToken]); // jwtToken이 변경될 때마다 재요청
 
   if (loading) {
     return <div>로딩 중...</div>; // 로딩 중 표시
