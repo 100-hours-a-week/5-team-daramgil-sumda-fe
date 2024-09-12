@@ -96,6 +96,7 @@
   width: 30px;
   height: 30px;
   margin-right: 25px;
+  color: #43a047;
   /* 회색으로 변경하는 속성 */
   filter: grayscale(100%);
   position: relative;

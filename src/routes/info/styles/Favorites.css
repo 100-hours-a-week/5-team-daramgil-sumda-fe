@@ -113,14 +113,12 @@
   border-radius: 25px;
   cursor: pointer;
   color: #ffffff;
-  /* 흰색 텍스트 */
   font-size: 14px;
   transition: background-color 0.2s ease-in-out;
 }
 
 .search-result-item-delete-button:hover {
   background-color: #45857d;
-  /* 좀 더 진한 갈색 */
 }
 .favorites-item-container {
   width: 100%;
