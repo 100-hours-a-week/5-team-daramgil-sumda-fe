@@ -62,9 +62,9 @@
   transition: background-color 0.3s; /* 호버 시 배경색 변경 효과를 위해 추가 */
 }
 
-.to-squirrel:hover {
+.to-squirrel-button:hover {
   cursor: pointer; /* 호버 시 커서를 손가락 모양으로 변경 */
-  background-color: #ff0000; /* 호버 시 배경색 변경 (선택 사항) */
+  background-color: #bbd6a6; /* 호버 시 배경색 변경 (선택 사항) */
 }
 
 .main-squirrel {
