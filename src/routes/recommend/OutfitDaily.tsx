@@ -139,24 +139,29 @@ const OutfitDailyPage: React.FC = () => {
   return (
     <div className="outfit-daily-page">
       <LocationDropdown onLocationSelect={handleLocationSelect} />
+      <div className="outfit-daily-weather-section">
+        <div className="outfit-daily-weather-p">
+          <div className="outfit-daily-weather-icon-container">
+            {weatherIconMap[weatherData.current.weather[0].main]}
+          </div>
+          <p className="outfit-daily-weather-status">
+            {weatherMainToKorean[weatherData.current.weather[0].main] ||
+              "알 수 없음"}
+          </p>
+        </div>
+        <p className="outfit-daily-weather-current-temperature">
+          {Math.round(weatherData.current.temp)}°
+        </p>
+        <div className="outfit-daily-weather-p">
+          <p className="outfit-daily-weather-precipitation">
+            습도 {weatherData.current.humidity}%
+          </p>
+        </div>
+      </div>
       <div className="outfit-info-container">
         <div className="outfit-weather-section">
           {weatherData ? (
             <>
-              <div className="outfit-weather-icon-container">
-                {weatherIconMap[weatherData.current.weather[0].main]}
-              </div>
-              <p className="outfit-weather-status">
-                {weatherMainToKorean[weatherData.current.weather[0].main] ||
-                  "알 수 없음"}
-              </p>
-              <p className="outfit-weather-current-temperature">
-                {Math.round(weatherData.current.temp)}°C
-              </p>
-
-              <p className="outfit-weather-humidity">
-                습도 {weatherData.current.humidity}%
-              </p>
               <h2 className="outfit-recommend-title">추천 옷차림</h2>
               {loading ? ( // 로딩 중일 때
                 <ul className="outfit-recommendations-list">

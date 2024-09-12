@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import gps from "../assets/icons/gps.png";
 import {
@@ -21,6 +21,8 @@ const LocationDropdown: React.FC<LocationDropdownProps> = ({
   const [selectedLocation, setSelectedLocation] = useState<string>("");
   const [isDropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const navigate = useNavigate();
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
     loadCurrentLocation();
     const storedFavorites = localStorage.getItem("favorites");
@@ -28,6 +30,25 @@ const LocationDropdown: React.FC<LocationDropdownProps> = ({
       setFavorites(JSON.parse(storedFavorites));
     }
   }, []);
+  // 드롭다운 외부 클릭 감지하여 닫기
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setDropdownOpen(false);
+      }
+    };
+    if (isDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isDropdownOpen]);
 
   const loadCurrentLocation = async (): Promise<{
     latitude: number;
@@ -113,7 +134,7 @@ const LocationDropdown: React.FC<LocationDropdownProps> = ({
   };
 
   return (
-    <div className="location-dropdown">
+    <div className="location-dropdown" ref={dropdownRef}>
       <div className="dropdown-controls">
         <button className="gps-button" onClick={handleLoadCurrentLocation}>
           <img className="gps-icon" src={gps} alt="gps icon" />

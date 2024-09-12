@@ -144,7 +144,7 @@ const WeatherInfo: React.FC = () => {
   const scrollLeft = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({
-        left: -80, // 스크롤할 픽셀 값 조정 가능
+        left: -110, // 스크롤할 픽셀 값 조정 가능
         behavior: "smooth",
       });
     }
@@ -153,7 +153,7 @@ const WeatherInfo: React.FC = () => {
   const scrollRight = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({
-        left: 80, // 스크롤할 픽셀 값 조정 가능
+        left: 110, // 스크롤할 픽셀 값 조정 가능
         behavior: "smooth",
       });
     }

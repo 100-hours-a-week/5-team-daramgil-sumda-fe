@@ -37,7 +37,7 @@
 
 .squirrel-item.selected {
   opacity: 1;
-  border: 2px solid #007bff;
+  border: 2px solid #45857d;
 }
 
 .squirrel-image {
@@ -73,7 +73,7 @@
   font-size: 18px;
   font-weight: bold;
   color: #fff;
-  background-color: #007bff;
+  background-color: #45857d;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -84,7 +84,9 @@
   background-color: #999;
   cursor: not-allowed;
 }
-
+.complete-button:enabled {
+  background-color: #45857d;
+}
 .complete-button:hover:enabled {
-  background-color: #0056b3;
+  background-color: #249285;
 }

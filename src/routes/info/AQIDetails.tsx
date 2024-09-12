@@ -412,7 +412,7 @@ const AQIDetails: React.FC = () => {
           <div className="allert-container-unique">
             <img style={{ width: "12%", height: "12%" }} src={callout} />
             <p>
-              * 데이터는 실시간 관측된 자료이며
+              데이터는 실시간 관측된 자료이며
               <br />
               측정소 현지 사정이나 데이터의 <br />
               수신상태에 따라 미수신 될 수 있습니다. <br />

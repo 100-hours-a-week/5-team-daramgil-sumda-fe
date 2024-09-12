@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./styles/Squirrel.css";
 import Acorn_img from "../../assets/acorn.png";
@@ -84,6 +84,8 @@ const Squirrel: React.FC = () => {
       4: "/squirrels/main/힙합-다람쥐-lv4.png",
     },
   };
+  // 질문 목록 요소 참조 생성
+  const questionContainerRef = useRef<HTMLDivElement | null>(null);
   // 위치 선택 핸들러
   const handleLocationSelect = (location: string, id: number) => {
     setId(id); // 선택된 위치의 ID 설정
@@ -149,6 +151,27 @@ const Squirrel: React.FC = () => {
     // 입력 필드 초기화
     setInputMessage("");
   };
+  // 외부 클릭 감지하여 질문 목록 닫기
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        questionContainerRef.current &&
+        !questionContainerRef.current.contains(event.target as Node)
+      ) {
+        setIsQuestionsVisible(false); // 질문 목록 닫기
+      }
+    };
+
+    if (isQuestionsVisible) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isQuestionsVisible]);
 
   // useEffect(() => {
   //   if (weatherData) {
@@ -305,9 +328,6 @@ const Squirrel: React.FC = () => {
   };
 
   const navigate = useNavigate();
-  const handleToGames = () => {
-    navigate(`/games`);
-  };
   const handleNewSquirrel = () => {
     navigate(`/adopt`);
   };
@@ -411,6 +431,7 @@ const Squirrel: React.FC = () => {
             </div>
 
             <div
+              ref={questionContainerRef}
               className={`common-questions-container ${
                 isQuestionsVisible ? "visible" : ""
               }`}
