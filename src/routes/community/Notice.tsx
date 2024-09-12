@@ -39,32 +39,35 @@ const Notice: React.FC = () => {
   }, []);
 
   return (
-    <div className="notice-container">
-      <h2 className="title">공지사항</h2>
-      <div className="notice-list">
-        {notices.map((notice, index) => (
-          <div key={index}>
-            <div className="notice-item">
-              <div
-                className="notice-header"
-                onClick={() => toggleContent(index)}
-              >
-                <div className="notice-title-text">{notice.title}</div>
-                <div className="notice-date">{notice.createdAt}</div>
-              </div>
-            </div>
-            {openIndex === index && (
+    <div className="notice-page">
+      <div className="notice-container">
+        <img src="/squirrels/main/기본-다람쥐-lv4.png" />
+        <h2 className="notice-title">공지사항</h2>
+        <div className="notice-list">
+          {notices.map((notice, index) => (
+            <div key={index}>
               <div className="notice-item">
                 <div
-                  className="notice-content"
-                  dangerouslySetInnerHTML={{ __html: notice.content }}
-                />
+                  className="notice-header"
+                  onClick={() => toggleContent(index)}
+                >
+                  <div className="notice-title-text">{notice.title}</div>
+                  <div className="notice-date">{notice.createdAt}</div>
+                </div>
               </div>
-            )}
-          </div>
-        ))}
+              {openIndex === index && (
+                <div className="notice-item">
+                  <div
+                    className="notice-content"
+                    dangerouslySetInnerHTML={{ __html: notice.content }}
+                  />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
       </div>
-      {errorMessage && <div className="error-message">{errorMessage}</div>}
     </div>
   );
 };

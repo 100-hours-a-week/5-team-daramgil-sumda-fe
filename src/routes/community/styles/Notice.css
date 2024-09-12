@@ -1,40 +1,53 @@
-.notice-container {
-  min-height: calc(100vh - 338px);
-  background-color: #f4f4f9;
-  padding: 20px;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
+.notice-page {
+  background-image: url("../../../assets//background/example.png");
+  background-size: 100%; /* 배경 이미지를 컨테이너에 맞게 확장하여 잘리지 않도록 설정 */
+  background-position: top center; /* 배경 이미지를 상단 중앙에 위치 */
+  background-repeat: no-repeat; /* 배경 이미지 반복 방지 */
+  background-attachment: scroll; /* 배경 이미지를 스크롤할 때 함께 움직이도록 설정 */
 
-.title {
+  max-width: 400px;
+  min-height: calc(100vh - 338px);
+  margin: 0 auto;
+  padding: 10px 10px 20px 10px;
+  font-family: "Noto Sans KR", sans-serif;
+}
+.notice-container {
+  padding: 0 20px 20px 20px;
+}
+.notice-container > img {
+  width: 150px;
+  margin: 0 auto;
+}
+.notice-title {
+  border-radius: 30px;
+  background-color: #c2dfac;
   text-align: center;
   font-size: 32px;
   margin: 20px 0;
+  padding: 10px;
   font-weight: 600;
-  color: #333;
+  color: #ffffff;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
-
 .notice-list {
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
-
 .notice-item {
   background-color: #ffffff;
   padding: 20px;
   border-radius: 12px;
   margin-bottom: 15px;
   border: 1px solid #e0e0e0;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
   cursor: pointer;
 }
-
 .notice-item:hover {
   box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
   transform: translateY(-2px);
 }
-
 .notice-title-text {
   text-align: left;
   font-size: 22px;
@@ -42,13 +55,11 @@
   margin-bottom: 10px;
   color: #333;
 }
-
 .notice-date {
   font-size: 16px;
   text-align: left;
   color: #888;
 }
-
 .notice-content {
   text-align: left;
   padding: 20px 10px;
@@ -57,7 +68,6 @@
   line-height: 1.6;
   color: #555;
 }
-
 @keyframes slideDown {
   from {
     max-height: 0;

@@ -289,6 +289,12 @@ const Squirrel: React.FC = () => {
       <div className="squirrel-container">
         <LocationDropdown onLocationSelect={handleLocationSelect} />
         <div className="level-info">
+          <div className="acorn-info">
+            <div className="acorn-count" onClick={handleAcornClick}>
+              <img src={Acorn_img} alt="acorn-icon" />
+              {/* {squirrelData.userAcorns} */}
+            </div>
+          </div>
           <div className="progress-bar">
             <div
               className="progress"
@@ -299,45 +305,57 @@ const Squirrel: React.FC = () => {
               }}
             />
           </div>
-          <div className="level-text">LV. {squirrelData.level}</div>
-        </div>
-
-        <div className="acorn-info">
-          <button className="acorn-button" onClick={handleToGames}>
-            도토리 주으러 가기
-          </button>
-          <div className="acorn-count" onClick={handleAcornClick}>
-            <img src={Acorn_img} alt="acorn-icon" />
-            {squirrelData.userAcorns}
-          </div>
-        </div>
-
-        {isModalOpen && (
-          <div className="acorn-modal" onClick={() => setIsModalOpen(false)}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-              <h3>도토리 주기</h3>
-              <p>다람쥐에게 도토리를 주고 성장시키세요.</p>
-              <p>보유중인 도토리 {squirrelData.userAcorns}개</p>
-              <input
-                type="range"
-                min="1"
-                max={squirrelData.userAcorns}
-                value={selectedAcorns}
-                onChange={handleAcornChange}
-              />
-              <div>
-                {selectedAcorns}/{maxLevels[squirrelData.level - 1]}
+          {isModalOpen && (
+            <div className="acorn-modal" onClick={() => setIsModalOpen(false)}>
+              <div
+                className="modal-content"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <h3>도토리 주기</h3>
+                <div className="feed-acorn">
+                  <img src={Acorn_img} alt="acorn-icon" />
+                  {/* <p>LV. {squirrelData.level}</p> */}
+                  <p>
+                    다람쥐에게 도토리를 주고
+                    <br />
+                    성장시키세요!
+                  </p>
+                  <p>보유중인 도토리 : {squirrelData.userAcorns}개</p>
+                  <input
+                    type="range"
+                    min="0"
+                    max={squirrelData.userAcorns}
+                    value={selectedAcorns}
+                    onChange={handleAcornChange}
+                  />
+                  <p>
+                    {/* {selectedAcorns}/{maxLevels[squirrelData.level - 1]} */}
+                    {selectedAcorns}/{squirrelData.userAcorns}
+                  </p>
+                </div>
+                <button className="acorn-modal-btn" onClick={handleFeedAcorns}>
+                  도토리 주기
+                </button>
               </div>
-              <button className="acorn-modal-btn" onClick={handleFeedAcorns}>
-                도토리 주기
-              </button>
             </div>
-          </div>
-        )}
-
+          )}
+        </div>
+        <div className="level-text">
+          <p>LV. {squirrelData.level}</p>
+          <p>
+            {squirrelData.level < 4
+              ? `LV. ${squirrelData.level + 1}까지 ${
+                  maxLevels[squirrelData.level - 1] - squirrelData.userAcorns
+                }개`
+              : "최대 레벨입니다"}
+          </p>
+        </div>
         <div className="squirrel-section">
           <div className="chat-squirrel">
             <img src={squirrelImageSrc} alt="chat-squirrel" />
+            {/* <button className="acorn-button" onClick={handleToGames}>
+              도토리 주으러 가기
+            </button> */}
           </div>
           {squirrelData.level === 4 && squirrelData.feed >= 100 && (
             <button className="new-squirrel-button" onClick={handleNewSquirrel}>

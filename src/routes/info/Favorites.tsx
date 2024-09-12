@@ -136,8 +136,8 @@ const Favorites: React.FC = () => {
             </div>
           )}
         </div>
+        <div className="favorites-items-title">등록한 지역</div>
         <div className="favorites-item-container">
-          <h3 className="favorites-item-header">내가 등록한 지역</h3>
           {favorites.length > 0 ? (
             <ul className="favorites-list">
               {favorites.map((favorite) => (

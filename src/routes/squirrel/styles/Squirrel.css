@@ -23,28 +23,43 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
 }
 
 .progress-bar {
-  width: 80%;
-  background-color: #e1e9e8;
+  width: 85%;
+  background-color: #e1e9e89b;
   border-radius: 10px;
-  height: 10px;
+  height: 20px;
   overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .progress {
   background-color: #45857d;
+  border-radius: 10px;
   height: 100%;
-  filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.3)); /*그림자*/
 }
 
-.level-text {
-  margin-right: 5px;
+.feed-acorn {
+  display: flex;
+  flex-direction: column;
+}
+.feed-acorn > img {
+  padding: 10px;
+  width: 100px;
+  height: 100px;
+  margin: 10px auto;
+}
+.feed-acorn > p {
+  margin-bottom: 12px;
   font-weight: bold;
-  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-  color: #ffffff;
+  font-size: 1rem;
+  color: #000000;
+}
+
+.feed-acorn > input[type="range"] {
+  width: 70%;
+  margin: 0 auto;
 }
 
 .acorn-info {
@@ -94,23 +109,37 @@
 
 .modal-content {
   background-color: white;
-  padding: 40px 30px;
-  border-radius: 10px;
+  width: 350px;
+  padding: 30px 20px;
+  border-radius: 30px;
   text-align: center;
   position: relative;
-  line-height: 1.5rem;
+  line-height: 1.8rem;
+}
+.modal-content > h3 {
+  font-size: 25px;
+  font-weight: bold;
 }
 
 .acorn-modal-btn {
-  padding: 5px 10px;
+  width: 100%;
+  padding: 10px 10px;
   margin-top: 5px;
   color: white;
-  background-color: #c2dfac;
+  background-color: #45857d;
   cursor: pointer;
-  border-radius: 4px;
-  font-size: 12px;
+  border-radius: 15px;
+  font-size: 18px;
 }
-
+.level-text {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 60px;
+}
+.level-text > p {
+  color: #ffffff;
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+}
 .squirrel-section {
   position: relative;
 }
