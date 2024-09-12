@@ -39,7 +39,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && if [ \"$SENTRY_AUTH_TOKEN\" != \"\" ]; then npm run sentry:sourcemaps; fi",
+    "build": "CI=false react-scripts build && if [ \"$SENTRY_AUTH_TOKEN\" != \"\" ]; then npm run sentry:sourcemaps; fi",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "sentry:sourcemaps": "sentry-cli sourcemaps inject --org daramgil --project sumda-fe ./build && sentry-cli sourcemaps upload --org daramgil --project sumda-fe ./build"
