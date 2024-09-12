@@ -240,6 +240,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.211);
   min-height: 100px;
   padding: 10px 5px;
+  gap: 20px;
 
   overflow-x: auto; /* Allow horizontal scrolling */
   scroll-behavior: smooth; /* Optional: smooth scrolling effect */
@@ -255,7 +256,7 @@
   align-items: center;
   border-radius: 10px;
   padding: 10px 5px;
-  min-width: 80px;
+  min-width: 90px;
 }
 
 .detail-forecast-item > p {

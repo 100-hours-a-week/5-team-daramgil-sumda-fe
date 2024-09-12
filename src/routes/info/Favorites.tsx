@@ -101,7 +101,7 @@ const Favorites: React.FC = () => {
             <input
               type="text"
               className="search-bar-input"
-              placeholder="검색"
+              placeholder="지역명을 검색하세요 (읍/면/동)"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onFocus={() => setShowSearchResults(true)}
@@ -137,8 +137,8 @@ const Favorites: React.FC = () => {
           )}
         </div>
         <div className="favorites-items-title">등록한 지역</div>
-        <div className="favorites-item-container">
-          {favorites.length > 0 ? (
+        {favorites.length > 0 ? (
+          <div className="favorites-item-container">
             <ul className="favorites-list">
               {favorites.map((favorite) => (
                 <li key={favorite.id} className="favorite-item">
@@ -154,10 +154,12 @@ const Favorites: React.FC = () => {
                 </li>
               ))}
             </ul>
-          ) : (
-            <p className="no-favorites">즐겨찾기한 지역이 없습니다</p>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div className="no-item-container">
+            <p className="no-items">즐겨찾기한 지역이 없습니다</p>
+          </div>
+        )}
       </div>
     </div>
   );
