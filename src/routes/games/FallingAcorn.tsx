@@ -4,7 +4,7 @@ import useAuthStore from "../../store/useAuthStore"; // JWT 토큰 가져오기
 import axios from "axios";
 
 const FallingAcorn: React.FC = () => {
-  const { jwtToken } = useAuthStore(); // Zustand에서 JWT 토큰 가져오기
+  const { jwtToken, reissueToken } = useAuthStore(); // Zustand에서 JWT 토큰 가져오기
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState<number | null>(null); // 서버에서 가져올 최고 점수
   const [acornPosition, setAcornPosition] = useState({ x: 50, y: 0 });
@@ -32,7 +32,7 @@ const FallingAcorn: React.FC = () => {
   // 서버에서 최고 점수를 불러오는 함수
   const fetchHighScore = useCallback(async () => {
     try {
-      const response = await axios.get(
+      let response = await axios.get(
         `${process.env.REACT_APP_API_URL}/game/highest-score?gameTypeId=1`,
         {
           headers: {
@@ -40,6 +40,19 @@ const FallingAcorn: React.FC = () => {
           },
         }
       );
+      // 토큰 만료 시 재발급 후 재요청
+      if (response.status === 500) {
+        console.log("토큰이 만료되었습니다. 재발급 시도 중...");
+        await reissueToken();
+        response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/game/highest-score?gameTypeId=1`,
+          {
+            headers: {
+              Authorization: `Bearer ${jwtToken}`, // 재발급된 토큰 사용
+            },
+          }
+        );
+      }
       if (response.status === 200) {
         setHighScore(response.data.data.highestScore);
       }
@@ -54,14 +67,14 @@ const FallingAcorn: React.FC = () => {
         console.error("알 수 없는 오류가 발생했습니다:", error);
       }
     }
-  }, [jwtToken]);
+  }, [jwtToken, reissueToken]);
 
   // 게임 결과를 서버로 전송하는 함수
   const sendGameResult = useCallback(async () => {
     if (!startTime) return;
 
     try {
-      const response = await axios.post(
+      let response = await axios.post(
         `${process.env.REACT_APP_API_URL}/game/result`,
         {
           gameId: 1,
@@ -74,7 +87,24 @@ const FallingAcorn: React.FC = () => {
           },
         }
       );
-
+      // 토큰 만료 시 재발급 후 재요청
+      if (response.status === 500) {
+        console.log("토큰이 만료되었습니다. 재발급 시도 중...");
+        await reissueToken();
+        response = await axios.post(
+          `${process.env.REACT_APP_API_URL}/game/result`,
+          {
+            gameId: 1,
+            startTime: startTime,
+            score: score,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${jwtToken}`, // 재발급된 토큰 사용
+            },
+          }
+        );
+      }
       if (response.status === 200) {
         const { getAcorns, userAcorns } = response.data.data;
         console.log(`획득한 도토리: ${getAcorns}, 보유 도토리: ${userAcorns}`);
@@ -82,7 +112,7 @@ const FallingAcorn: React.FC = () => {
     } catch (error) {
       console.error("게임 결과 전송 중 오류 발생:", error);
     }
-  }, [jwtToken, score, startTime]);
+  }, [jwtToken, reissueToken, score, startTime]);
 
   useEffect(() => {
     fetchHighScore();

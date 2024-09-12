@@ -12,39 +12,39 @@ interface SquirrelData {
 }
 
 const Adopt: React.FC = () => {
-  const { jwtToken, setSquirrelData } = useAuthStore(); // Zustand에서 jwtToken과 setSquirrelData 가져오기
+  const { jwtToken, reissueToken, setSquirrelData } = useAuthStore();
   const [selectedSquirrel, setSelectedSquirrel] = useState<string | null>(null);
   const navigate = useNavigate();
   const squirrels = [
     {
       id: 1,
       type: "요리사 다람쥐",
-      img: "/squirrels/main/요리사_다람쥐_lv1-removebg-preview.png",
+      img: "/squirrels/main/요리사-다람쥐-lv1.png",
     },
     {
       id: 2,
       type: "기사 다람쥐",
-      img: "/squirrels/main/기사_다람쥐_lv1-removebg-preview.png",
+      img: "/squirrels/main/기사-다람쥐-lv1.png",
     },
     {
       id: 3,
       type: "파일럿 다람쥐",
-      img: "/squirrels/main/파일럿_다람쥐_lv1-removebg-preview.png",
+      img: "/squirrels/main/파일럿-다람쥐-lv1.png",
     },
     {
       id: 4,
       type: "사무라이 다람쥐",
-      img: "/squirrels/main/사무라이_다람쥐_lv1-removebg-preview.png",
+      img: "/squirrels/main/사무라이-다람쥐-lv1.png",
     },
     {
       id: 5,
       type: "우주비행사 다람쥐",
-      img: "/squirrels/main/우주비행사_다람쥐_lv1-removebg-preview.png",
+      img: "/squirrels/main/우주비행사-다람쥐-lv1.png",
     },
     {
       id: 6,
       type: "힙합 다람쥐",
-      img: "/squirrels/main/힙합_다람쥐_lv1-removebg-preview.png",
+      img: "/squirrels/main/힙합-다람쥐-lv1.png",
     },
   ];
 
@@ -59,7 +59,7 @@ const Adopt: React.FC = () => {
     }
 
     try {
-      const response = await fetch(
+      let response = await fetch(
         `${process.env.REACT_APP_API_URL}/squirrel/new`,
         {
           method: "POST",
@@ -70,6 +70,23 @@ const Adopt: React.FC = () => {
           body: JSON.stringify({ sqrType: selectedSquirrel }), // 선택된 다람쥐 종류를 전송
         }
       );
+      // 토큰이 만료된 경우
+      if (response.status === 500) {
+        console.log("토큰이 만료되었습니다. 재발급 시도 중...");
+        await reissueToken(); // 토큰 재발급 요청
+        // 재발급 후 요청을 다시 시도
+        response = await fetch(
+          `${process.env.REACT_APP_API_URL}/squirrel/new`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${jwtToken}`, // 재발급 받은 토큰으로 재시도
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ sqrType: selectedSquirrel }),
+          }
+        );
+      }
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || "다람쥐 분양에 실패했습니다.");

@@ -20,7 +20,8 @@ interface ChatMessage {
 const Squirrel: React.FC = () => {
   const [airQualityData, setAirQualityData] = useState<any>(null);
   const [weatherData, setWeatherData] = useState<any>(null);
-  const { squirrelData, setSquirrelData, jwtToken } = useAuthStore.getState();
+  const { squirrelData, setSquirrelData, jwtToken, reissueToken } =
+    useAuthStore.getState();
   const [progress, setProgress] = useState<number>(squirrelData?.feed || 0);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedAcorns, setSelectedAcorns] = useState<number>(0);
@@ -110,7 +111,7 @@ const Squirrel: React.FC = () => {
       question: question,
     };
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/ai/chat`, {
+      let response = await fetch(`${process.env.REACT_APP_API_URL}/ai/chat`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${jwtToken}`,
@@ -118,6 +119,18 @@ const Squirrel: React.FC = () => {
         },
         body: JSON.stringify(payload),
       });
+      if (response.status === 500) {
+        // 토큰 만료 시
+        await reissueToken();
+        response = await fetch(`${process.env.REACT_APP_API_URL}/ai/chat`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+      }
       if (!response.ok) {
         throw new Error("응답을 불러오는데 실패했습니다.");
       }
@@ -189,16 +202,24 @@ const Squirrel: React.FC = () => {
   // API 호출 함수
   const fetchSquirrelData = async () => {
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/squirrel/`,
-        {
+      let response = await fetch(`${process.env.REACT_APP_API_URL}/squirrel/`, {
+        method: "GET",
+        credentials: "include", // 쿠키를 요청에 포함
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      });
+      if (response.status === 500) {
+        // 토큰 만료 시
+        await reissueToken();
+        response = await fetch(`${process.env.REACT_APP_API_URL}/squirrel/`, {
           method: "GET",
-          credentials: "include", // 쿠키를 요청에 포함
+          credentials: "include",
           headers: {
             Authorization: `Bearer ${jwtToken}`,
           },
-        }
-      );
+        });
+      }
       if (!response.ok) {
         throw new Error("다람쥐 정보를 불러오는데 실패했습니다.");
       }
@@ -232,7 +253,7 @@ const Squirrel: React.FC = () => {
     if (!squirrelData || selectedAcorns <= 0) return;
     try {
       // 도토리 주기 API 호출
-      const response = await fetch(
+      let response = await fetch(
         `${process.env.REACT_APP_API_URL}/squirrel/feed`,
         {
           method: "POST",
@@ -243,6 +264,21 @@ const Squirrel: React.FC = () => {
           body: JSON.stringify({ acorns: selectedAcorns }),
         }
       );
+      if (response.status === 500) {
+        // 토큰 만료 시
+        await reissueToken();
+        response = await fetch(
+          `${process.env.REACT_APP_API_URL}/squirrel/feed`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${jwtToken}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ acorns: selectedAcorns }),
+          }
+        );
+      }
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || "도토리 주기 실패");
@@ -345,7 +381,7 @@ const Squirrel: React.FC = () => {
           <p>
             {squirrelData.level < 4
               ? `LV. ${squirrelData.level + 1}까지 ${
-                  maxLevels[squirrelData.level - 1] - squirrelData.userAcorns
+                  maxLevels[squirrelData.level - 1] - squirrelData.feed
                 }개`
               : "최대 레벨입니다"}
           </p>

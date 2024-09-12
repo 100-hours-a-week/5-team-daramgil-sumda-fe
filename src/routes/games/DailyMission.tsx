@@ -4,7 +4,7 @@ import "react-circular-progressbar/dist/styles.css";
 import "./styles/DailyMission.css";
 import Acorn_img from "../../assets/acorn.png";
 import Check_img from "../../assets/check.png";
-import { FcCheckmark } from "react-icons/fc";
+import { FaCheck } from "react-icons/fa";
 
 import useAuthStore from "../../store/useAuthStore"; // Zustand에서 JWT 토큰 가져오기
 
@@ -114,28 +114,28 @@ const DailyMission: React.FC = () => {
             </div>
           </div>
           <div className="mission-container">
-            <FcCheckmark
+            <FaCheck
               className="check-img"
               style={checkImageStyle(missionData.attendance)}
             />
             <p>출석하기</p>
           </div>
           <div className="mission-container">
-            <FcCheckmark
+            <FaCheck
               className="check-img"
               style={checkImageStyle(missionData.talkWithSquirrel)}
             />
             <p>다람쥐와 대화하기</p>
           </div>
           <div className="mission-container">
-            <FcCheckmark
+            <FaCheck
               className="check-img"
               style={checkImageStyle(missionData.quiz)}
             />
             <p>OX 퀴즈 참여하기</p>
           </div>
           <div className="mission-container">
-            <FcCheckmark
+            <FaCheck
               className="check-img"
               style={checkImageStyle(missionData.checkAir)}
             />
