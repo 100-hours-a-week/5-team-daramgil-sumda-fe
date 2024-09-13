@@ -10,7 +10,7 @@ const Layout: React.FC = () => {
   return (
     <div
       className="background-container"
-      style={{ backgroundImage: `url(${forest})` }}
+      // style={{ backgroundImage: `url(${forest})` }}
     >
       <div className="mobile-frame">
         <Header />
