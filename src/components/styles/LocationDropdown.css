@@ -1,8 +1,16 @@
+@font-face {
+  font-family: "goorm-sans-bold";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/goorm-sans-bold.woff2")
+    format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
 .location-dropdown {
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;
   position: relative;
+  font-family: "goorm-sans-bold";
 }
 
 .dropdown-controls {

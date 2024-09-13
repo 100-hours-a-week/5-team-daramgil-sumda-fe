@@ -72,11 +72,11 @@
   font-size: 100px;
   color: #ffffff;
   text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-  margin-bottom: 20px;
 }
 .weather-p {
   display: flex;
   align-items: center;
+  margin-bottom: 10px;
 }
 .weather-status {
   font-size: 16px;

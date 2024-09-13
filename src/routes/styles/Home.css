@@ -1,3 +1,10 @@
+@font-face {
+  font-family: "goorm-sans-bold";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/goorm-sans-bold.woff2")
+    format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
 .home-page {
   background-image: url("../../assets//background/weatherBackgrounds/daysunny.png");
   background-size: 100%; /* 배경 이미지를 컨테이너에 맞게 확장하여 잘리지 않도록 설정 */
@@ -32,6 +39,7 @@
   background-color: #f9fafb;
   border-radius: 12px;
   box-shadow: 0 7px 12px rgba(0, 0, 0, 0.3);
+  font-family: "goorm-sans-bold";
 }
 .additional-info li {
   font-size: 0.9rem;
@@ -138,6 +146,7 @@
   font-weight: 500;
   color: #1d1d1f;
   margin-left: 10px;
+  margin-bottom: 10px;
 }
 .home-weather-status {
   font-size: 20px;
@@ -150,6 +159,7 @@
   font-size: 50px;
   font-weight: 700;
   color: #45857d;
+  margin-top: 10px;
 }
 .home-weather-current-temperature {
   font-size: 50px;
@@ -165,11 +175,13 @@
   margin-top: 20px;
   font-size: 14px;
   color: #6e6e73;
+  font-family: "goorm-sans-bold";
 }
 .weather-description {
   margin-top: 13px;
   font-size: 14px;
   color: #6e6e73;
+  font-family: "goorm-sans-bold";
 }
 @keyframes bounce {
   0%,
