@@ -13,7 +13,7 @@
   background-attachment: scroll; /* 배경 이미지를 스크롤할 때 함께 움직이도록 설정 */
 
   max-width: 400px;
-  min-height: calc(100vh - 238px);
+  min-height: calc(100vh - 223px);
   margin: 0 auto;
   padding: 10px 10px 20px 10px;
   font-family: "goorm-sans-bold";
@@ -32,7 +32,7 @@
   font-size: 32px;
   margin: 20px 0;
   padding: 10px;
-  font-weight: 600;
+  font-weight: 500;
   color: #ffffff;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
