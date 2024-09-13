@@ -12,26 +12,38 @@
   background: transparent;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   line-height: 1;
 }
-
-body {
-  font-family: Arial, sans-serif;
+@font-face {
+  font-family: "CustomFont"; /* 사용할 폰트 이름 */
+  src: url("./assets/fonts/고령딸기체+TTF.ttf") format("truetype"); /* 폰트 파일 경로와 형식 */
+  font-weight: normal; /* 폰트 굵기 */
+  font-style: normal; /* 폰트 스타일 */
 }
 
-ol, ul {
+/* 적용할 요소에 폰트 설정 */
+body {
+  font-family: "CustomFont", sans-serif;
+}
+
+ol,
+ul {
   list-style: none;
 }
 
-blockquote, q {
+blockquote,
+q {
   quotes: none;
 }
 
-blockquote::before, blockquote::after,
-q::before, q::after {
-  content: '';
+blockquote::before,
+blockquote::after,
+q::before,
+q::after {
+  content: "";
   content: none;
 }
 
@@ -51,7 +63,10 @@ a {
   color: inherit;
 }
 
-button, input, select, textarea {
+button,
+input,
+select,
+textarea {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
@@ -59,12 +74,26 @@ button, input, select, textarea {
   padding: 0;
 }
 
-address, caption, cite, code, dfn, em, strong, th, var {
+address,
+caption,
+cite,
+code,
+dfn,
+em,
+strong,
+th,
+var {
   font-weight: normal;
   font-style: normal;
 }
 
-h1, h2, h3, h4, h5, h6, p {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
   margin: 0;
   font-weight: normal;
 }
