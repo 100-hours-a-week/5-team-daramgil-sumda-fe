@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom"; // useNavigate 추�
 import Sidebar from "./Sidebar";
 import "./styles/Header.css";
 
-import logo from "../../assets/icons/logo.png";
+import newLogo1 from "../../assets/logo-1.png";
 import menu_icon from "../../assets/icons/menu.png";
 
 const Header: React.FC = () => {
@@ -63,11 +63,12 @@ const Header: React.FC = () => {
           onClick={toggleSidebar}
         />
         <div className="header-logo" onClick={goHome}>
-          <img src={logo} alt="Logo" className="logo" />
+          {/* <img src={logo} alt="Logo" className="logo" />
           <p className="logo-text">
             <strong className="logo-strong">숨</strong>쉬는{" "}
             <strong className="logo-strong">다</strong>람쥐
-          </p>
+          </p> */}
+          <img src={newLogo1} alt="Logo" className="logo" />
         </div>
         <p style={{ marginLeft: "30px" }}></p>
       </header>

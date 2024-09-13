@@ -1,28 +1,27 @@
 /* Header.css */
 .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 20px;
-    background-color: white;
-    border-bottom: 1px solid #ccc;
-    height: 73px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  background-color: white;
+  border-bottom: 1px solid #ccc;
+  height: 73px;
 }
 .menu-icon {
-    width:30px;
+  width: 30px;
 }
 .header-logo {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 .logo {
-    width:60px;
-    margin-right: 10px;
+  width: 185px;
 }
 .logo-text {
-    font-weight: bold;
+  font-weight: bold;
 }
 .logo-strong {
-    font-weight: bold;
-    font-size: 30px;
+  font-weight: bold;
+  font-size: 30px;
 }

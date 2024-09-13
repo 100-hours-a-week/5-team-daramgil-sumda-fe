@@ -15,6 +15,13 @@
     display: flex;
     justify-content: center;
 } */
+@font-face {
+  font-family: "goorm-sans-bold";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/goorm-sans-bold.woff2")
+    format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
 .wrapbar {
   position: fixed;
   bottom: 0;
@@ -36,6 +43,7 @@
   min-width: 50px;
   font-size: 12px;
   color: #333;
+  font-family: "goorm-sans-bold";
 }
 .wrapbar-icon {
   width: 24px; /* 아이콘 크기 */

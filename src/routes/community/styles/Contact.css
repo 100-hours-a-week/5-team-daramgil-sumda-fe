@@ -1,3 +1,10 @@
+@font-face {
+  font-family: "goorm-sans-bold";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/goorm-sans-bold.woff2")
+    format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
 .contact-container {
   display: flex;
   flex-direction: column;
@@ -9,6 +16,7 @@
   background-color: #ffffff;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  font-family: "goorm-sans-bold";
 }
 
 .contact-title {

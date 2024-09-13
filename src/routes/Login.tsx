@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/icons/logo.png";
+import newLogo from "../assets/icon-logo.png";
 import kakao_login_button_img from "../assets/icons/kakao_login_large_wide.png";
 import "./styles/Login.css";
 import useAuthStore from "../store/useAuthStore";
@@ -22,7 +23,7 @@ const Login: React.FC = () => {
 
   return (
     <div className="login-container">
-      <img className="login-logo" src={logo} alt="숨다 로고 이미지" />
+      <img className="login-logo" src={newLogo} alt="숨다 로고 이미지" />
       <p className="logo-text">
         <strong className="logo-strong">숨</strong>쉬는{" "}
         <strong className="logo-strong">다</strong>람쥐

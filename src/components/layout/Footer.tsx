@@ -11,8 +11,9 @@ const Footer: React.FC = () => {
         <br />
         고객센터: daramgil07@gmail.com | 이미지 출처:{" "}
         <a
-          href="https://kr.freepik.com"
+          href="https://kr.freepik.com/"
           target="_blank"
+          rel="noopener noreferrer"
           className="footer-link"
         >
           Freepik
