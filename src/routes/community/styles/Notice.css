@@ -6,10 +6,9 @@
   background-attachment: scroll; /* 배경 이미지를 스크롤할 때 함께 움직이도록 설정 */
 
   max-width: 400px;
-  min-height: calc(100vh - 338px);
+  min-height: calc(100vh - 238px);
   margin: 0 auto;
   padding: 10px 10px 20px 10px;
-  font-family: "Noto Sans KR", sans-serif;
 }
 .notice-container {
   padding: 0 20px 20px 20px;

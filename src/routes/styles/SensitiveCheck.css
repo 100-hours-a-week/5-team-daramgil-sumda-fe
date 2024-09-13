@@ -1,5 +1,5 @@
 .check-container {
-  min-height: calc(100vh - 338px);
+  min-height: calc(100vh - 238px);
   display: flex;
   flex-direction: column;
   align-items: center;

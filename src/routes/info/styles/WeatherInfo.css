@@ -34,7 +34,7 @@
   flex-direction: column;
   padding: 20px 10px 0 10px;
   box-sizing: border-box;
-  min-height: calc(100vh - 338px);
+  min-height: calc(100vh - 238px);
 }
 
 .weatherinfo-container {
@@ -43,7 +43,7 @@
   max-width: 400px;
   padding: 0 10px;
   box-sizing: border-box;
-  min-height: calc(100vh - 338px);
+  min-height: calc(100vh - 268px);
 }
 
 .loading {
