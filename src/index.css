@@ -23,12 +23,17 @@ body {
   font-weight: normal; /* 폰트 굵기 */
   font-style: normal; /* 폰트 스타일 */
 }
-
+@font-face {
+  font-family: "goorm-sans-bold";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/goorm-sans-bold.woff2")
+    format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
 /* 적용할 요소에 폰트 설정 */
 body {
   font-family: "CustomFont", sans-serif;
 }
-
 ol,
 ul {
   list-style: none;

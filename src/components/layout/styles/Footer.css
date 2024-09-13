@@ -1,4 +1,11 @@
 /* Footer.css */
+@font-face {
+  font-family: "goorm-sans-bold";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/goorm-sans-bold.woff2")
+    format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
 .footer {
   display: flex;
   flex-direction: column;
@@ -6,6 +13,7 @@
   background-color: #f8f8f8;
   text-align: center;
   margin-bottom: 73px;
+  font-family: "goorm-sans-bold";
 }
 
 .footer-logo {

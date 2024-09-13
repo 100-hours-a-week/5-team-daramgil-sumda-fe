@@ -1,4 +1,11 @@
 /* AQIDetails.css */
+@font-face {
+  font-family: "goorm-sans-bold";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/goorm-sans-bold.woff2")
+    format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
 .aqidetails-page.level1 {
   background-image: url("../../../assets//background/AQIBackgrounds/level1.png");
 }
@@ -173,11 +180,13 @@
   font-weight: 600;
   color: #333;
   margin-bottom: 5px;
+  font-family: "goorm-sans-bold";
 }
 
 .pollutant-value-unique {
   font-size: 0.9rem;
   color: #757575;
+  font-family: "goorm-sans-bold";
 }
 
 .map-container-unique {
@@ -226,6 +235,7 @@
   padding: 15px 5px;
   display: flex;
   flex-direction: row;
+  font-family: "goorm-sans-bold";
 }
 .allert-container-unique p {
   margin-left: 10px;

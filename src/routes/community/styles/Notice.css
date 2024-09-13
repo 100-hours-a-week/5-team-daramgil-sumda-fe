@@ -1,3 +1,10 @@
+@font-face {
+  font-family: "goorm-sans-bold";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/goorm-sans-bold.woff2")
+    format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
 .notice-page {
   background-image: url("../../../assets//background/example.png");
   background-size: 100%; /* 배경 이미지를 컨테이너에 맞게 확장하여 잘리지 않도록 설정 */
@@ -9,6 +16,7 @@
   min-height: calc(100vh - 238px);
   margin: 0 auto;
   padding: 10px 10px 20px 10px;
+  font-family: "goorm-sans-bold";
 }
 .notice-container {
   padding: 0 20px 20px 20px;
