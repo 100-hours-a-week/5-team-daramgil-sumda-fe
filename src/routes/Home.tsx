@@ -163,7 +163,8 @@ const Home: React.FC = () => {
     currentTemperature: number | null | undefined
   ) => {
     // null 또는 undefined일 때 0으로 대체하는 처리
-    const safeKhaiGrade = khaiGrade ?? 0;
+    const safeKhaiGrade =
+      khaiGrade !== null && khaiGrade !== undefined ? khaiGrade : 0;
     const safeKhaiValue = khaiValue ?? 0;
     const safeWeatherType = weatherType ?? "0"; // 문자열인 경우 기본값을 '0'으로 설정
     const safeCurrentTemperature = currentTemperature ?? 0;
