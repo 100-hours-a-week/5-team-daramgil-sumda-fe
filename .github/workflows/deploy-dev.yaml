@@ -42,8 +42,12 @@ jobs:
           chmod 600 ~/.ssh/id_rsa  # 적절한 권한 설정
           eval $(ssh-agent -s)
           ssh-add ~/.ssh/id_rsa
+      # 7. EC2 서버의 기존 파일 삭제
+      - name: EC2 서버의 기존 파일 삭제
+        run: |
+          ssh ${{ secrets.DEPLOY_EC2_USER }}@${{ secrets.DEPLOY_EC2_HOST }} "rm -rf /var/www/html/*"
 
-      # 7. EC2 서버로 빌드된 정적 파일 전송
+      # 8. EC2 서버로 빌드된 정적 파일 전송
       - name: 빌드된 파일을 EC2로 전송
         run: |
           scp -r ./build/* ${{ secrets.DEPLOY_EC2_USER }}@${{ secrets.DEPLOY_EC2_HOST }}:/var/www/html/
