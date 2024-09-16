@@ -157,16 +157,20 @@ const Home: React.FC = () => {
 
   // AI 응답 데이터를 가져오는 함수
   const fetchSimpleAIResponse = async (
-    khaiGrade: number | null,
-    khaiValue: number | null,
-    weatherType: string | null,
-    currentTemperature: number | null
+    khaiGrade: number | null | undefined,
+    khaiValue: number | null | undefined,
+    weatherType: string | null | undefined,
+    currentTemperature: number | null | undefined
   ) => {
-    // null일 때 0으로 대체하는 처리
+    // null 또는 undefined일 때 0으로 대체하는 처리
     const safeKhaiGrade = khaiGrade ?? 0;
     const safeKhaiValue = khaiValue ?? 0;
-    const safeWeatherType = weatherType || "0"; // 문자열인 경우 기본값을 '0'으로 설정
+    const safeWeatherType = weatherType ?? "0"; // 문자열인 경우 기본값을 '0'으로 설정
     const safeCurrentTemperature = currentTemperature ?? 0;
+    console.log("safeKhaiGrade:", safeKhaiGrade);
+    console.log("safeKhaiValue:", safeKhaiValue);
+    console.log("safeWeatherType:", safeWeatherType);
+    console.log("safeCurrentTemperature:", safeCurrentTemperature);
     try {
       setLoading(true); // 로딩 시작
       const response = await fetch(
@@ -179,7 +183,7 @@ const Home: React.FC = () => {
       if (response.ok) {
         const data = await response.json();
         setAiSummary(data.data); // AI 요약 정보 설정
-        console.log(aiSummary);
+        console.log(data.data); // aiSummary 대신 data.data 출력
       } else {
         console.error("AI 데이터를 가져오는 데 실패했습니다.");
       }
