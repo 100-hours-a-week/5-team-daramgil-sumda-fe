@@ -156,26 +156,23 @@ const Home: React.FC = () => {
     }
   };
 
-  // AI 응답 데이터를 가져오는 함수
   const fetchSimpleAIResponse = async (
     khaiGrade: string | number | null | undefined, // 문자열도 받을 수 있도록 변경
     khaiValue: number | null | undefined,
     weatherType: string | null | undefined,
     currentTemperature: number | null | undefined
   ) => {
-    // "null" 문자열을 실제 null로 변환
-    const normalizedKhaiGrade = khaiGrade === "null" ? null : khaiGrade;
-
-    // null 또는 undefined일 때 0으로 대체하는 처리
+    // "null" 문자열이나 실제 null일 경우 0으로 변환
     const safeKhaiGrade =
-      normalizedKhaiGrade !== null && normalizedKhaiGrade !== undefined
-        ? Number(normalizedKhaiGrade) // khaiGrade가 문자열일 경우 숫자로 변환
-        : 0;
+      khaiGrade === "null" || khaiGrade === null || khaiGrade === undefined
+        ? 0
+        : Number(khaiGrade); // 숫자로 변환
 
     const safeKhaiValue = khaiValue ?? 0;
     const safeWeatherType = weatherType ?? "0"; // 문자열인 경우 기본값을 '0'으로 설정
     const safeCurrentTemperature = currentTemperature ?? 0;
 
+    // 각 값 확인을 위한 콘솔 로그
     console.log("safeKhaiGrade:", safeKhaiGrade);
     console.log("safeKhaiValue:", safeKhaiValue);
     console.log("safeWeatherType:", safeWeatherType);
@@ -286,12 +283,21 @@ const Home: React.FC = () => {
     },
   };
 
-  // 대기질 값을 바탕으로 등급을 결정하는 함수
-  const getAirQualityGrade = (value: number) => {
-    if (value <= 50) return airQualityGrades["1"];
-    if (value <= 100) return airQualityGrades["2"];
-    if (value <= 250) return airQualityGrades["3"];
-    if (value <= 350) return airQualityGrades["4"];
+  // 대기질 값을 바탕으로 등급을 결정하는 함수 수정
+  const getAirQualityGrade = (value: string | number | null) => {
+    // 값이 null 또는 "null" 문자열이거나 0일 경우 "데이터 없음" 반환
+    if (value === null || value === "null" || value === 0) {
+      return { status: "데이터 없음", icon: <PiSmileyMehLight /> };
+    }
+
+    // 문자열인 경우 숫자로 변환
+    const numericValue = typeof value === "string" ? Number(value) : value;
+
+    // 숫자 범위에 따른 등급 반환
+    if (numericValue <= 50) return airQualityGrades["1"];
+    if (numericValue <= 100) return airQualityGrades["2"];
+    if (numericValue <= 250) return airQualityGrades["3"];
+    if (numericValue <= 350) return airQualityGrades["4"];
     return airQualityGrades["5"];
   };
 
@@ -353,7 +359,10 @@ const Home: React.FC = () => {
                     {airQualityData ? (
                       <div className="air-quality-info">
                         <p className="air-quality-value">
-                          {airQualityData.khaiValue}
+                          {airQualityData.khaiValue === "null" ||
+                          airQualityData.khaiValue === 0
+                            ? "데이터 없음"
+                            : airQualityData.khaiValue}
                         </p>
                         <p className="air-quality-status">
                           {getAirQualityGrade(airQualityData.khaiValue).status}
@@ -373,10 +382,12 @@ const Home: React.FC = () => {
                     />
                   ) : (
                     <div className="home-air-quality-icon">
-                      {airQualityData?.khaiValue ? (
-                        getAirQualityGrade(airQualityData.khaiValue).icon
-                      ) : (
+                      {airQualityData?.khaiValue === "null" ||
+                      airQualityData?.khaiValue === "0" ||
+                      airQualityData?.khaiValue === 0 ? (
                         <p>데이터 없음</p>
+                      ) : (
+                        getAirQualityGrade(airQualityData.khaiValue).icon
                       )}
                     </div>
                   )}
