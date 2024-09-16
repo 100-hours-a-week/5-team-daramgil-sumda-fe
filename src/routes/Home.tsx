@@ -147,6 +147,7 @@ const Home: React.FC = () => {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
+      console.log("대기질 데이터:", data); // 데이터를 출력해서 확인
       setAirQualityData(data.data); // 대기질 데이터 설정
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -206,6 +207,9 @@ const Home: React.FC = () => {
             .main as keyof typeof weatherMainToKorean
         ];
       const currentTemperature = Math.round(weatherData.current.temp); // 온도 반올림
+
+      console.log("khaiGrade 값:", khaiGrade); // 여기에서 khaiGrade 값을 확인
+      console.log("khaiValue 값:", khaiValue); // 마찬가지로 khaiValue도 확인
 
       fetchSimpleAIResponse(
         khaiGrade,
