@@ -284,9 +284,14 @@ const Home: React.FC = () => {
   };
 
   // 대기질 값을 바탕으로 등급을 결정하는 함수 수정
-  const getAirQualityGrade = (value: string | number | null) => {
-    // 값이 null 또는 "null" 문자열이거나 0일 경우 "데이터 없음" 반환
-    if (value === null || value === "null" || value === 0) {
+  const getAirQualityGrade = (value: string | number | null | undefined) => {
+    // null, undefined, "null", 또는 값이 없을 경우 "데이터 없음"을 반환
+    if (
+      value === null ||
+      value === undefined ||
+      value === "null" ||
+      value === 0
+    ) {
       return { status: "데이터 없음", icon: <PiSmileyMehLight /> };
     }
 
@@ -358,8 +363,11 @@ const Home: React.FC = () => {
                     <h1 className="home-slide-title">통합대기환경지수</h1>
                     {airQualityData ? (
                       <div className="air-quality-info">
+                        {/* khaiValue가 null, undefined, 또는 값이 없을 경우 처리 */}
                         <p className="air-quality-value">
-                          {airQualityData.khaiValue === "null" ||
+                          {airQualityData.khaiValue === null ||
+                          airQualityData.khaiValue === undefined ||
+                          airQualityData.khaiValue === "null" ||
                           airQualityData.khaiValue === 0
                             ? "데이터 없음"
                             : airQualityData.khaiValue}
@@ -382,8 +390,9 @@ const Home: React.FC = () => {
                     />
                   ) : (
                     <div className="home-air-quality-icon">
-                      {airQualityData?.khaiValue === "null" ||
-                      airQualityData?.khaiValue === "0" ||
+                      {airQualityData?.khaiValue === null ||
+                      airQualityData?.khaiValue === undefined ||
+                      airQualityData?.khaiValue === "null" ||
                       airQualityData?.khaiValue === 0 ? (
                         <p>데이터 없음</p>
                       ) : (
