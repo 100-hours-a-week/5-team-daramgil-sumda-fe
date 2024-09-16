@@ -158,21 +158,29 @@ const Home: React.FC = () => {
 
   // AI 응답 데이터를 가져오는 함수
   const fetchSimpleAIResponse = async (
-    khaiGrade: number | null | undefined,
+    khaiGrade: string | number | null | undefined, // 문자열도 받을 수 있도록 변경
     khaiValue: number | null | undefined,
     weatherType: string | null | undefined,
     currentTemperature: number | null | undefined
   ) => {
+    // "null" 문자열을 실제 null로 변환
+    const normalizedKhaiGrade = khaiGrade === "null" ? null : khaiGrade;
+
     // null 또는 undefined일 때 0으로 대체하는 처리
     const safeKhaiGrade =
-      khaiGrade !== null && khaiGrade !== undefined ? khaiGrade : 0;
+      normalizedKhaiGrade !== null && normalizedKhaiGrade !== undefined
+        ? Number(normalizedKhaiGrade) // khaiGrade가 문자열일 경우 숫자로 변환
+        : 0;
+
     const safeKhaiValue = khaiValue ?? 0;
     const safeWeatherType = weatherType ?? "0"; // 문자열인 경우 기본값을 '0'으로 설정
     const safeCurrentTemperature = currentTemperature ?? 0;
+
     console.log("safeKhaiGrade:", safeKhaiGrade);
     console.log("safeKhaiValue:", safeKhaiValue);
     console.log("safeWeatherType:", safeWeatherType);
     console.log("safeCurrentTemperature:", safeCurrentTemperature);
+
     try {
       setLoading(true); // 로딩 시작
       const response = await fetch(
