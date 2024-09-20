@@ -36,7 +36,7 @@ const Answer: React.FC = () => {
   }, [completeDailyQuiz]);
 
   const handleSubmit = () => {
-    navigate(`/daily`);
+    navigate(`/games`);
   };
 
   return (

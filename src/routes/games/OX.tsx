@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./styles/OX.css";
 import { useNavigate } from "react-router-dom";
+import useAuthStore from "../../store/useAuthStore"; // Auth 상태를 사용하기 위해 import
 
 const OX: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -13,12 +14,39 @@ const OX: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
 
+  const { jwtToken, reissueToken, isLoggedIn } = useAuthStore(); // Zustand에서 auth 관련 정보 가져오기
+
   useEffect(() => {
     const fetchQuizData = async () => {
+      // 로그인 확인
+      if (!isLoggedIn) {
+        alert("로그인이 필요합니다.");
+        navigate("/login");
+        return;
+      }
+
       try {
-        const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/oxgames`
-        );
+        let response = await fetch(`${process.env.REACT_APP_API_URL}/oxgames`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${jwtToken}`, // JWT 토큰 포함
+            "Content-Type": "application/json",
+          },
+        });
+
+        // 토큰 만료 시 토큰 재발급 요청 후 다시 시도
+        if (response.status === 401) {
+          await reissueToken();
+          const { jwtToken: newToken } = useAuthStore.getState(); // 새로운 토큰 가져오기
+          response = await fetch(`${process.env.REACT_APP_API_URL}/oxgames`, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${newToken}`, // 재발급된 토큰 사용
+              "Content-Type": "application/json",
+            },
+          });
+        }
+
         const data = await response.json();
         setCurrentQuestion(data); // 퀴즈 데이터를 설정
         setLoading(false);
@@ -29,7 +57,7 @@ const OX: React.FC = () => {
     };
 
     fetchQuizData(); // 페이지가 로드될 때 퀴즈 데이터를 먼저 가져옴
-  }, []);
+  }, [jwtToken, isLoggedIn, navigate, reissueToken]);
 
   const handleOptionClick = (option: string) => {
     setSelectedOption(option);
