@@ -19,8 +19,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "16"
-        # 로그 추가
-        run: echo "Node.js 설치 완료. 버전: $(node -v)"
 
       # 3. 의존성 설치
       - name: 의존성 설치
@@ -78,7 +76,6 @@ jobs:
       - name: 배포를 위한 SSH 키 설정
         run: |
           echo "배포를 위한 SSH 키 설정 시작"
-          set -x
           eval $(ssh-agent -s)
           echo "${{ secrets.EC2_SSH_KEY }}" | tr -d '\r' | ssh-add -
           echo "배포를 위한 SSH 키 설정 완료"
