@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import "./styles/DailyMission.css";
@@ -19,7 +20,7 @@ const DailyMission: React.FC = () => {
   const { jwtToken, reissueToken } = useAuthStore(); // Zustand에서 JWT 토큰 및 토큰 재발급 함수 가져오기
   const [missionData, setMissionData] = useState<MissionData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchMissionData = async () => {
       try {
@@ -120,21 +121,27 @@ const DailyMission: React.FC = () => {
             />
             <p>출석하기</p>
           </div>
-          <div className="mission-container">
+          <div
+            className="mission-container"
+            onClick={() => navigate("/squirrel")}
+          >
             <FaCheck
               className="check-img"
               style={checkImageStyle(missionData.talkWithSquirrel)}
             />
             <p>다람쥐와 대화하기</p>
           </div>
-          <div className="mission-container">
+          <div className="mission-container" onClick={() => navigate("/games")}>
             <FaCheck
               className="check-img"
               style={checkImageStyle(missionData.quiz)}
             />
             <p>OX 퀴즈 참여하기</p>
           </div>
-          <div className="mission-container">
+          <div
+            className="mission-container"
+            onClick={() => navigate("/aqi-details")}
+          >
             <FaCheck
               className="check-img"
               style={checkImageStyle(missionData.checkAir)}
