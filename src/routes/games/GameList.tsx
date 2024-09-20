@@ -11,20 +11,20 @@ const GameList: React.FC = () => {
       link: "ox",
     },
     {
-      title: "떨어지는 도토리를 받아받아",
-      thumbnailUrl: "https://via.placeholder.com/150",
+      title: "도토리를 받아받아",
+      thumbnailUrl: "/game.png",
       link: "fallingacorn",
     },
-    {
-      title: "도토리를 들고 점프점프",
-      thumbnailUrl: "https://via.placeholder.com/150",
-      link: "jumpacorn",
-    },
-    {
-      title: "나무에 있는 도토리를 떨어뜨려요",
-      thumbnailUrl: "https://via.placeholder.com/150",
-      link: "shaketree",
-    },
+    // {
+    //   title: "도토리를 들고 점프점프",
+    //   thumbnailUrl: "https://via.placeholder.com/150",
+    //   link: "jumpacorn",
+    // },
+    // {
+    //   title: "나무에 있는 도토리를 떨어뜨려요",
+    //   thumbnailUrl: "https://via.placeholder.com/150",
+    //   link: "shaketree",
+    // },
   ];
 
   return (
