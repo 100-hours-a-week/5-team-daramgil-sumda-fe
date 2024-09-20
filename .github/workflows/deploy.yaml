@@ -19,7 +19,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "16"
-
       # 3. 의존성 설치
       - name: 의존성 설치
         run: |
@@ -67,9 +66,9 @@ jobs:
           scp -r ./build/* ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/build/
           echo "EC2 서버로 빌드된 파일 전송 완료"
 
-      # 9. EC2 서버에서 /var/www/html로 파일 이동 및 소유자 변경
-      - name: EC2 서버의 /var/www/html로 파일 이동 및 소유자 변경
+      # 9. EC2 서버에서 /var/www/html로 파일 동기화
+      - name: EC2 서버에서 /var/www/html로 파일 동기화
         run: |
-          echo "EC2 서버에서 /var/www/html로 파일 이동 시작"
-          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "sudo mv /home/${{ secrets.EC2_USER }}/build/* /var/www/html/ && sudo chown -R www-data:www-data /var/www/html"
-          echo "EC2 서버에서 파일 이동 및 소유자 변경 완료"
+          echo "EC2 서버에서 /var/www/html로 파일 동기화 시작"
+          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "sudo rsync -av --delete /home/${{ secrets.EC2_USER }}/build/ /var/www/html/"
+          echo "EC2 서버에서 파일 동기화 완료"
