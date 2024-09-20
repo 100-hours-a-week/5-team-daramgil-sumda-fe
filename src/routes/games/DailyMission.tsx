@@ -34,7 +34,7 @@ const DailyMission: React.FC = () => {
           }
         );
         console.log(response);
-        if (response.status === 500) {
+        if (response.status === 401) {
           // 토큰 만료 시
           console.log("토큰이 만료되었습니다. 재발급 시도 중...");
           await reissueToken(); // 토큰 재발급 요청

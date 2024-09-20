@@ -121,7 +121,7 @@ const Squirrel: React.FC = () => {
         },
         body: JSON.stringify(payload),
       });
-      if (response.status === 500) {
+      if (response.status === 401) {
         // 토큰 만료 시
         await reissueToken();
         response = await fetch(`${process.env.REACT_APP_API_URL}/ai/chat`, {
@@ -232,7 +232,7 @@ const Squirrel: React.FC = () => {
           Authorization: `Bearer ${jwtToken}`,
         },
       });
-      if (response.status === 500) {
+      if (response.status === 401) {
         // 토큰 만료 시
         await reissueToken();
         response = await fetch(`${process.env.REACT_APP_API_URL}/squirrel/`, {
@@ -286,7 +286,7 @@ const Squirrel: React.FC = () => {
           body: JSON.stringify({ acorns: selectedAcorns }),
         }
       );
-      if (response.status === 500) {
+      if (response.status === 401) {
         // 토큰 만료 시
         await reissueToken();
         response = await fetch(

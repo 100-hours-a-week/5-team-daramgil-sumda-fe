@@ -41,7 +41,7 @@ const FallingAcorn: React.FC = () => {
         }
       );
       // 토큰 만료 시 재발급 후 재요청
-      if (response.status === 500) {
+      if (response.status === 401) {
         console.log("토큰이 만료되었습니다. 재발급 시도 중...");
         await reissueToken();
         response = await axios.get(
@@ -88,7 +88,7 @@ const FallingAcorn: React.FC = () => {
         }
       );
       // 토큰 만료 시 재발급 후 재요청
-      if (response.status === 500) {
+      if (response.status === 401) {
         console.log("토큰이 만료되었습니다. 재발급 시도 중...");
         await reissueToken();
         response = await axios.post(
