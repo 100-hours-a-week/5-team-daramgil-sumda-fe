@@ -21,6 +21,7 @@ import {
   PiSmileyMehLight,
   PiSmileySadLight,
   PiSmileyXEyesLight,
+  PiSmileyMeltingLight,
 } from "react-icons/pi";
 
 import loading_gif from "../assets/loading.gif";
@@ -290,9 +291,9 @@ const Home: React.FC = () => {
       value === null ||
       value === undefined ||
       value === "null" ||
-      value === 0
+      value == 0
     ) {
-      return { status: "데이터 없음", icon: <PiSmileyMehLight /> };
+      return { status: "데이터 없음", icon: <PiSmileyMeltingLight /> };
     }
 
     // 문자열인 경우 숫자로 변환
