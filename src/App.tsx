@@ -39,9 +39,14 @@ import Setting from "./routes/Setting";
 import UnderConstruction from "./routes/UnderConstruction";
 import Login from "./routes/Login";
 
+import PrivateRoute from "./components/PrivateRoute";
+import useAuthStore from "./store/useAuthStore";
+import axios from "axios";
+
 const App: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { isLoggedIn, loginAttempted, login } = useAuthStore();
 
   useEffect(() => {
     const sensitiveGroup = localStorage.getItem("sensitiveGroup");
@@ -52,31 +57,87 @@ const App: React.FC = () => {
       navigate("/sensitivecheck");
     }
   }, [navigate, location.pathname]);
+  useEffect(() => {
+    const reissueAccessToken = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/auth/reissue`,
+          {
+            withCredentials: true, // refresh_token을 쿠키에서 자동으로 전송
+          }
+        );
 
+        const { data } = response.data;
+        console.log(data);
+        if (response.status === 200) {
+          login(data.access_token); // 액세스 토큰을 상태에 저장
+        } else {
+          console.error("액세스 토큰 재발급 실패:", data);
+        }
+      } catch (error) {
+        console.error("액세스 토큰 재발급 오류:", error);
+      }
+    };
+
+    // 로그인 시도가 있었고, 로그인되지 않았다면 토큰 재발급 시도
+    if (loginAttempted && !isLoggedIn) {
+      reissueAccessToken();
+    }
+  }, [isLoggedIn, loginAttempted, login]);
   return (
     <div>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="/sensitivecheck" element={<SensitiveCheck />} />
           <Route path="/" element={<Home />} />
-
           <Route path="/aqi-details" element={<AQIDetails />} />
           <Route path="/weatherinfo" element={<WeatherInfo />} />
           <Route path="/favorites" element={<Favorites />} />
-
           <Route path="/notice" element={<Notice />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/localpride" element={<LocalPride />} />
-
+          <Route
+            path="/localpride"
+            element={
+              <PrivateRoute>
+                <LocalPride />
+              </PrivateRoute>
+            }
+          />
           <Route path="/activityRecommed" element={<ActivityRecommed />} />
           <Route path="/outfitdaily" element={<OutfitDaily />} />
           <Route path="/outfitbytemp" element={<OutfitByTemp />} />
-
-          <Route path="/squirrel" element={<Squirrel />} />
-          <Route path="/adopt" element={<Adopt />} />
-          <Route path="/collection" element={<Collection />} />
-
-          <Route path="/daily" element={<DaliyMission />} />
+          <Route
+            path="/squirrel"
+            element={
+              <PrivateRoute>
+                <Squirrel />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/adopt"
+            element={
+              <PrivateRoute>
+                <Adopt />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/collection"
+            element={
+              <PrivateRoute>
+                <Collection />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/daily"
+            element={
+              <PrivateRoute>
+                <DaliyMission />
+              </PrivateRoute>
+            }
+          />
           <Route path="/games" element={<GameList />} />
           <Route path="/games/ox" element={<OX />} />
           <Route path="/games/answer" element={<Answer />} />

@@ -1,22 +1,57 @@
 /* Main container styling for the outfit daily page */
 .outfit-daily-page {
-  max-width: 450px;
-  min-height: calc(100vh - 338px);
+  background-image: url("../../../assets//background/weatherBackgrounds/clouds.png");
+  background-size: 100%; /* 배경 이미지를 컨테이너에 맞게 확장하여 잘리지 않도록 설정 */
+  background-position: top center; /* 배경 이미지를 상단 중앙에 위치 */
+  background-repeat: no-repeat; /* 배경 이미지 반복 방지 */
+  background-attachment: scroll; /* 배경 이미지를 스크롤할 때 함께 움직이도록 설정 */
+
+  max-width: 400px;
+  min-height: calc(100vh - 223px);
   margin: 0 auto;
-  padding: 20px;
-  font-family: "Noto Sans KR", sans-serif;
+  padding: 30px 10px;
   background-color: #ffffff;
+}
+.outfit-daily-weather-section {
+  border-radius: 15px;
   display: flex;
   flex-direction: column;
+  align-items: left;
+  margin-bottom: 80px;
+  padding: 0 0 20px 10px;
 }
-
-/* Title for daily outfit recommendation section */
-.outfit-daily-title {
-  text-align: center;
-  font-size: 26px;
-  margin: 16px 0;
-  font-weight: 600;
-  color: #333;
+.outfit-daily-weather-icon-container {
+  width: 40px;
+  height: 40px;
+}
+.outfit-daily-weather-icon-container > svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.3)); /*그림자*/
+  color: white;
+}
+.outfit-daily-weather-current-temperature {
+  font-size: 100px;
+  color: #ffffff;
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+}
+.outfit-daily-weather-p {
+  display: flex;
+  align-items: center;
+}
+.outfit-daily-weather-status {
+  font-size: 16px;
+  font-weight: bold;
+  color: #f7f7f7;
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  margin-bottom: 0;
+  margin-right: 10px;
+}
+.outfit-daily-weather-precipitation {
+  font-size: 20px;
+  color: #f7f7f7;
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 /* Container for weather information */
@@ -30,53 +65,15 @@
   padding: 20px;
   text-align: center;
   border-radius: 12px;
-  background-color: #f0f4f8;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Add subtle animation effect when hovering over weather section */
-.outfit-weather-section:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-}
-
-.outfit-weather-icon {
-  display: inline-block;
-  width: 50px;
-  height: 50px;
-  margin-bottom: 12px;
-}
-
-/* Styling for the weather status text */
-.outfit-weather-status {
-  font-size: 18px;
-  font-weight: 500;
-  color: #1d1d1f;
-  margin-bottom: 8px;
-}
-
-/* Current temperature display styling */
-.outfit-weather-current-temperature {
-  font-size: 30px;
-  font-weight: 700;
-  color: #0055ff;
-  margin-bottom: 12px;
-}
-
-/* Humidity display styling */
-.outfit-weather-humidity {
-  font-size: 14px;
-  font-weight: 500;
-  color: #555;
-  margin-bottom: 12px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Recommendation title styling */
 .outfit-recommend-title {
-  font-size: 20px;
-  margin: 16px 0;
-  font-weight: 600;
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-weight: 700;
   color: #333;
   line-height: 1.5;
 }
@@ -91,7 +88,7 @@
 .outfit-recommendations-list strong {
   font-size: 20px;
   line-height: 1.8;
-  color: #005eff;
+  color: #45857d;
 }
 
 /* Responsive design tweaks */

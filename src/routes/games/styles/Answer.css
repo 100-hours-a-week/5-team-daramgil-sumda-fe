@@ -1,17 +1,35 @@
-.answer-container {
+.answer-page {
+  background-image: url("../../../assets//background/missionBackground.png");
+  background-size: 100%; /* 배경 이미지를 컨테이너에 맞게 확장하여 잘리지 않도록 설정 */
+  background-position: top center; /* 배경 이미지를 상단 중앙에 위치 */
+  background-repeat: no-repeat; /* 배경 이미지 반복 방지 */
+  background-attachment: scroll; /* 배경 이미지를 스크롤할 때 함께 움직이도록 설정 */
+
   max-width: 400px;
-  min-height: calc(100vh - 338px);
+  min-height: calc(100vh - 223px);
   margin: 0 auto;
-  padding: 20px;
-  text-align: center;
+  padding: 30px 10px;
+  background-color: #ffffff;
+}
+.answer-container {
+  width: 90%;
+  padding: 30px;
+  background-color: #ffffff;
+  margin: 170px auto 0 auto;
+  border-radius: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .answer-title {
   text-align: center;
   font-size: 32px;
-  margin: 40px 0;
+  margin-bottom: 10px;
   font-weight: 600;
-  color: #333;
+  color: #000000;
 }
 .correct-answer-section {
   margin-bottom: 20px;
@@ -23,16 +41,13 @@
 }
 
 .correct-answer-box {
-  display: inline-block;
-  padding: 15px;
-  font-size: 24px;
-  font-weight: bold;
-  color: #007bff;
-  background-color: #f0f0f0;
-  border-radius: 8px;
-  border: 2px solid #007bff;
-  width: 60px;
-  margin: 0 auto;
+  background-color: #45857d;
+  color: #ffffff;
+  padding: 20px;
+  border-radius: 20px;
+  font-size: 30px;
+  font-weight: 400;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
 .explanation-section {
@@ -41,11 +56,11 @@
 
 .explanation-text {
   font-size: 16px;
-  color: #555;
+  color: #000000;
   line-height: 1.5;
-  background-color: #f9f9f9;
+  background-color: #e1e9e8;
   padding: 15px;
-  border-radius: 8px;
+  border-radius: 15px;
   text-align: left;
 }
 
@@ -53,27 +68,19 @@
   margin: 20px 0;
 }
 
-.reward-text {
-  font-size: 18px;
-  font-weight: bold;
-  color: #28a745;
-  background-color: #e0ffe0;
-  padding: 10px;
-  border-radius: 8px;
-}
-
 .confirm-button {
-  padding: 10px 20px;
+  width: 60%;
+  padding: 10px 30px;
   font-size: 18px;
   font-weight: bold;
-  color: #fff;
-  background-color: #007bff;
-  border: none;
+  color: #000000;
+  background-color: #c2dfac;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
 }
 
 .confirm-button:hover {
-  background-color: #0056b3;
+  background-color: #b6d1a1;
 }

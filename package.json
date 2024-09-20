@@ -17,24 +17,29 @@
     "@types/react-dom": "^18.3.0",
     "axios": "^1.7.4",
     "chart.js": "^4.4.4",
+    "jsonwebtoken": "^9.0.2",
+    "jwt-decode": "^4.0.0",
     "lightweight-charts": "^4.2.0",
     "react": "^18.3.1",
     "react-chartjs-2": "^5.2.0",
+    "react-circular-progressbar": "^2.1.0",
     "react-dom": "^18.3.1",
     "react-icon": "^1.0.0",
     "react-icons": "^5.3.0",
     "react-router-dom": "^6.26.1",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
     "react-select": "^5.8.0",
     "react-switch": "^7.0.0",
+    "react-toastify": "^10.0.5",
     "recharts": "^2.12.7",
     "swiper": "^11.1.9",
     "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "zustand": "^4.5.5"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && npm run sentry:sourcemaps && npm run sentry:sourcemaps && npm run sentry:sourcemaps && npm run sentry:sourcemaps",
+    "build": "CI=false react-scripts build && if [ \"$SENTRY_AUTH_TOKEN\" != \"\" ]; then npm run sentry:sourcemaps; fi",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "sentry:sourcemaps": "sentry-cli sourcemaps inject --org daramgil --project sumda-fe ./build && sentry-cli sourcemaps upload --org daramgil --project sumda-fe ./build"
@@ -58,7 +63,9 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/jwt-decode": "^3.1.0"
   },
   "description": "## 팀명 : 다람길",
   "main": "index.js",

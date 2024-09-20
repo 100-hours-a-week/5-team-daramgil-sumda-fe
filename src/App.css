@@ -32,9 +32,6 @@ body {
 
 /* 공통 컨테이너 스타일 */
 .info-container {
-  background-color: #ffffff;
-  border-radius: 15px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   padding: 20px;
   box-sizing: border-box;
   width: 100%;

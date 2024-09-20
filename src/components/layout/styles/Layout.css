@@ -6,8 +6,9 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-color: #e1e9e8;
 }
-  
+
 @media (max-width: 768px) {
   .background-container {
     background-image: none;
@@ -17,7 +18,6 @@
 .mobile-frame {
   width: 400px;
   min-height: 100vh;
-  border: 1px solid #ccc;
   overflow: hidden;
   display: flex;
   flex-direction: column;

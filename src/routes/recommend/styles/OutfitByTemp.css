@@ -1,5 +1,5 @@
 .outfitbytemp-page {
-  min-height: calc(100vh - 338px);
+  min-height: calc(100vh - 223px);
   padding: 40px 20px;
   background-color: #ffffff;
 }
@@ -10,7 +10,6 @@
   margin: 30px 0;
   font-weight: 600;
   color: #333;
-  font-family: 'Roboto', sans-serif;
 }
 
 .outfitbytemp-container {
@@ -23,24 +22,17 @@
 .color-container {
   width: 40px;
   margin-right: 10px;
-  background: linear-gradient(to bottom,
-      #ff0000,
-      /* 빨강 */
-      #ff8000,
-      /* 주황 */
-      #ffff00,
-      /* 노랑 */
-      #80ff00,
-      /* 연두 */
-      #00ff00,
-      /* 초록 */
-      #0080ff,
-      /* 파랑 */
-      #4b0082,
-      /* 남색 */
-      #800080
-      /* 보라 */
-    );
+  background: linear-gradient(
+    to bottom,
+    #ff0000,
+    /* 빨강 */ #ff8000,
+    /* 주황 */ #ffff00,
+    /* 노랑 */ #80ff00,
+    /* 연두 */ #00ff00,
+    /* 초록 */ #0080ff,
+    /* 파랑 */ #4b0082,
+    /* 남색 */ #800080 /* 보라 */
+  );
   border-radius: 5px;
   animation: gradientScroll 10s infinite linear;
   /* flex-grow 추가: outfit-container와 높이를 맞춤 */

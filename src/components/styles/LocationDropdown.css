@@ -1,65 +1,82 @@
+@font-face {
+  font-family: "goorm-sans-bold";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/goorm-sans-bold.woff2")
+    format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
 .location-dropdown {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  position: relative;
+  font-family: "goorm-sans-bold";
 }
 
 .dropdown-controls {
-    display: flex;
-    align-items: center;
+  display: flex;
+  flex-grow: 1;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 10px;
+  background-color: #4848484d;
+  color: #f7f7f7;
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .dropdown-button {
-    flex-grow: 1;
-    padding: 10px;
-    font-size: 16px;
-    cursor: pointer;
-    border: 1px solid #a3c6a5;
-    /* 부드러운 녹색 테두리 */
-    border-radius: 5px;
-    background-color: #edf7f1;
-    /* 자연의 부드러운 초록색 배경 */
-    color: #3c6e47;
-    /* 진한 녹색 텍스트 */
+  flex-grow: 1;
+  font-size: 16px;
+  cursor: pointer;
+  color: #f7f7f7;
 }
 
 .gps-button {
-    margin-left: 10px;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 .gps-icon {
-    width: 24px;
-    height: 24px;
+  width: 24px;
+  height: 24px;
+}
+.dropdown-menu {
+  width: 100%;
+  margin-top: 10px;
+  list-style: none;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  position: absolute; /* 절대 위치 설정 */
+  top: 100%; /* 부모 요소 바로 아래에 위치 */
+  left: 50%; /* 부모 요소의 수평 중앙에 위치 */
+  transform: translateX(-50%); /* 수평 중앙 정렬 */
+  z-index: 1000; /* 다른 요소 위에 표시되도록 설정 */
+}
+.dropdown-item {
+  display: flex;
+  align-items: center; /* 아이콘과 텍스트를 수직으로 정렬 */
 }
 
-.dropdown-menu {
-    list-style: none;
-    padding: 0;
-    margin-top: 10px;
-    border: 1px solid #a3c6a5;
-    /* 부드러운 녹색 테두리 */
-    border-radius: 5px;
-    background-color: #ffffff;
-    /* 흰색 배경 */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.icon {
+  margin-right: 50px; /* 아이콘과 텍스트 사이의 거리 조정 */
+  font-size: 30px;
+}
+
+.text {
+  flex: 1; /* 텍스트가 아이콘 옆에 올 수 있도록 설정 */
 }
 
 .dropdown-menu li {
-    text-align: center;
-    padding: 10px;
-    cursor: pointer;
-    color: #4a523a;
-    /* 다람쥐를 연상시키는 갈색 텍스트 */
-    background-color: #edf7f1;
-
+  text-align: left;
+  padding: 5px;
+  margin-bottom: 2px;
+  cursor: pointer;
+  color: #000000;
 }
 
 .dropdown-menu li:hover {
-    background-color: #f1f1f1;
-    /* 중립적인 회색 배경 */
-    background-color: #d0e1c4;
-
+  color: #45857d;
 }

@@ -1,39 +1,50 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./styles/Adopt.css";
+import useAuthStore from "../../store/useAuthStore"; // Zustand store import
+
+interface SquirrelData {
+  squirrelId: number; // squirrelId 추가
+  type: string;
+  level: number;
+  feed: number;
+  userAcorns: number;
+}
 
 const Adopt: React.FC = () => {
+  const { jwtToken, reissueToken, setSquirrelData } = useAuthStore();
   const [selectedSquirrel, setSelectedSquirrel] = useState<string | null>(null);
-
+  const navigate = useNavigate();
   const squirrels = [
     {
       id: 1,
-      name: "요리사 다람쥐",
-      img: "/squirrels/main/요리사_다람쥐_lv1-removebg-preview.png",
+      type: "요리사 다람쥐",
+      img: "/squirrels/main/요리사-다람쥐-lv1.png",
     },
     {
       id: 2,
-      name: "기사 다람쥐",
-      img: "/squirrels/main/기사_다람쥐_lv1-removebg-preview.png",
+      type: "기사 다람쥐",
+      img: "/squirrels/main/기사-다람쥐-lv1.png",
     },
     {
       id: 3,
-      name: "파일럿 다람쥐",
-      img: "/squirrels/main/파일럿_다람쥐_lv1-removebg-preview.png",
+      type: "파일럿 다람쥐",
+      img: "/squirrels/main/파일럿-다람쥐-lv1.png",
     },
     {
       id: 4,
-      name: "사무라이 다람쥐",
-      img: "/squirrels/main/사무라이_다람쥐_lv1-removebg-preview.png",
+      type: "사무라이 다람쥐",
+      img: "/squirrels/main/사무라이-다람쥐-lv1.png",
     },
     {
       id: 5,
-      name: "우주비행사 다람쥐",
-      img: "/squirrels/main/우주비행사_다람쥐_lv1-removebg-preview.png",
+      type: "우주비행사 다람쥐",
+      img: "/squirrels/main/우주비행사-다람쥐-lv1.png",
     },
     {
       id: 6,
-      name: "힙합 다람쥐",
-      img: "/squirrels/main/힙합_다람쥐_lv1-removebg-preview.png",
+      type: "힙합 다람쥐",
+      img: "/squirrels/main/힙합-다람쥐-lv1.png",
     },
   ];
 
@@ -41,12 +52,59 @@ const Adopt: React.FC = () => {
     setSelectedSquirrel(name === selectedSquirrel ? null : name);
   };
 
-  const handleComplete = () => {
-    if (selectedSquirrel) {
-      alert(`선택된 다람쥐: ${selectedSquirrel}`);
-      // 여기서 기존 다람쥐를 컬렉션으로 이동시키고, 새로운 다람쥐로 교체하는 로직 추가
-    } else {
+  const handleComplete = async () => {
+    if (!selectedSquirrel) {
       alert("다람쥐를 선택해주세요.");
+      return;
+    }
+
+    try {
+      let response = await fetch(
+        `${process.env.REACT_APP_API_URL}/squirrel/new`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${jwtToken}`, // JWT 토큰을 헤더에 포함
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ sqrType: selectedSquirrel }), // 선택된 다람쥐 종류를 전송
+        }
+      );
+      // 토큰이 만료된 경우
+      if (response.status === 500) {
+        console.log("토큰이 만료되었습니다. 재발급 시도 중...");
+        await reissueToken(); // 토큰 재발급 요청
+        // 재발급 후 요청을 다시 시도
+        response = await fetch(
+          `${process.env.REACT_APP_API_URL}/squirrel/new`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${jwtToken}`, // 재발급 받은 토큰으로 재시도
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ sqrType: selectedSquirrel }),
+          }
+        );
+      }
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "다람쥐 분양에 실패했습니다.");
+      }
+      const data = await response.json();
+      // squirrelId가 서버 응답에 포함되어 있지 않은 경우 임시 ID를 생성
+      setSquirrelData({
+        squirrelId: data.data.squirrelId || 0, // squirrelId가 제공되면 사용, 아니면 0
+        type: data.data.type,
+        level: data.data.level,
+        feed: data.data.feed,
+        userAcorns: 0, // 초기값 설정
+      });
+      alert(`새로운 다람쥐가 분양되었습니다: ${data.data.type}`);
+      navigate(`/squirrel`);
+    } catch (error: any) {
+      alert(error.message);
+      console.error("다람쥐 분양 에러:", error);
     }
   };
 
@@ -58,17 +116,17 @@ const Adopt: React.FC = () => {
           <div
             key={squirrel.id}
             className={`squirrel-item ${
-              selectedSquirrel === squirrel.name ? "selected" : "dimmed"
+              selectedSquirrel === squirrel.type ? "selected" : "dimmed"
             }`}
-            onClick={() => handleSquirrelSelect(squirrel.name)}
+            onClick={() => handleSquirrelSelect(squirrel.type)}
           >
             <img
               src={squirrel.img}
-              alt={squirrel.name}
+              alt={squirrel.type}
               className="squirrel-image"
             />
-            <p className="squirrel-name">{squirrel.name}</p>
-            {selectedSquirrel === squirrel.name && (
+            <p className="squirrel-name">{squirrel.type}</p>
+            {selectedSquirrel === squirrel.type && (
               <div className="selection-overlay"></div>
             )}
           </div>

@@ -1,23 +1,49 @@
+.weatherinfo-page.daysunny {
+  background-image: url("../../../assets/background/weatherBackgrounds/daysunny.png");
+}
+.weatherinfo-page.cloudy {
+  background-image: url("../../../assets//background/weatherBackgrounds/clouds.png");
+}
+.weatherinfo-page.showers {
+  background-image: url("../../../assets/background/weatherBackgrounds/showers.png");
+}
+.weatherinfo-page.snow {
+  background-image: url("../../../assets/background/weatherBackgrounds/snow.png");
+}
+.weatherinfo-page.thunderstorm {
+  background-image: url("../../../assets/background/weatherBackgrounds/thunderstorm.png");
+}
+.weatherinfo-page.fog {
+  background-image: url("../../../assets/background/weatherBackgrounds/fog.png");
+}
+.weatherinfo-page.stormshowers {
+  background-image: url("../../../assets/background/weatherBackgrounds/stormshowers.png");
+}
+.weatherinfo-page.default {
+  background-image: url("../../../assets/background/weatherBackgrounds/daysunny.png");
+}
+
 .weatherinfo-page {
+  background-size: 100%; /* 배경 이미지를 컨테이너에 맞게 확장하여 잘리지 않도록 설정 */
+  background-position: top center; /* 배경 이미지를 상단 중앙에 위치 */
+  background-repeat: no-repeat; /* 배경 이미지 반복 방지 */
+  background-attachment: scroll; /* 배경 이미지를 스크롤할 때 함께 움직이도록 설정 */
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding: 20px;
+  padding: 20px 10px 0 10px;
   box-sizing: border-box;
-  background-color: #f0f0f0;
-  min-height: calc(100vh - 338px);
+  min-height: calc(100vh - 223px);
 }
 
-.info-container {
-  background-color: #ffffff;
+.weatherinfo-container {
   border-radius: 15px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
-  padding: 20px;
+  padding: 0 10px;
   box-sizing: border-box;
-  min-height: calc(100vh - 338px);
+  min-height: calc(100vh - 268px);
 }
 
 .loading {
@@ -27,36 +53,43 @@
 }
 
 .weather-section {
+  border-radius: 15px;
   display: flex;
   flex-direction: column;
+  align-items: left;
+  margin-bottom: 140px;
+  padding: 0 0 20px 10px;
+}
+
+.weather-icon-container {
+  width: 40px;
+  height: 40px;
+}
+.weather-icon-container > svg {
+  filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.3)); /*그림자*/
+}
+.weather-current-temperature {
+  font-size: 100px;
+  color: #ffffff;
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+}
+.weather-p {
+  display: flex;
   align-items: center;
-  margin-bottom: 20px;
-}
-
-.weather-icon {
-  width: 100px;
-  height: 100px;
   margin-bottom: 10px;
-  color: #ff6f61;
 }
-
 .weather-status {
   font-size: 16px;
   font-weight: bold;
-  color: #333;
-  margin-bottom: 5px;
+  color: #f7f7f7;
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  margin-bottom: 0;
+  margin-right: 10px;
 }
-
-.weather-current-temperature {
-  font-size: 30px;
-  font-weight: bold;
-  color: #ff6f61;
-  margin-bottom: 10px;
-}
-
 .weather-precipitation {
   font-size: 16px;
-  color: #555;
+  color: #f7f7f7;
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .forecast-section {
@@ -67,9 +100,10 @@
 .forecast-title {
   font-size: 18px;
   font-weight: bold;
-  color: #333;
-  margin-bottom: 10px;
-  text-align: center;
+  color: #000000;
+  margin-bottom: 20px;
+  margin-left: 10px;
+  text-align: left;
 }
 
 .forecast-scroll {
@@ -96,11 +130,11 @@
 .forecast-item {
   display: inline-block;
   text-align: center;
-  background-color: #f9f9f9;
+  background-color: #a3a3a355;
   border-radius: 10px;
   padding: 10px;
   min-width: 70px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .forecast-icon {
@@ -118,73 +152,124 @@
 
 .daily-forecast-section {
   margin-bottom: 20px;
+  overflow: hidden;
+  position: relative;
 }
 
 .daily-forecast-items {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  padding: 0 5px 20px 5px;
+  gap: 15px;
+
+  overflow-x: auto; /* Allow horizontal scrolling */
+  scroll-behavior: smooth; /* Optional: smooth scrolling effect */
+  -ms-overflow-style: none; /* Hide scrollbar in IE and Edge */
+  scrollbar-width: none; /* Hide scrollbar in Firefox */
 }
 
 .daily-forecast-item {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  min-width: 95px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.211);
+  border-radius: 30px;
+  padding: 20px 0;
 }
-
-.daily-forecast-item .forecast-icon {
+.daily-forecast-item.first-item {
+  background-color: #c2dfac;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.211);
+}
+.daily-forecast-item.first-item .forecast-icon-container > svg {
+  width: 100%;
+  height: 100%;
+  color: #585858 !important;
+}
+.daily-forecast-item.first-item .day-info {
+  color: #585858;
+}
+.daily-forecast-item.first-item .temperature {
+  color: #585858;
+}
+.daily-forecast-icon {
   width: 40px;
   height: 40px;
-  margin-right: 10px;
+  margin-top: 10px;
   color: #ff6f61;
 }
-
 .day-info {
   font-size: 16px;
   font-weight: bold;
-  color: #333;
+  color: #000000;
+  justify-content: center; /* 수평 중앙 정렬 */
+  align-items: center; /* 수직 중앙 정렬 (필요시) */
+}
+.day {
+  text-align: center; /* 텍스트 중앙 정렬 */
 }
 
 .temperature {
   font-size: 16px;
-  color: #555;
+  color: #000000;
+  margin-top: 10px;
 }
 
 .detail-forecast-section {
-  margin-bottom: 20px;
+  margin-bottom: 40px;
+  padding: 10px; /* 그림자가 잘리지 않도록 여백 추가 */
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center; /* 가운데 정렬 */
 }
 
 .detail-forecast-title {
   font-size: 18px;
   font-weight: bold;
-  color: #333;
+  color: #ffffff;
   margin-bottom: 10px;
   text-align: center;
 }
 
 .detail-forecast-items {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+  border-radius: 30px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.211);
+  min-height: 100px;
+  padding: 10px 5px;
+  gap: 20px;
 
+  overflow-x: auto; /* Allow horizontal scrolling */
+  scroll-behavior: smooth; /* Optional: smooth scrolling effect */
+  -ms-overflow-style: none; /* Hide scrollbar in IE and Edge */
+  scrollbar-width: none; /* Hide scrollbar in Firefox */
+}
+.detail-forecast-items::-webkit-scrollbar {
+  display: none; /* Hide scrollbar in Chrome, Safari, and Opera */
+}
 .detail-forecast-item {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  background-color: #f9f9f9;
   border-radius: 10px;
-  padding: 10px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px 5px;
+  min-width: 90px;
+}
+
+.detail-forecast-item > p {
+  margin-top: 10px;
+  color: #000000;
+  text-align: center;
 }
 
 .detail-forecast-label {
   display: flex;
+  flex-direction: column;
   align-items: center;
+  color: #000000;
   gap: 10px;
 }
 
@@ -193,6 +278,29 @@
   height: 30px;
   color: #ff6f61;
 }
+.detail-forecast-section > svg {
+  border: none;
+  color: rgb(0, 0, 0);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 5px;
+  width: 30%;
+  height: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+.left {
+  left: -33px; /* 왼쪽 화살표 버튼 위치 */
+}
+
+.right {
+  right: -33px; /* 오른쪽 화살표 버튼 위치 */
+}
 
 @media (max-width: 400px) {
   .info-container {
@@ -200,12 +308,12 @@
   }
 
   .weather-icon {
-    width: 80px;
-    height: 80px;
+    width: 40px;
+    height: 40px;
   }
 
   .weather-current-temperature {
-    font-size: 24px;
+    font-size: 100px;
   }
 
   .forecast-icon {
@@ -221,12 +329,8 @@
     padding: 8px;
   }
 }
-.weather-icon-container {
-  width: 100px;
-  height: 100px;
-}
 
-.weather-icon-container>svg {
+.weather-icon-container > svg {
   width: 100%;
   height: 100%;
 }
@@ -244,7 +348,7 @@
   color: #ff6f61;
 }
 .day {
-  width:41px;
+  width: 41px;
 }
 
 .forecast-icon-container {
@@ -254,9 +358,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 10px;
 }
 
-.forecast-icon-container>svg {
+.forecast-icon-container > svg {
   width: 100%;
   height: 100%;
+  color: black !important; /* 아이콘을 검은색으로 설정 */
 }

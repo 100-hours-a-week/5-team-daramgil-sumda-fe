@@ -1,4 +1,4 @@
-name: React 앱 빌드 및 EC2 배포
+name: 숨다 FE prod 서버, 빌드 후 EC2로 배포
 
 on:
   push:
@@ -6,59 +6,60 @@ on:
       - master
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. 리포지토리 클론
       - name: 코드 체크아웃
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Node.js 설정
-        uses: actions/setup-node@v2
+      # 2. Node.js 설정
+      - name: Node.js 설치
+        uses: actions/setup-node@v3
         with:
-          node-version: "14"
+          node-version: "16"
 
-      - name: npm 캐시 정리 및 종속성 설치
+      # 3. 의존성 설치
+      - name: 의존성 설치
+        run: npm install
+
+      # 4. 빌드 수행
+      - name: 빌드
+        run: npm run build
+
+      # 5. SSH 디렉토리 생성 및 EC2 서버의 호스트 키 등록
+      - name: EC2 호스트 등록
         run: |
-          npm cache clean --force
-          rm -rf node_modules
-          rm ./package-lock.json
-          npm install
+          mkdir -p ~/.ssh  # ~/.ssh 디렉토리 생성
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts  # EC2 호스트 키 추가
 
-      - name: .env 파일 생성
-        run: |
-          echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}" > .env
-          echo "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}" >> .env
-          echo "SENTRY_ORG=${{ secrets.SENTRY_ORG }}" >> .env
-          echo "SENTRY_PROJECT=${{ secrets.SENTRY_PROJECT }}" >> .env
-
-      - name: .env 파일을 EC2로 업로드
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-          SSH_HOST: ${{ secrets.EC2_HOST }}
-          SSH_USER: ${{ secrets.EC2_USER }}
+      # 6. SSH 키 설정 및 에이전트에 추가
+      - name: SSH 키 설정
         run: |
           mkdir -p ~/.ssh
-          echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          scp -o StrictHostKeyChecking=no .env ${SSH_USER}@${SSH_HOST}:/var/www/html/.env
-
-      - name: React 앱 빌드
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa  # 적절한 권한 설정
+          eval $(ssh-agent -s)
+          ssh-add ~/.ssh/id_rsa
+      # 7. EC2 서버의 기존 파일 삭제
+      - name: EC2 서버의 기존 파일 삭제
         run: |
-          CI=false npm run build
+          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "rm -rf /var/www/html/*"
 
-      - name: Sentry 소스맵 업로드
+      # 8. EC2 서버로 빌드된 정적 파일 전송
+      - name: 빌드된 파일을 EC2로 전송
         run: |
-          export $(cat .env | xargs)
-          npm run sentry:sourcemaps
+          scp -r ./build/* ${{ secrets.EC2_USER }}@$${{ secrets.EC2_HOST }}:/var/www/html/
 
-      - name: React 앱을 EC2로 배포
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-          SSH_HOST: ${{ secrets.EC2_HOST }}
-          SSH_USER: ${{ secrets.EC2_USER }}
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      # 1. SSH 키 설정 및 에이전트에 추가 (배포 단계에서도 SSH 설정)
+      - name: 배포를 위한 SSH 키 설정
         run: |
-          mkdir -p ~/.ssh
-          echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          scp -r -o StrictHostKeyChecking=no build/* ${SSH_USER}@${SSH_HOST}:/var/www/html/
+          set -x
+          eval $(ssh-agent -s)
+          echo "${{ secrets.EC2_SSH_KEY }}" | tr -d '\r' | ssh-add -

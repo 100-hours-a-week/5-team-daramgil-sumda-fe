@@ -1,6 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import gps from "../assets/icons/gps.png";
+import {
+  MdLocationOn,
+  MdOutlineEditLocation,
+  MdAddLocation,
+} from "react-icons/md";
 import "./styles/LocationDropdown.css";
 
 interface LocationDropdownProps {
@@ -16,6 +21,8 @@ const LocationDropdown: React.FC<LocationDropdownProps> = ({
   const [selectedLocation, setSelectedLocation] = useState<string>("");
   const [isDropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const navigate = useNavigate();
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
     loadCurrentLocation();
     const storedFavorites = localStorage.getItem("favorites");
@@ -23,6 +30,25 @@ const LocationDropdown: React.FC<LocationDropdownProps> = ({
       setFavorites(JSON.parse(storedFavorites));
     }
   }, []);
+  // 드롭다운 외부 클릭 감지하여 닫기
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setDropdownOpen(false);
+      }
+    };
+    if (isDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isDropdownOpen]);
 
   const loadCurrentLocation = async (): Promise<{
     latitude: number;
@@ -108,28 +134,38 @@ const LocationDropdown: React.FC<LocationDropdownProps> = ({
   };
 
   return (
-    <div className="location-dropdown">
+    <div className="location-dropdown" ref={dropdownRef}>
       <div className="dropdown-controls">
-        <button className="dropdown-button" onClick={toggleDropdown}>
-          {selectedLocation || "위치 선택"}
-        </button>
         <button className="gps-button" onClick={handleLoadCurrentLocation}>
           <img className="gps-icon" src={gps} alt="gps icon" />
+        </button>
+        <button className="dropdown-button" onClick={toggleDropdown}>
+          {selectedLocation || "위치 선택"}
         </button>
       </div>
 
       {isDropdownOpen && (
-        <ul className="dropdown-menu">
-          {favorites.map((favorite) => (
+        <>
+          <ul className="dropdown-menu">
+            {favorites.map((favorite) => (
+              <li
+                key={favorite.id}
+                onClick={() => selectLocation(favorite.location, favorite.id)}
+                className="dropdown-item"
+              >
+                <MdOutlineEditLocation className="icon" />
+                <span className="text">{favorite.location}</span>
+              </li>
+            ))}
             <li
-              key={favorite.id}
-              onClick={() => selectLocation(favorite.location, favorite.id)}
+              onClick={() => selectLocation("등록하기", 0)}
+              className="dropdown-item"
             >
-              {favorite.location}
+              <MdAddLocation className="icon" />
+              <span className="text">등록하기</span>
             </li>
-          ))}
-          <li onClick={() => selectLocation("등록하기", 0)}>등록하기</li>
-        </ul>
+          </ul>
+        </>
       )}
     </div>
   );

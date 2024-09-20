@@ -1,0 +1,65 @@
+name: 숨다 FE dev 서버, 빌드 후 EC2로 배포
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. 리포지토리 클론
+      - name: 코드 체크아웃
+        uses: actions/checkout@v3
+
+      # 2. Node.js 설정
+      - name: Node.js 설치
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+
+      # 3. 의존성 설치
+      - name: 의존성 설치
+        run: npm install
+
+      # 4. 빌드 수행
+      - name: 빌드
+        run: npm run build
+
+      # 5. SSH 디렉토리 생성 및 EC2 서버의 호스트 키 등록
+      - name: EC2 호스트 등록
+        run: |
+          mkdir -p ~/.ssh  # ~/.ssh 디렉토리 생성
+          ssh-keyscan -H ${{ secrets.DEPLOY_EC2_HOST }} >> ~/.ssh/known_hosts  # EC2 호스트 키 추가
+
+      # 6. SSH 키 설정 및 에이전트에 추가
+      - name: SSH 키 설정
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa  # 적절한 권한 설정
+          eval $(ssh-agent -s)
+          ssh-add ~/.ssh/id_rsa
+      # 7. EC2 서버의 기존 파일 삭제
+      - name: EC2 서버의 기존 파일 삭제
+        run: |
+          ssh ${{ secrets.DEPLOY_EC2_USER }}@${{ secrets.DEPLOY_EC2_HOST }} "rm -rf /var/www/html/*"
+
+      # 8. EC2 서버로 빌드된 정적 파일 전송
+      - name: 빌드된 파일을 EC2로 전송
+        run: |
+          scp -r ./build/* ${{ secrets.DEPLOY_EC2_USER }}@${{ secrets.DEPLOY_EC2_HOST }}:/var/www/html/
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      # 1. SSH 키 설정 및 에이전트에 추가 (배포 단계에서도 SSH 설정)
+      - name: 배포를 위한 SSH 키 설정
+        run: |
+          set -x
+          eval $(ssh-agent -s)
+          echo "${{ secrets.EC2_SSH_KEY }}" | tr -d '\r' | ssh-add -

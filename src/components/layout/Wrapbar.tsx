@@ -34,7 +34,7 @@ const Wrapbar: React.FC = () => {
         <img src={weather} alt="날씨 정보 조회" className="wrapbar-icon" />
         <span>날씨조회</span>
       </Link>
-      <Link to="/underConstruction" className="wrapbar-item">
+      <Link to="/squirrel" className="wrapbar-item">
         <img src={squirrel} alt="다람쥐와 대화하기" className="wrapbar-icon" />
         <span>
           다람쥐와
@@ -42,7 +42,7 @@ const Wrapbar: React.FC = () => {
           대화하기
         </span>
       </Link>
-      <Link to="/underConstruction" className="wrapbar-item">
+      <Link to="/daily" className="wrapbar-item">
         <img src={mission} alt="일일 미션" className="wrapbar-icon" />
         <span>일일미션</span>
       </Link>

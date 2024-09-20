@@ -1,45 +1,110 @@
+.dailymission-page {
+  background-image: url("../../../assets//background/missionBackground.png");
+  background-size: 100%; /* 배경 이미지를 컨테이너에 맞게 확장하여 잘리지 않도록 설정 */
+  background-position: top center; /* 배경 이미지를 상단 중앙에 위치 */
+  background-repeat: no-repeat; /* 배경 이미지 반복 방지 */
+  background-attachment: scroll; /* 배경 이미지를 스크롤할 때 함께 움직이도록 설정 */
+
+  max-width: 400px;
+  min-height: calc(100vh - 223px);
+  margin: 0 auto;
+  padding: 30px 10px;
+  background-color: #ffffff;
+}
+
 .dailymission-container {
-  min-height: calc(100vh - 338px);
-  padding: 30px;
+  width: 90%;
+  padding: 0 10px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .dailymission-header {
+  display: flex;
+  align-items: center;
   font-size: 16px;
   font-weight: 700;
+  margin-bottom: 15px;
 }
-.dailymission-page-meta {
+.progress-circle {
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 50px; /* 원형 그래프 크기 */
+  height: 50px;
+}
+.dailymission-title {
   display: flex;
   flex-direction: column;
+  gap: 5px;
+}
+.dailymission-title h3 {
+  font-size: 20px;
+  font-weight: 800;
+}
+.progress-text {
+  font-size: 18px; /* 글자 크기 키우기 */
+  font-weight: 500; /* 글자 두께 설정, 필요시 추가 */
+}
+
+.dailymission-page-meta {
+  border-radius: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  margin-top: 20px;
+  display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0 0 0 10px;
 }
 .acron-img {
-  display: block;
-  width: 60px;
-  height: 60px;
-  margin-top: 30px;
-  margin-bottom: 20px;
+  width: 35px;
+  height: 35px;
 }
 .dailymission-explanation-text {
-  margin: 10px;
-  text-align: center;
-  font-size: 14px;
+  padding: 10px;
+  text-align: left;
+  font-size: 12px;
   line-height: 2;
-  font-weight: 500;
+  font-weight: 600;
+}
+.mission-containers {
+  display: flex;
+  flex-direction: column;
+  border-radius: 30px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  margin-top: 170px;
+  padding: 25px 15px;
 }
 .mission-container {
-  height: 69px;
+  height: 50px;
   width: 100%;
-  background-color: #f1f1f3;
   display: flex;
-  margin: 10px 10px 10px 0px;
-  padding: 10px 20px 10px 10px;
+  padding: 10px 10px;
   align-items: center;
+  position: relative; /* 줄을 상대적으로 배치하기 위해 position 설정 */
+}
+.mission-container p {
+  font-size: 16px;
+  font-weight: 600;
 }
 .check-img {
-  width: 40px;
-  height: 40px;
-  margin-left: auto;
+  width: 30px;
+  height: 30px;
+  margin-right: 25px;
+  color: #43a047;
   /* 회색으로 변경하는 속성 */
   filter: grayscale(100%);
+  position: relative;
+}
+.mission-container::after {
+  content: "";
+  position: absolute;
+  left: 22px; /* 아이콘의 가운데 위치에 줄을 놓기 */
+  top: -5px; /* 줄의 시작점 조정 */
+  bottom: 35px; /* 줄의 끝점을 아이콘 아래로 연장 */
+  width: 2px; /* 줄의 두께 */
+  background-color: #c3c3c3; /* 줄 색상 설정 */
 }
