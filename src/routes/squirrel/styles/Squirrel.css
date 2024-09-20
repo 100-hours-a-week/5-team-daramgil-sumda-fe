@@ -1,3 +1,10 @@
+@font-face {
+  font-family: "goorm-sans-bold";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/goorm-sans-bold.woff2")
+    format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
 .squirrel-page {
   background-image: url("../../../assets//background/AQIBackgrounds/level1.png");
   background-size: 100%; /* 배경 이미지를 컨테이너에 맞게 확장하여 잘리지 않도록 설정 */
@@ -54,6 +61,7 @@
   font-weight: bold;
   font-size: 1rem;
   color: #000000;
+  font-family: "goorm-sans-bold";
 }
 
 .feed-acorn > input[type="range"] {
@@ -171,6 +179,7 @@
 .chat-section {
   margin-top: 10px;
   position: relative; /* 부모 요소의 위치 기준 설정 */
+  font-family: "goorm-sans-bold";
 }
 
 .chat-messages {
