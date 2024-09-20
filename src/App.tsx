@@ -139,9 +139,23 @@ const App: React.FC = () => {
             }
           />
           <Route path="/games" element={<GameList />} />
-          <Route path="/games/ox" element={<OX />} />
+          <Route
+            path="/games/ox"
+            element={
+              <PrivateRoute>
+                <OX />
+              </PrivateRoute>
+            }
+          />
           <Route path="/games/answer" element={<Answer />} />
-          <Route path="/games/fallingacorn" element={<FallingAcorn />} />
+          <Route
+            path="/games/fallingacorn"
+            element={
+              <PrivateRoute>
+                <FallingAcorn />
+              </PrivateRoute>
+            }
+          />
 
           <Route path="/setting" element={<Setting />} />
           <Route path="/login" element={<Login />} />
