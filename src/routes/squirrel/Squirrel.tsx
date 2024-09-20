@@ -35,7 +35,7 @@ const Squirrel: React.FC = () => {
         "안녕하세요! 저는 다람쥐에요. 대기 오염 정보나 다른 질문이 있으면 언제든지 물어보세요!",
     },
   ]);
-  const maxLevels = [10, 20, 30, 40]; // 각 레벨에 필요한 도토리 수
+  const maxLevels = [0, 10, 30, 60, 100]; // 각 레벨에 필요한 도토리 수
   const { completeSquirrelChatMission } = useMissionStore(); // 다람쥐와 대화 미션
   const [hasCompletedChat, setHasCompletedChat] = useState<boolean>(false); // 대화 완료 여부 상태
 
@@ -339,7 +339,6 @@ const Squirrel: React.FC = () => {
   if (!squirrelData) {
     return <div>로딩 중...</div>;
   }
-
   return (
     <div className="squirrel-page">
       <div className="squirrel-container">
@@ -356,11 +355,15 @@ const Squirrel: React.FC = () => {
               className="progress"
               style={{
                 width: `${
-                  (progress / maxLevels[squirrelData.level - 1]) * 100
+                  ((squirrelData.feed - maxLevels[squirrelData.level - 1]) /
+                    (maxLevels[squirrelData.level] -
+                      maxLevels[squirrelData.level - 1])) *
+                  100
                 }%`,
               }}
             />
           </div>
+
           {isModalOpen && (
             <div className="acorn-modal" onClick={() => setIsModalOpen(false)}>
               <div
@@ -396,22 +399,23 @@ const Squirrel: React.FC = () => {
             </div>
           )}
         </div>
+
         <div className="level-text">
           <p>LV. {squirrelData.level}</p>
           <p>
             {squirrelData.level < 4
               ? `LV. ${squirrelData.level + 1}까지 ${
-                  maxLevels[squirrelData.level - 1] - squirrelData.feed
+                  maxLevels[squirrelData.level] - squirrelData.feed
                 }개`
+              : squirrelData.feed < 100
+              ? `새 다람쥐 분양까지 ${100 - squirrelData.feed}개`
               : "최대 레벨입니다"}
           </p>
         </div>
+
         <div className="squirrel-section">
           <div className="chat-squirrel">
             <img src={squirrelImageSrc} alt="chat-squirrel" />
-            {/* <button className="acorn-button" onClick={handleToGames}>
-              도토리 주으러 가기
-            </button> */}
           </div>
           {squirrelData.level === 4 && squirrelData.feed >= 100 && (
             <button className="new-squirrel-button" onClick={handleNewSquirrel}>
