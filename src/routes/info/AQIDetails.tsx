@@ -28,6 +28,8 @@ import {
 import callout from "../../assets/info.png";
 
 import { toast } from "react-toastify";
+import { useWeatherSelector } from "../../store/useWeatherStore";
+import { useLocationSelector } from "../../store/useLocationStore";
 import useMissionStore from "../../store/useMissionStore";
 
 const AQIDetails: React.FC = () => {
