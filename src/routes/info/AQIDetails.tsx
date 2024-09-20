@@ -220,11 +220,22 @@ const AQIDetails: React.FC = () => {
     },
   };
   const getAirQualityInfo = (value: string | null, grade: string | null) => {
-    if (!value || !grade) {
-      return { icon: null, status: "데이터 없음", value: "데이터 없음" };
+    // value나 grade가 없을 때 처리
+    if (
+      !value ||
+      !grade ||
+      value === "데이터 없음" ||
+      grade === "데이터 없음"
+    ) {
+      return {
+        icon: <PiSmileyMeltingLight style={{ color: "white" }} />,
+        status: "데이터 없음",
+        value: "데이터 없음",
+      };
     }
+    // 정상적으로 값이 있을 때 처리
     const info = airQualityGrades[grade] || {
-      icon: null,
+      icon: <PiSmileyMeltingLight style={{ color: "white" }} />, // 기본값 아이콘 설정
       status: "데이터 없음",
     };
     return { ...info, value };
