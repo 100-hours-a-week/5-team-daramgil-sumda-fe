@@ -258,9 +258,8 @@ const Squirrel: React.FC = () => {
 
   // squirrelData가 null이 아닐 때, type과 level에 따라 이미지를 선택
   const squirrelImageSrc = squirrelData
-    ? squirrelImages[squirrelData.type]?.[squirrelData.level] ||
-      "/squirrels/main/기본-다람쥐-lv1.png" // 타입과 레벨에 맞는 이미지, 없으면 기본 이미지
-    : "/squirrels/main/기본-다람쥐0lv1.png"; // squirrelData가 null인 경우 기본 이미지
+    ? squirrelImages[squirrelData.type]?.[squirrelData.level || 1] // level이 0이면 1로 처리
+    : "/squirrels/main/기본_다람쥐_lv1.png"; // squirrelData가 null인 경우 기본 이미지
 
   const handleAcornClick = () => {
     setIsModalOpen(true);
