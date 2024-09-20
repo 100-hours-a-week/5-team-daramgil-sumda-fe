@@ -12,7 +12,7 @@ const Login: React.FC = () => {
 
   const handleKakaoLogin = () => {
     attemptLogin(); // 로그인 시도 상태를 true로 설정
-    window.location.href = `https://dev.sumda.co.kr/oauth2/authorization/kakao`; // 리다이렉트
+    window.location.href = `https://sumda.co.kr/oauth2/authorization/kakao`; // 리다이렉트
   };
 
   const handleLogout = () => {
