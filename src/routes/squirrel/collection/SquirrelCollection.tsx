@@ -12,8 +12,8 @@ const SquirrelCollection: React.FC = () => {
 
   // 다람쥐 이미지 URL 생성 함수
   const getSquirrelImageUrl = (squirrelType: string) => {
-    const formattedType = squirrelType.replace(/ /g, "_"); // 공백을 _로 변환
-    return `/squirrels/main/${formattedType}_lv4-removebg-preview.png`;
+    const formattedType = squirrelType.replace(/ /g, "-"); // 공백을 _로 변환
+    return `/squirrels/main/${formattedType}-lv4.png`;
   };
 
   if (error) {
@@ -27,7 +27,7 @@ const SquirrelCollection: React.FC = () => {
   return (
     <div className="squirrel-collection">
       {squirrels.map((squirrel, index) => (
-        <div key={index} className="squirrel-item">
+        <div key={index} className="squirrel-item-collection">
           <div className="image-container">
             <img src={pedestal} alt="단상" className="pedestal" />
             <img
