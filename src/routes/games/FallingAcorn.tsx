@@ -108,6 +108,7 @@ const FallingAcorn: React.FC = () => {
       if (response.status === 200) {
         const { getAcorns, userAcorns } = response.data.data;
         console.log(`획득한 도토리: ${getAcorns}, 보유 도토리: ${userAcorns}`);
+        alert(`게임 보상으로 도토리 ${getAcorns}개가 지급되었습니다.`);
       }
     } catch (error) {
       console.error("게임 결과 전송 중 오류 발생:", error);
@@ -159,9 +160,7 @@ const FallingAcorn: React.FC = () => {
       <div className="falling-acorn">
         <div className="score-board">
           <div>점수 : {score}</div>
-          <div>
-            최고점수 : {highScore !== null ? highScore : "불러오는 중..."}
-          </div>
+          <div>최고점수 : {highScore !== null ? highScore : 0}</div>
         </div>
         {gameStarted ? (
           <>
