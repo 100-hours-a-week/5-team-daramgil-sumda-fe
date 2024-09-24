@@ -1,5 +1,5 @@
 .ox-quiz-page {
-  background-image: url("../../../assets//background/missionBackground.png");
+  background-image: url("../../../assets//background/oxBackground.png");
   background-size: 100%; /* 배경 이미지를 컨테이너에 맞게 확장하여 잘리지 않도록 설정 */
   background-position: top center; /* 배경 이미지를 상단 중앙에 위치 */
   background-repeat: no-repeat; /* 배경 이미지 반복 방지 */
@@ -45,8 +45,8 @@
   color: #ffffff;
   padding: 10px;
   border-radius: 15px;
-  font-size: 15px;
-  font-weight: 400;
+  font-size: 14px;
+  font-weight: 200;
   line-height: 1.5rem;
   margin-bottom: 40px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);

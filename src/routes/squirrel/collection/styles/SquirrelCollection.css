@@ -8,6 +8,7 @@
 .squirrel-collection {
   display: flex;
   flex-wrap: wrap; /* 아이템들을 줄바꿈하여 여러 줄에 걸쳐 배치 */
+  width: 100%;
   justify-content: space-around;
   padding: 20px 10px;
 }
@@ -16,6 +17,7 @@
   text-align: center;
   flex: 1 1 calc(50% - 40px); /* 각 아이템의 너비를 부모의 50%로 설정 (2열) */
   box-sizing: border-box;
+  max-width: 162px;
   padding: 10px;
   margin: 5px 2px 5px 2px;
   position: relative;
@@ -38,7 +40,7 @@
   position: absolute;
   bottom: 0;
   width: 100%;
-  right: 2%;
+  right: 4%;
   height: auto;
 }
 

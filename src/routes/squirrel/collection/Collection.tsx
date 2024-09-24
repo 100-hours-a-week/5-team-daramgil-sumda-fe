@@ -23,14 +23,6 @@ const Collection: React.FC = () => {
   return (
     <div className="collection-container">
       <h1 className="title">컬렉션</h1>
-      <div className="dropdown-container">
-        <Select
-          value={selectedOption}
-          onChange={handleLayoutChange}
-          options={options}
-          classNamePrefix="custom-select"
-        />
-      </div>
 
       {selectedOption.value === "collection" && <SquirrelCollection />}
       {selectedOption.value === "tag" && <TagCollection />}
