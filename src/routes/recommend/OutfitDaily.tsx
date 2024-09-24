@@ -81,7 +81,9 @@ const OutfitDailyPage: React.FC = () => {
       }
       const data = await response.json();
       if (data.weatherDataJson) {
+        console.log(data.weatherDataJson);
         setWeatherData(data.weatherDataJson);
+        console.log(weatherData);
       } else {
         alert("날씨 정보를 가져올 수 없습니다.");
       }
@@ -142,19 +144,19 @@ const OutfitDailyPage: React.FC = () => {
       <div className="outfit-daily-weather-section">
         <div className="outfit-daily-weather-p">
           <div className="outfit-daily-weather-icon-container">
-            {weatherIconMap[weatherData.current.weather[0].main]}
+            {weatherIconMap[weatherData?.current?.weather[0]?.main]}
           </div>
           <p className="outfit-daily-weather-status">
-            {weatherMainToKorean[weatherData.current.weather[0].main] ||
+            {weatherMainToKorean[weatherData?.current?.weather[0]?.main] ||
               "알 수 없음"}
           </p>
         </div>
         <p className="outfit-daily-weather-current-temperature">
-          {Math.round(weatherData.current.temp)}°
+          {Math.round(weatherData?.current?.temp)}°
         </p>
         <div className="outfit-daily-weather-p">
           <p className="outfit-daily-weather-precipitation">
-            습도 {weatherData.current.humidity}%
+            습도 {weatherData?.current?.humidity}%
           </p>
         </div>
       </div>
