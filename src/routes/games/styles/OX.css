@@ -25,9 +25,8 @@
   text-align: center;
   font-size: 32px;
   margin-bottom: 10px;
-  font-weight: 400;
+  font-weight: 600;
   color: #000000;
-  font-family: "goorm-sans-bold";
 }
 
 .quiz-description {
@@ -82,8 +81,7 @@
   width: 60%;
   padding: 10px 30px;
   font-size: 18px;
-  font-weight: 400;
-  font-family: "goorm-sans-bold";
+  font-weight: bold;
   color: #000000;
   background-color: #c2dfac;
   border-radius: 8px;
