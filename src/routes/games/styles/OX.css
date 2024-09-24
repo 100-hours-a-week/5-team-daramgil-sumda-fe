@@ -82,7 +82,8 @@
   width: 60%;
   padding: 10px 30px;
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 400;
+  font-family: "goorm-sans-bold";
   color: #000000;
   background-color: #c2dfac;
   border-radius: 8px;
