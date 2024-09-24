@@ -146,6 +146,13 @@ const FallingAcorn: React.FC = () => {
     };
   }, [basketPosition, gameStarted, sendGameResult]);
 
+  // 점수 갱신 시 highScore와 비교하여 갱신
+  useEffect(() => {
+    if (score > (highScore || 0)) {
+      setHighScore(score); // 점수가 기존 최고 점수보다 높으면 최고 점수 갱신
+    }
+  }, [score, highScore]);
+
   const startGame = () => {
     setScore(0);
     setAcornPosition({ x: 50, y: 0 });
