@@ -24,7 +24,7 @@ import {
   PiSmileyMeltingLight,
 } from "react-icons/pi";
 
-import loading_gif from "../assets/loading.gif";
+import loading_gif from "../assets/loading4.gif";
 import LocationDropdown from "../components/LocationDropdown"; // 위치 드롭다운 컴포넌트
 
 import { toast } from "react-toastify";
@@ -378,24 +378,30 @@ const Home: React.FC = () => {
                         </p>
                       </div>
                     ) : (
-                      <p className="loading-text">
+                      <p className="loading-text-status">
                         대기질 정보를 불러오는 중입니다...
                       </p>
                     )}
                   </div>
-                  {loading ? (
-                    <img
-                      className="home-air-quality-icon"
-                      src={loading_gif}
-                      alt="통합대기환경지수 로딩 이미지"
-                    />
+                  {airQualityData ? (
+                    <div className="home-air-quality-icon">
+                      <img
+                        src={loading_gif}
+                        alt="통합대기환경지수 로딩 이미지"
+                        // style={{ width: "65px", height: "60px" }}
+                      />
+                    </div>
                   ) : (
                     <div className="home-air-quality-icon">
                       {airQualityData?.khaiValue === null ||
                       airQualityData?.khaiValue === undefined ||
                       airQualityData?.khaiValue === "null" ||
                       airQualityData?.khaiValue === 0 ? (
-                        <p>데이터 없음</p>
+                        <img
+                          src={loading_gif}
+                          alt="통합대기환경지수 로딩 이미지"
+                          // style={{ width: "65px", height: "60px" }}
+                        />
                       ) : (
                         getAirQualityGrade(airQualityData.khaiValue).icon
                       )}
