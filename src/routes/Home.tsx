@@ -97,12 +97,26 @@ const Home: React.FC = () => {
     navigate("/squirrel");
   };
 
+  // // 위치 ID가 변경될 때마다 날씨 및 대기질 데이터를 가져옴
+  // useEffect(() => {
+  //   if (id) {
+  //     setLoading(true);
+  //     fetchWeatherData(id).then(() => setLoading(false));
+  //     fetchAirQualityData(id);
+  //   }
+  // }, [id]);
   // 위치 ID가 변경될 때마다 날씨 및 대기질 데이터를 가져옴
   useEffect(() => {
     if (id) {
-      setLoading(true);
-      fetchWeatherData(id).then(() => setLoading(false));
-      fetchAirQualityData(id);
+      setLoading(true); // 로딩 시작
+      Promise.all([fetchWeatherData(id), fetchAirQualityData(id)])
+        .then(() => {
+          setLoading(false); // 두 데이터 모두 로드된 후에 로딩 종료
+        })
+        .catch(() => {
+          console.error("데이터를 가져오는 중 오류가 발생했습니다.");
+          setLoading(false);
+        });
     }
   }, [id]);
 
@@ -114,7 +128,6 @@ const Home: React.FC = () => {
   // 날씨 데이터를 가져오는 함수
   const fetchWeatherData = async (id: number) => {
     try {
-      setLoading(true); // 로딩 시작
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/acweather?id=${id}`
       );
@@ -126,15 +139,12 @@ const Home: React.FC = () => {
       }
     } catch (error) {
       console.error("날씨 데이터를 가져오는 중 오류가 발생했습니다:", error);
-    } finally {
-      setLoading(false); // 로딩 종료
     }
   };
 
   // 대기질 데이터를 가져오는 함수
   const fetchAirQualityData = async (id: number) => {
     try {
-      setLoading(true); // 로딩 시작
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/air/current?id=${id}`,
         {
@@ -152,8 +162,6 @@ const Home: React.FC = () => {
       setAirQualityData(data.data); // 대기질 데이터 설정
     } catch (error) {
       console.error("Error fetching data:", error);
-    } finally {
-      setLoading(false); // 로딩 종료
     }
   };
 
@@ -383,7 +391,7 @@ const Home: React.FC = () => {
                       </p>
                     )}
                   </div>
-                  {airQualityData ? (
+                  {loading ? (
                     <div className="home-air-quality-icon">
                       <img
                         src={loading_gif}
@@ -397,11 +405,7 @@ const Home: React.FC = () => {
                       airQualityData?.khaiValue === undefined ||
                       airQualityData?.khaiValue === "null" ||
                       airQualityData?.khaiValue === 0 ? (
-                        <img
-                          src={loading_gif}
-                          alt="통합대기환경지수 로딩 이미지"
-                          // style={{ width: "65px", height: "60px" }}
-                        />
+                        <p>데이터 없음</p>
                       ) : (
                         getAirQualityGrade(airQualityData.khaiValue).icon
                       )}
