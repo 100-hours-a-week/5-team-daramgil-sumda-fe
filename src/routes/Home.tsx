@@ -97,26 +97,12 @@ const Home: React.FC = () => {
     navigate("/squirrel");
   };
 
-  // // 위치 ID가 변경될 때마다 날씨 및 대기질 데이터를 가져옴
-  // useEffect(() => {
-  //   if (id) {
-  //     setLoading(true);
-  //     fetchWeatherData(id).then(() => setLoading(false));
-  //     fetchAirQualityData(id);
-  //   }
-  // }, [id]);
   // 위치 ID가 변경될 때마다 날씨 및 대기질 데이터를 가져옴
   useEffect(() => {
     if (id) {
-      setLoading(true); // 로딩 시작
-      Promise.all([fetchWeatherData(id), fetchAirQualityData(id)])
-        .then(() => {
-          setLoading(false); // 두 데이터 모두 로드된 후에 로딩 종료
-        })
-        .catch(() => {
-          console.error("데이터를 가져오는 중 오류가 발생했습니다.");
-          setLoading(false);
-        });
+      setLoading(true);
+      fetchWeatherData(id).then(() => setLoading(false));
+      fetchAirQualityData(id);
     }
   }, [id]);
 
@@ -128,6 +114,7 @@ const Home: React.FC = () => {
   // 날씨 데이터를 가져오는 함수
   const fetchWeatherData = async (id: number) => {
     try {
+      setLoading(true); // 로딩 시작
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/acweather?id=${id}`
       );
@@ -139,12 +126,15 @@ const Home: React.FC = () => {
       }
     } catch (error) {
       console.error("날씨 데이터를 가져오는 중 오류가 발생했습니다:", error);
+    } finally {
+      setLoading(false); // 로딩 종료
     }
   };
 
   // 대기질 데이터를 가져오는 함수
   const fetchAirQualityData = async (id: number) => {
     try {
+      setLoading(true); // 로딩 시작
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/air/current?id=${id}`,
         {
@@ -158,10 +148,11 @@ const Home: React.FC = () => {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
-      console.log("대기질 데이터:", data); // 데이터를 출력해서 확인
       setAirQualityData(data.data); // 대기질 데이터 설정
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false); // 로딩 종료
     }
   };
 
@@ -181,12 +172,6 @@ const Home: React.FC = () => {
     const safeWeatherType = weatherType ?? "0"; // 문자열인 경우 기본값을 '0'으로 설정
     const safeCurrentTemperature = currentTemperature ?? 0;
 
-    // 각 값 확인을 위한 콘솔 로그
-    console.log("safeKhaiGrade:", safeKhaiGrade);
-    console.log("safeKhaiValue:", safeKhaiValue);
-    console.log("safeWeatherType:", safeWeatherType);
-    console.log("safeCurrentTemperature:", safeCurrentTemperature);
-
     try {
       setLoading(true); // 로딩 시작
       const response = await fetch(
@@ -199,7 +184,6 @@ const Home: React.FC = () => {
       if (response.ok) {
         const data = await response.json();
         setAiSummary(data.data); // AI 요약 정보 설정
-        console.log(data.data); // aiSummary 대신 data.data 출력
       } else {
         console.error("AI 데이터를 가져오는 데 실패했습니다.");
       }
@@ -221,9 +205,6 @@ const Home: React.FC = () => {
             .main as keyof typeof weatherMainToKorean
         ];
       const currentTemperature = Math.round(weatherData.current.temp); // 온도 반올림
-
-      console.log("khaiGrade 값:", khaiGrade); // 여기에서 khaiGrade 값을 확인
-      console.log("khaiValue 값:", khaiValue); // 마찬가지로 khaiValue도 확인
 
       fetchSimpleAIResponse(
         khaiGrade,

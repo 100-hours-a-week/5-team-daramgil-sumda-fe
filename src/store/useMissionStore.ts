@@ -15,7 +15,6 @@ const useMissionStore = create<MissionState>()(
       completeDailyAttendance: async () => {
         const { jwtToken, isLoggedIn, squirrelData, setSquirrelData } =
           useAuthStore.getState(); // Auth 상태 사용
-        console.log(jwtToken);
 
         // 회원이 아닌 경우 미션 로직을 실행하지 않음
         if (!isLoggedIn) {
@@ -35,7 +34,6 @@ const useMissionStore = create<MissionState>()(
             }
           );
           const data = await response.json();
-          console.log(data);
 
           // 서버에서 반환된 데이터의 상태가 SUCCESS일 경우 미션 완료 처리
           if (response.ok && data.data.status === "SUCCESS") {
@@ -45,7 +43,6 @@ const useMissionStore = create<MissionState>()(
             });
             alert("출석 미션을 완료했습니다! 도토리 1개가 지급됩니다.");
           } else if (data.data.status === "ERROR") {
-            console.log("이미 완료된 미션입니다. (출석체크)");
           }
         } catch (error) {
           console.error("출석 미션 처리 실패:", error);
@@ -85,7 +82,6 @@ const useMissionStore = create<MissionState>()(
               "대기오염 조회 미션을 완료했습니다! 도토리 1개가 지급됩니다."
             );
           } else if (data.data.status === "ERROR") {
-            console.log("이미 완료된 미션입니다. (대기정보조회)");
           }
         } catch (error) {
           console.error("대기오염 조회 미션 처리 실패:", error);
@@ -123,7 +119,6 @@ const useMissionStore = create<MissionState>()(
             });
             alert("OX퀴즈 미션을 완료했습니다! 도토리 1개가 지급됩니다.");
           } else if (data.data.status === "ERROR") {
-            console.log("이미 완료된 미션입니다. (OX퀴즈)");
           }
         } catch (error) {
           console.error("OX퀴즈 미션 처리 실패:", error);
@@ -163,7 +158,6 @@ const useMissionStore = create<MissionState>()(
               "다람쥐와 대화하기 미션을 완료했습니다! 도토리 1개가 지급됩니다."
             );
           } else if (data.data.status === "ERROR") {
-            console.log("이미 완료된 미션입니다. (다람쥐와 대화)");
           }
         } catch (error) {
           console.error("다람쥐와 대화 미션 처리 실패:", error);

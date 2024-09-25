@@ -72,7 +72,6 @@ const Adopt: React.FC = () => {
       );
       // 토큰이 만료된 경우
       if (response.status === 401) {
-        console.log("토큰이 만료되었습니다. 재발급 시도 중...");
         await reissueToken(); // 토큰 재발급 요청
         // 재발급 후 요청을 다시 시도
         response = await fetch(

@@ -173,17 +173,6 @@ const Squirrel: React.FC = () => {
     };
   }, [isQuestionsVisible]);
 
-  // useEffect(() => {
-  //   if (weatherData) {
-  //     console.log("Weather data updated:", weatherData);
-  //   }
-  // }, [weatherData]);
-
-  // useEffect(() => {
-  //   if (airQualityData) {
-  //     console.log("Air quality data updated:", airQualityData);
-  //   }
-  // }, [airQualityData]);
   // 날씨 데이터를 가져오는 함수
   const fetchWeatherData = async (id: number) => {
     try {
@@ -248,7 +237,6 @@ const Squirrel: React.FC = () => {
       }
       const data = await response.json();
       setSquirrelData(data.data);
-      console.log(squirrelData);
 
       setProgress(data.data.feed);
     } catch (error) {

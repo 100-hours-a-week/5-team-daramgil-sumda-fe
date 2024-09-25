@@ -68,7 +68,6 @@ const App: React.FC = () => {
         );
 
         const { data } = response.data;
-        console.log(data);
         if (response.status === 200) {
           login(data.access_token); // 액세스 토큰을 상태에 저장
         } else {
