@@ -156,7 +156,6 @@ const AQIDetails: React.FC = () => {
   const handleFetchError = (error: any, customErrorMessage?: string) => {
     if (error instanceof Error) {
       if (error.name === "AbortError") {
-        console.log("Fetch aborted");
       } else {
         console.error(error);
         if (customErrorMessage) setError(customErrorMessage);

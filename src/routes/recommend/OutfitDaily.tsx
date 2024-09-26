@@ -81,9 +81,7 @@ const OutfitDailyPage: React.FC = () => {
       }
       const data = await response.json();
       if (data.weatherDataJson) {
-        console.log(data.weatherDataJson);
         setWeatherData(data.weatherDataJson);
-        console.log(weatherData);
       } else {
         alert("날씨 정보를 가져올 수 없습니다.");
       }
@@ -104,7 +102,6 @@ const OutfitDailyPage: React.FC = () => {
     try {
       setLoading(true); // 로딩 시작
       // 쿼리 스트링 생성
-      console.log(weatherType, currentTemp, highTemp, lowTemp);
       // API 요청 시 쿼리 스트링 포함
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/ai/clothes?weatherType=${weatherType}&currentTemp=${currentTemp}&highTemp=${highTemp}&lowTemp=${lowTemp}`
@@ -112,7 +109,6 @@ const OutfitDailyPage: React.FC = () => {
       if (response.ok) {
         const data = await response.json();
         setAiClothes(data.data);
-        console.log(aiClothes);
       } else {
         console.error("AI 데이터를 가져오는 데 실패했습니다.");
       }

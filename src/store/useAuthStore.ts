@@ -66,7 +66,6 @@ const useAuthStore = create<AuthState>()(
           );
 
           const { data } = response.data;
-          console.log("새로운 액세스 토큰:", data.access_token);
 
           if (response.status === 200) {
             get().login(data.access_token); // 새로 발급받은 액세스 토큰을 상태에 저장

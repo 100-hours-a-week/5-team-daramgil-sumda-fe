@@ -42,7 +42,6 @@ const FallingAcorn: React.FC = () => {
       );
       // 토큰 만료 시 재발급 후 재요청
       if (response.status === 401) {
-        console.log("토큰이 만료되었습니다. 재발급 시도 중...");
         await reissueToken();
         response = await axios.get(
           `${process.env.REACT_APP_API_URL}/game/highest-score?gameTypeId=1`,
@@ -59,7 +58,6 @@ const FallingAcorn: React.FC = () => {
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         if (error.response && error.response.status === 404) {
-          console.log("게임 로그를 찾을 수 없습니다.");
         } else {
           console.error("최고 점수를 불러오는데 실패했습니다:", error);
         }
@@ -89,7 +87,6 @@ const FallingAcorn: React.FC = () => {
       );
       // 토큰 만료 시 재발급 후 재요청
       if (response.status === 401) {
-        console.log("토큰이 만료되었습니다. 재발급 시도 중...");
         await reissueToken();
         response = await axios.post(
           `${process.env.REACT_APP_API_URL}/game/result`,
@@ -107,7 +104,6 @@ const FallingAcorn: React.FC = () => {
       }
       if (response.status === 200) {
         const { getAcorns, userAcorns } = response.data.data;
-        console.log(`획득한 도토리: ${getAcorns}, 보유 도토리: ${userAcorns}`);
         alert(`게임 보상으로 도토리 ${getAcorns}개가 지급되었습니다.`);
       }
     } catch (error) {

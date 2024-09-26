@@ -24,7 +24,7 @@ import {
   PiSmileyMeltingLight,
 } from "react-icons/pi";
 
-import loading_gif from "../assets/loading.gif";
+import loading_gif from "../assets/loading4.gif";
 import LocationDropdown from "../components/LocationDropdown"; // 위치 드롭다운 컴포넌트
 
 import { toast } from "react-toastify";
@@ -148,7 +148,6 @@ const Home: React.FC = () => {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
-      console.log("대기질 데이터:", data); // 데이터를 출력해서 확인
       setAirQualityData(data.data); // 대기질 데이터 설정
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -173,12 +172,6 @@ const Home: React.FC = () => {
     const safeWeatherType = weatherType ?? "0"; // 문자열인 경우 기본값을 '0'으로 설정
     const safeCurrentTemperature = currentTemperature ?? 0;
 
-    // 각 값 확인을 위한 콘솔 로그
-    console.log("safeKhaiGrade:", safeKhaiGrade);
-    console.log("safeKhaiValue:", safeKhaiValue);
-    console.log("safeWeatherType:", safeWeatherType);
-    console.log("safeCurrentTemperature:", safeCurrentTemperature);
-
     try {
       setLoading(true); // 로딩 시작
       const response = await fetch(
@@ -191,7 +184,6 @@ const Home: React.FC = () => {
       if (response.ok) {
         const data = await response.json();
         setAiSummary(data.data); // AI 요약 정보 설정
-        console.log(data.data); // aiSummary 대신 data.data 출력
       } else {
         console.error("AI 데이터를 가져오는 데 실패했습니다.");
       }
@@ -213,9 +205,6 @@ const Home: React.FC = () => {
             .main as keyof typeof weatherMainToKorean
         ];
       const currentTemperature = Math.round(weatherData.current.temp); // 온도 반올림
-
-      console.log("khaiGrade 값:", khaiGrade); // 여기에서 khaiGrade 값을 확인
-      console.log("khaiValue 값:", khaiValue); // 마찬가지로 khaiValue도 확인
 
       fetchSimpleAIResponse(
         khaiGrade,
@@ -378,17 +367,19 @@ const Home: React.FC = () => {
                         </p>
                       </div>
                     ) : (
-                      <p className="loading-text">
+                      <p className="loading-text-status">
                         대기질 정보를 불러오는 중입니다...
                       </p>
                     )}
                   </div>
                   {loading ? (
-                    <img
-                      className="home-air-quality-icon"
-                      src={loading_gif}
-                      alt="통합대기환경지수 로딩 이미지"
-                    />
+                    <div className="home-air-quality-icon">
+                      <img
+                        src={loading_gif}
+                        alt="통합대기환경지수 로딩 이미지"
+                        // style={{ width: "65px", height: "60px" }}
+                      />
+                    </div>
                   ) : (
                     <div className="home-air-quality-icon">
                       {airQualityData?.khaiValue === null ||
