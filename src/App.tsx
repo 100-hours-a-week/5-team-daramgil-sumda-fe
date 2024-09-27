@@ -24,10 +24,12 @@ import OutfitDaily from "./routes/recommend/OutfitDaily";
 import OutfitByTemp from "./routes/recommend/OutfitByTemp";
 
 import Squirrel from "./routes/squirrel/Squirrel";
+import NonSquirrel from "./routes/squirrel/NonSquirrel";
 import Adopt from "./routes/squirrel/Adopt";
 import Collection from "./routes/squirrel/collection/Collection";
 
 import DaliyMission from "./routes/games/DailyMission";
+import NonDailyMission from "./routes/games/NonDailyMission";
 import GameList from "./routes/games/GameList";
 import OX from "./routes/games/OX";
 import Answer from "./routes/games/Answer";
@@ -40,6 +42,8 @@ import UnderConstruction from "./routes/UnderConstruction";
 import Login from "./routes/Login";
 
 import PrivateRoute from "./components/PrivateRoute";
+import SquirrelRoute from "./components/SquirrelRoute";
+import MissionRoute from "./components/MissionRoute";
 import useAuthStore from "./store/useAuthStore";
 import axios from "axios";
 
@@ -108,11 +112,12 @@ const App: React.FC = () => {
           <Route
             path="/squirrel"
             element={
-              <PrivateRoute>
+              <SquirrelRoute>
                 <Squirrel />
-              </PrivateRoute>
+              </SquirrelRoute>
             }
           />
+
           <Route
             path="/adopt"
             element={
@@ -132,9 +137,9 @@ const App: React.FC = () => {
           <Route
             path="/daily"
             element={
-              <PrivateRoute>
+              <MissionRoute>
                 <DaliyMission />
-              </PrivateRoute>
+              </MissionRoute>
             }
           />
           <Route path="/games" element={<GameList />} />
@@ -160,6 +165,8 @@ const App: React.FC = () => {
           <Route path="/login" element={<Login />} />
 
           <Route path="/underConstruction" element={<UnderConstruction />} />
+          <Route path="/non_squirrel" element={<NonSquirrel />} />
+          <Route path="/non_daily" element={<NonDailyMission />} />
         </Route>
       </Routes>
     </div>

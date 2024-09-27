@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./styles/Squirrel.css";
 import Acorn_img from "../../assets/acorn.png";
+import Guide_Squirrel from "../../assets/quide-squirrel.png";
+import kakao_login_button_img from "../../assets/icons/kakao_login_large_wide.png";
 import useAuthStore from "../../store/useAuthStore";
 import useMissionStore from "../../store/useMissionStore";
 import LocationDropdown from "../../components/LocationDropdown";
@@ -17,7 +19,7 @@ interface ChatMessage {
   sender: "user" | "bot";
   message: string;
 }
-const Squirrel: React.FC = () => {
+const NonSquirrel: React.FC = () => {
   const [airQualityData, setAirQualityData] = useState<any>(null);
   const [weatherData, setWeatherData] = useState<any>(null);
   const { squirrelData, setSquirrelData, jwtToken, reissueToken } =
@@ -86,6 +88,7 @@ const Squirrel: React.FC = () => {
   };
   // 질문 목록 요소 참조 생성
   const questionContainerRef = useRef<HTMLDivElement | null>(null);
+  const { attemptLogin } = useAuthStore();
   // 위치 선택 핸들러
   const handleLocationSelect = (location: string, id: number) => {
     setId(id); // 선택된 위치의 ID 설정
@@ -97,10 +100,6 @@ const Squirrel: React.FC = () => {
       fetchAirQualityData(id);
     }
   }, [id]);
-
-  useEffect(() => {
-    fetchSquirrelData();
-  }, []);
   const handleSendMessage = async (message?: string) => {
     const question = message || inputMessage.trim();
     if (!question) return;
@@ -211,203 +210,78 @@ const Squirrel: React.FC = () => {
       console.error("Error fetching data:", error);
     }
   };
-  // API 호출 함수
-  const fetchSquirrelData = async () => {
-    try {
-      let response = await fetch(`${process.env.REACT_APP_API_URL}/squirrel/`, {
-        method: "GET",
-        credentials: "include", // 쿠키를 요청에 포함
-        headers: {
-          Authorization: `Bearer ${jwtToken}`,
-        },
-      });
-      if (response.status === 401) {
-        // 토큰 만료 시
-        await reissueToken();
-        response = await fetch(`${process.env.REACT_APP_API_URL}/squirrel/`, {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            Authorization: `Bearer ${jwtToken}`,
-          },
-        });
-      }
-      if (!response.ok) {
-        throw new Error("다람쥐 정보를 불러오는데 실패했습니다.");
-      }
-      const data = await response.json();
-      setSquirrelData(data.data);
-
-      setProgress(data.data.feed);
-    } catch (error) {
-      console.error("API 호출 에러:", error);
-    }
-  };
 
   // squirrelData가 null이 아닐 때, type과 level에 따라 이미지를 선택
   const squirrelImageSrc = squirrelData
     ? squirrelImages[squirrelData.type]?.[squirrelData.level || 1] // level이 0이면 1로 처리
-    : "/squirrels/main/기본_다람쥐_lv1.png"; // squirrelData가 null인 경우 기본 이미지
+    : "/squirrels/main/기본-다람쥐-lv1.png"; // squirrelData가 null인 경우 기본 이미지
 
   const handleAcornClick = () => {
     setIsModalOpen(true);
   };
 
-  const handleAcornChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedAcorns(
-      Math.min(parseInt(e.target.value), squirrelData?.userAcorns || 0)
-    );
-  };
-
-  const handleFeedAcorns = async () => {
-    if (!squirrelData || selectedAcorns <= 0) return;
-    try {
-      // 도토리 주기 API 호출
-      let response = await fetch(
-        `${process.env.REACT_APP_API_URL}/squirrel/feed`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${jwtToken}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ acorns: selectedAcorns }),
-        }
-      );
-      if (response.status === 401) {
-        // 토큰 만료 시
-        await reissueToken();
-        response = await fetch(
-          `${process.env.REACT_APP_API_URL}/squirrel/feed`,
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${jwtToken}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ acorns: selectedAcorns }),
-          }
-        );
-      }
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "도토리 주기 실패");
-      }
-      const data = await response.json();
-      // 서버 응답에 따라 Zustand 상태 업데이트
-      setSquirrelData({
-        ...squirrelData,
-        userAcorns: data.data.userAcorns,
-        type: data.data.type,
-        level: data.data.level,
-        feed: data.data.ateAcorns,
-      });
-
-      setProgress(data.data.ateAcorns);
-      alert("도토리를 성공적으로 줬습니다!");
-    } catch (error: any) {
-      alert(error.message);
-      console.error("도토리 주기 에러:", error);
-    } finally {
-      setSelectedAcorns(0);
-      setIsModalOpen(false);
-    }
-  };
-
   const navigate = useNavigate();
-  const handleNewSquirrel = () => {
-    navigate(`/adopt`);
+  const handleLogin = () => {
+    attemptLogin(); // 로그인 시도 상태를 true로 설정
+    window.location.href = `${process.env.REACT_APP_LOGIN_URL}/oauth2/authorization/kakao`; // 리다이렉트
   };
 
   const toggleQuestions = () => {
     setIsQuestionsVisible(!isQuestionsVisible);
   };
-
-  if (!squirrelData) {
-    return <div>로딩 중...</div>;
-  }
   return (
     <div className="squirrel-page">
       <div className="squirrel-container">
         <LocationDropdown onLocationSelect={handleLocationSelect} />
-        <div className="level-info">
-          <div className="acorn-info">
-            <div className="acorn-count" onClick={handleAcornClick}>
-              <img src={Acorn_img} alt="acorn-icon" />
-              {/* {squirrelData.userAcorns} */}
-            </div>
+        <div className="squirrel-guide">
+          <div className="acorn-count" onClick={handleAcornClick}>
+            <img src={Acorn_img} alt="acorn-icon" className="acorn-guide" />
+            {/* {squirrelData.userAcorns} */}
           </div>
-          <div className="progress-bar">
-            <div
-              className="progress"
-              style={{
-                width: `${
-                  ((squirrelData.feed - maxLevels[squirrelData.level - 1]) /
-                    (maxLevels[squirrelData.level] -
-                      maxLevels[squirrelData.level - 1])) *
-                  100
-                }%`,
-              }}
-            />
-          </div>
+          <p>
+            로그인하고 귀여운 다람쥐에게 도토리를 주세요!
+            <br />
+          </p>
           {isModalOpen && (
             <div className="acorn-modal" onClick={() => setIsModalOpen(false)}>
               <div
                 className="modal-content"
                 onClick={(e) => e.stopPropagation()}
               >
-                <h3>도토리 주기</h3>
-                <div className="feed-acorn">
-                  <img src={Acorn_img} alt="acorn-icon" />
-                  {/* <p>LV. {squirrelData.level}</p> */}
+                <h3>다람쥐 키우기</h3>
+                <div className="guide-squirrel">
+                  <img src={Guide_Squirrel} alt="acorn-icon" />
+                  <p>로그인하고 나만의 다람쥐를 키워보세요.</p>
                   <p>
-                    다람쥐에게 도토리를 주고
+                    도토리를 모아 다람쥐를 성장시키고,
                     <br />
-                    성장시키세요!
-                  </p>
-                  <p>보유중인 도토리 : {squirrelData.userAcorns}개</p>
-                  <input
-                    type="range"
-                    min="0"
-                    max={squirrelData.userAcorns}
-                    value={selectedAcorns}
-                    onChange={handleAcornChange}
-                  />
-                  <p>
-                    {/* {selectedAcorns}/{maxLevels[squirrelData.level - 1]} */}
-                    {selectedAcorns}/{squirrelData.userAcorns}
+                    7종의 특별한 다람쥐를 만나보세요!
                   </p>
                 </div>
-                <button className="acorn-modal-btn" onClick={handleFeedAcorns}>
-                  도토리 주기
-                </button>
+                <div className="modal-btns">
+                  <button
+                    className="login-button-squirrel"
+                    onClick={handleLogin}
+                  >
+                    <img
+                      className="login-button-img"
+                      src={kakao_login_button_img}
+                      alt="카카오 로그인 이미지"
+                    />
+                  </button>
+                </div>
               </div>
             </div>
           )}
-        </div>
-
-        <div className="level-text">
-          <p>LV. {squirrelData.level}</p>
-          <p>
-            {squirrelData.level < 4
-              ? `LV. ${squirrelData.level + 1}까지 ${
-                  maxLevels[squirrelData.level] - squirrelData.feed
-                }개`
-              : squirrelData.feed < 100
-              ? `새 다람쥐 분양까지 ${100 - squirrelData.feed}개`
-              : "최대 레벨입니다"}
-          </p>
         </div>
 
         <div className="squirrel-section">
           <div className="chat-squirrel">
             <img src={squirrelImageSrc} alt="chat-squirrel" />
           </div>
-          {squirrelData.level === 4 && squirrelData.feed >= 100 && (
-            <button className="new-squirrel-button" onClick={handleNewSquirrel}>
-              새 다람쥐 분양받기
-            </button>
-          )}
+          <button className="new-squirrel-button" onClick={handleLogin}>
+            로그인하기
+          </button>
         </div>
 
         <div className="chat-section">
@@ -513,4 +387,4 @@ const Squirrel: React.FC = () => {
   );
 };
 
-export default Squirrel;
+export default NonSquirrel;
