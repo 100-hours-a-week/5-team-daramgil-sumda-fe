@@ -500,6 +500,11 @@ const Squirrel: React.FC = () => {
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
                   maxLength={2000}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleSendMessage();
+                    }
+                  }}
                 />
                 <button onClick={() => handleSendMessage()}>
                   <FaArrowUp />
