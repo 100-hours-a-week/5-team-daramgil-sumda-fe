@@ -101,8 +101,13 @@ const Home: React.FC = () => {
   useEffect(() => {
     if (id) {
       setLoading(true);
-      fetchWeatherData(id).then(() => setLoading(false));
-      fetchAirQualityData(id);
+      // 날씨와 대기질 데이터를 모두 가져온 후 로딩 종료
+      Promise.all([fetchWeatherData(id), fetchAirQualityData(id)])
+        .then(() => setLoading(false))
+        .catch((error) => {
+          console.error("Error loading data:", error);
+          setLoading(false);
+        });
     }
   }, [id]);
 
@@ -216,17 +221,18 @@ const Home: React.FC = () => {
   }, [airQualityData, weatherData]);
   useEffect(() => {
     // 컴포넌트 마운트 시 출석 체크 호출
-    const checkAttendance = async () => {
-      try {
-        await completeDailyAttendance();
-        toast.success("출석 미션을 완료했습니다. 도토리 1개가 지급됩니다.");
-      } catch (error) {
-        toast.error("이미 완료된 미션입니다."); // 에러 시 처리
-      }
-    };
-
-    checkAttendance();
-  }, [completeDailyAttendance, isLoggedIn, login]);
+    if (!loading) {
+      const checkAttendance = async () => {
+        try {
+          await completeDailyAttendance();
+          toast.success("출석 미션을 완료했습니다. 도토리 1개가 지급됩니다.");
+        } catch (error) {
+          toast.error("이미 완료된 미션입니다."); // 에러 시 처리
+        }
+      };
+      checkAttendance();
+    }
+  }, [loading, completeDailyAttendance, isLoggedIn, login]);
 
   // 다람쥐 이미지 목록
   const squirrelImages = [basic, knight, samurai, space, cook, pilot, hiphop];
