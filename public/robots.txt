@@ -1,0 +1,14 @@
+# 모든 사용자 에이전트에게 적용
+User-agent: *
+
+# /api/, /aqi-details, /weatherinfo, /squirrel 경로 크롤링 차단
+Disallow: /api/
+Disallow: /aqi-details
+Disallow: /weatherinfo
+Disallow: /squirrel
+
+# 그 외 모든 페이지는 크롤링 허용
+Allow: /
+
+# 사이트맵 위치 지정
+Sitemap: https://sumda.co.kr/sitemap.xml

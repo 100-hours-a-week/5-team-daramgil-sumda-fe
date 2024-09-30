@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- 홈페이지 -->
+  <url>
+    <loc>https://sumda.co.kr/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- 대기질 상세 정보 페이지 -->
+  <url>
+    <loc>https://sumda.co.kr/aqi-details</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 날씨 정보 페이지 -->
+  <url>
+    <loc>https://sumda.co.kr/weatherinfo</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 오늘의 옷차림 추천 -->
+  <url>
+    <loc>https://sumda.co.kr/outfitdaily</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- 즐겨찾기 -->
+  <url>
+    <loc>https://sumda.co.kr/favorites</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- 공지 -->
+  <url>
+    <loc>https://sumda.co.kr/notice</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- 문의 -->
+  <url>
+    <loc>https://sumda.co.kr/contact</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <!-- 온도별 옷차림 추천 -->
+  <url>
+    <loc>https://sumda.co.kr/outfitbytemp</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- 다람쥐 관련 페이지 -->
+  <url>
+    <loc>https://sumda.co.kr/adopt</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://sumda.co.kr/collection</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- 일일 미션 -->
+  <url>
+    <loc>https://sumda.co.kr/daily</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 게임 관련 페이지 -->
+  <url>
+    <loc>https://sumda.co.kr/games</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- OX 퀴즈 -->
+  <url>
+    <loc>https://sumda.co.kr/games/ox</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- 도토리 받기 게임 -->
+  <url>
+    <loc>https://sumda.co.kr/games/fallingacorn</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- 설정 및 로그인 페이지 -->
+  <url>
+    <loc>https://sumda.co.kr/setting</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://sumda.co.kr/login</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+</urlset>

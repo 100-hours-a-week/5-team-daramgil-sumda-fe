@@ -1,30 +1,102 @@
 <!DOCTYPE html>
 <html lang="ko">
   <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-49WL8TCGPR"></script>
+    <!-- Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-49WL8TCGPR"
+    ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag() { dataLayer.push(arguments); }
-      gtag('js', new Date());
-
-      gtag('config', 'G-49WL8TCGPR');
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-49WL8TCGPR");
     </script>
+
+    <!-- 기본 메타 태그 -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <!-- 웹페이지 제목 -->
     <title>숨쉬는 다람쥐, 숨다</title>
+
+    <!-- Favicon -->
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P4Z22KXM" height="0" width="0"
-        style="display:none;visibility:hidden"></iframe></noscript>
+
+    <!-- SEO Meta Tags -->
+    <!-- 페이지 설명: 검색 엔진이 이 페이지의 내용을 알 수 있도록 도와줌 -->
+    <meta
+      name="description"
+      content="숨 쉬는 다람쥐 - 대기질, 미세먼지, 날씨 정보를 기반으로 건강한 일상을 책임지는 서비스입니다. 실시간 대기질 조회, 다람쥐와의 소통, 일일 미션으로 도토리 모으기 등 다양한 기능을 제공합니다."
+    />
+
+    <!-- 페이지 키워드: 검색 엔진 최적화를 위한 관련 키워드 설정 -->
+    <meta
+      name="keywords"
+      content="숨 쉬는 다람쥐, 대기질, 미세먼지, 날씨 정보, 건강 관리, 다람쥐 캐릭터, 도토리 모으기, OX 퀴즈, 실시간 대기 정보, 날씨 예보"
+    />
+
+    <!-- 페이지 작성자 정보 -->
+    <meta name="author" content="다람길" />
+
+    <!-- Open Graph 메타 태그: 페이스북과 같은 소셜 미디어에서 공유될 때 사용하는 정보 -->
+    <meta
+      property="og:title"
+      content="숨 쉬는 다람쥐 - 건강한 숨을 위한 스마트한 선택"
+    />
+    <meta
+      property="og:description"
+      content="대기 오염 정보와 날씨를 쉽게 확인하고, 다람쥐와 소통하며 도토리를 모으는 재미를 누리세요."
+    />
+    <meta property="og:image" content="https://sumda.co.kr/thumbnail.png" />
+    <meta property="og:url" content="https://sumda.co.kr" />
+
+    <!-- 트위터 메타 태그: 트위터에서 공유될 때 사용하는 정보 -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="숨 쉬는 다람쥐 - 건강한 숨을 위한 스마트한 선택"
+    />
+    <meta
+      name="twitter:description"
+      content="대기질 정보, 날씨 정보, 다람쥐와의 소통 등 다양한 기능을 제공합니다."
+    />
+    <meta name="twitter:image" content="https://sumda.co.kr/thumbnail.png" />
+
+    <!-- 검색 엔진에 페이지를 크롤링하고 링크를 따라가도록 허용 -->
+    <meta name="robots" content="index, follow" />
+    <!-- End of SEO Meta Tags -->
+
+    <!-- NoScript 태그: 자바스크립트를 지원하지 않는 브라우저를 위한 태그 -->
+    <noscript>
+      <iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-P4Z22KXM"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe>
+    </noscript>
   </head>
 
   <body>
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-P4Z22KXM');</script>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <!-- Google Tag Manager 스크립트 -->
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-P4Z22KXM");
+    </script>
+
+    <!-- React Root Element -->
     <div id="root"></div>
   </body>
 </html>
