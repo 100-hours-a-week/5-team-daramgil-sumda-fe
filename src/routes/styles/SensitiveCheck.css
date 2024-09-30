@@ -47,6 +47,7 @@
 
 .sub-title .text-content {
   font-size: 14px;
+  font-weight: lighter;
 }
 
 .sub-title strong {
@@ -92,17 +93,17 @@
   box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
   transform: translateY(-2px);
   color: #ffffff;
-  background-color: #000dff;
+  background-color: #4d55f6;
 }
 .option-button2:hover {
   box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
   transform: translateY(-2px);
   color: #ffffff;
-  background-color: #ff0000;
+  background-color: #d74444;
 }
 
 .warning {
-  color: red;
+  color: #d61919;
   font-size: 14px;
   margin-bottom: 20px;
 }

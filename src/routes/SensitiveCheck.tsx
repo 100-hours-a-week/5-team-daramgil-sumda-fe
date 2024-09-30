@@ -53,7 +53,7 @@ const SensitiveCheck: React.FC = () => {
             className={`option-button1 ${selected === "no" ? "selected" : ""}`}
             onClick={() => handleSelect("no")}
           >
-            괜찮아요
+            아니요
           </button>
         </div>
 
