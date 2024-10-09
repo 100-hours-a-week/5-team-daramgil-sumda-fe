@@ -5,43 +5,70 @@
   font-weight: 400;
   font-style: normal;
 }
-.check-container {
+.check-page {
+  max-width: 400px;
   min-height: calc(100vh - 223px);
+  margin: 0 auto;
+  padding: 20px 30px 0 30px;
+}
+.check-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: left;
   width: 100%;
-  text-align: center;
+  text-align: left;
   font-family: "goorm-sans-bold";
 }
 
 .check-title {
   font-size: 24px;
   font-weight: bold;
-  margin: 30px;
+  margin: 30px auto 15px 0;
 }
 
 .sub-title {
-  font-size: 14px;
-  color: red;
-  margin: 10px 10px 30px 10px;
-  line-height: 1.6;
+  display: flex; /* 이미지와 텍스트를 가로로 나란히 배치 */
+  align-items: center; /* 세로 중앙 정렬 */
+  border-radius: 15px;
+  background-color: #e7f4f1; /* 민트색 배경 */
+  padding: 15px;
+  font-size: 14px; /* 폰트 크기 */
+  color: #333; /* 텍스트 색상 */
+  line-height: 1.5;
+  margin: 30px auto 40px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
 }
 
-.highlight {
+.sub-title .icon {
+  width: 40px; /* 아이콘 크기 */
+  height: 40px;
+  margin-right: 10px; /* 텍스트와의 간격 */
+}
+
+.sub-title .text-content {
+  font-size: 14px;
+  font-weight: lighter;
+}
+
+.sub-title strong {
+  display: block;
   font-size: 16px;
   font-weight: bold;
+  margin-bottom: 4px;
+  color: #000;
 }
 
-.button-group {
+.check-button-group {
   display: flex;
-  gap: 25px;
-  margin-bottom: 20px;
+  justify-content: space-between;
+  width: 100%;
+  gap: 20px;
+  margin-bottom: 30px;
 }
 
 .option-button1,
 .option-button2 {
-  width: 100px;
+  width: 47%;
   padding: 15px 20px;
   font-size: 18px;
   background-color: #e0e0e0;
@@ -66,32 +93,32 @@
   box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
   transform: translateY(-2px);
   color: #ffffff;
-  background-color: #000dff;
+  background-color: #4d55f6;
 }
 .option-button2:hover {
   box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
   transform: translateY(-2px);
   color: #ffffff;
-  background-color: #ff0000;
+  background-color: #d74444;
 }
 
 .warning {
-  color: red;
+  color: #d61919;
   font-size: 14px;
   margin-bottom: 20px;
 }
 
-.info {
+.check-info {
   font-size: 14px;
   color: #555;
-  margin: 0 30px 30px 40px;
+  margin: 0 auto 20px 0;
   line-height: 1.6;
 }
 
 .complete-button {
   width: 120px;
   padding: 15px 20px;
-  margin-bottom: 30px;
+  margin: 0 auto 30px auto;
   font-size: 17px;
   background-color: #e0e0e0;
   border: none;

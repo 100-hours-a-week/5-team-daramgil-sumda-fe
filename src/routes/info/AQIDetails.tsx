@@ -39,7 +39,7 @@ const AQIDetails: React.FC = () => {
   const [airPollutionImages, setAirPollutionImages] = useState<any[]>([]);
   const [imageIndex, setImageIndex] = useState(0);
   const [id, setId] = useState<number | null>(null);
-
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
   const prevIdRef = useRef<number | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
 
@@ -57,10 +57,14 @@ const AQIDetails: React.FC = () => {
 
       abortControllerRef.current = new AbortController();
 
-      // 새로운 데이터 요청
-      fetchAirPollutionData(id, abortControllerRef.current.signal);
-      fetchAirQualityData(id, abortControllerRef.current.signal);
-      fetchAirPollutionImages(abortControllerRef.current.signal);
+      // 새로운 데이터 요청 후 로딩 완료 상태 업데이트
+      Promise.all([
+        fetchAirPollutionData(id, abortControllerRef.current.signal),
+        fetchAirQualityData(id, abortControllerRef.current.signal),
+        fetchAirPollutionImages(abortControllerRef.current.signal),
+      ])
+        .then(() => setIsDataLoaded(true)) // 모든 데이터가 로딩 완료된 후 true로 설정
+        .catch((error) => handleFetchError(error));
     }
   }, [id]);
 
@@ -174,19 +178,21 @@ const AQIDetails: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // 모든 데이터 로딩이 완료된 후에 미션 체크
   useEffect(() => {
-    // 컴포넌트 마운트 시 출석 체크 호출
-    const checkAir = async () => {
-      try {
-        await completeDailyAir();
-        toast.success("출석 미션을 완료했습니다. 도토리 1개가 지급됩니다.");
-      } catch (error) {
-        toast.error("이미 완료된 미션입니다."); // 에러 시 처리
-      }
-    };
+    if (isDataLoaded) {
+      const checkAir = async () => {
+        try {
+          await completeDailyAir();
+          toast.success("출석 미션을 완료했습니다. 도토리 1개가 지급됩니다.");
+        } catch (error) {
+          toast.error("이미 완료된 미션입니다.");
+        }
+      };
 
-    checkAir();
-  }, [completeDailyAir]);
+      checkAir();
+    }
+  }, [isDataLoaded, completeDailyAir]);
 
   // 위치 선택 핸들러
   const handleLocationSelect = (location: string, id: number) => {

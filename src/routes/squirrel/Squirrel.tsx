@@ -350,7 +350,6 @@ const Squirrel: React.FC = () => {
               }}
             />
           </div>
-
           {isModalOpen && (
             <div className="acorn-modal" onClick={() => setIsModalOpen(false)}>
               <div
@@ -501,7 +500,14 @@ const Squirrel: React.FC = () => {
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
                   maxLength={2000}
+                  onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault(); // 기본 엔터 동작 방지 (폼 제출 등)
+                      handleSendMessage();
+                    }
+                  }}
                 />
+
                 <button onClick={() => handleSendMessage()}>
                   <FaArrowUp />
                 </button>

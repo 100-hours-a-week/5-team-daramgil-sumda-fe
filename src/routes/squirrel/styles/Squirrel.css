@@ -5,6 +5,23 @@
   font-weight: 400;
   font-style: normal;
 }
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+
+  40% {
+    transform: translateY(-10px);
+  }
+
+  60% {
+    transform: translateY(-5px);
+  }
+}
 .squirrel-page {
   background-image: url("../../../assets//background/AQIBackgrounds/level1.png");
   background-size: 100%; /* 배경 이미지를 컨테이너에 맞게 확장하여 잘리지 않도록 설정 */
@@ -45,7 +62,36 @@
   border-radius: 10px;
   height: 100%;
 }
-
+.squirrel-guide {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0 0 10px;
+  font-family: "goorm-sans-bold";
+  gap: 10px;
+}
+.squirrel-guide > p {
+  padding: 10px;
+  text-align: left;
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  line-height: 2;
+  font-weight: 400;
+  color: #fff;
+}
+.acorn-guide {
+  display: block;
+  width: 100%;
+  margin: 10px auto;
+  animation: bounce 2s infinite;
+}
+.guide-squirrel > p {
+  margin-bottom: 20px;
+  font-size: 1rem;
+  color: #000000;
+  font-family: "goorm-sans-bold";
+}
 .feed-acorn {
   display: flex;
   flex-direction: column;
@@ -127,7 +173,13 @@
   font-size: 25px;
   font-weight: bold;
 }
-
+.modal-btns {
+  display: flex;
+  gap: 10px;
+}
+.login-button-squirrel {
+  margin-top: 10px;
+}
 .acorn-modal-btn {
   width: 100%;
   padding: 10px 10px;
@@ -166,12 +218,12 @@
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #007bff9f;
+  background-color: #45857eb5;
   color: white;
   padding: 20px 20px;
   margin-bottom: 50px;
   border: none;
-  border-radius: 5px;
+  border-radius: 15px;
   cursor: pointer;
   z-index: 10;
 }
